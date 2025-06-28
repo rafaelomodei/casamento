@@ -17,8 +17,8 @@ const shareDescription =
   'Um dia inesquecível está por vir! Com carinho, preparamos cada detalhe para celebrar nosso amor ao lado de quem mais amamos. Acompanhe nossa história, confira as informações da cerimônia, festa e deixe sua mensagem especial para nós.';
 
 export const metadata: Metadata = {
-  title: 'Create Next App',
-  description: shareDescription,
+  title: 'Maria e Rafael',
+  description: 'Este é o site do nosso casamento Maria e Rafael',
   openGraph: {
     title: 'Create Next App',
     description: shareDescription,
