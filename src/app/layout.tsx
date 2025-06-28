@@ -1,15 +1,11 @@
 import type { Metadata } from 'next';
 import { Arapey, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import { ThemeProvider } from '@/Providers/theme-provider';
 
 const arapey = Arapey({
   weight: '400',
   variable: '--font-arapey',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
   subsets: ['latin'],
 });
 
@@ -24,11 +20,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='pt-br'>
-      <body
-        className={`${arapey.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html lang='pt-br' suppressHydrationWarning>
+      <body className={`${arapey.variable} antialiased`}>
+        <main className='text-primary'>{children}</main>
       </body>
     </html>
   );
