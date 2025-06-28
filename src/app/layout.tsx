@@ -1,16 +1,10 @@
 import type { Metadata } from 'next';
-import { Arapey, Geist_Mono } from 'next/font/google';
+import { Arapey } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider } from '@/Providers/theme-provider';
 
 const arapey = Arapey({
   weight: '400',
   variable: '--font-arapey',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
   subsets: ['latin'],
 });
 
