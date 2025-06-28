@@ -1,11 +1,26 @@
 import type { Metadata } from 'next';
-import { Arapey } from 'next/font/google';
+import { Arapey, Arbutus_Slab, Poppins } from 'next/font/google';
 import './globals.css';
 
-const arapey = Arapey({
-  weight: '400',
-  variable: '--font-arapey',
+export const arbutus = Arbutus_Slab({
   subsets: ['latin'],
+  weight: ['400'], // único peso disponível
+  display: 'swap',
+  variable: '--font-body', // mapeamos p/ CSS var
+});
+
+export const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['600', '700', '800'],
+  display: 'swap',
+  variable: '--font-title',
+});
+
+export const arapey = Arapey({
+  subsets: ['latin'],
+  weight: ['400'],
+  display: 'swap',
+  variable: '--font-arapey',
 });
 
 const shareDescription =
@@ -14,8 +29,9 @@ const shareDescription =
 export const metadata: Metadata = {
   title: 'Maria e Rafael',
   description: 'Este é o site do nosso casamento Maria e Rafael',
+  metadataBase: new URL('https://mariaerafael.com.br/'),
   openGraph: {
-    title: 'Create Next App',
+    title: 'Maria Eduarda & Rafael Geovani',
     description: shareDescription,
     images: ['/og-image.png'],
   },
@@ -28,7 +44,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='pt-br' suppressHydrationWarning>
-      <body className={`${arapey.variable} antialiased`}>
+      <body
+        className={`${arbutus.className}  
+       ${arbutus.variable}   /* --font-body     */
+          ${poppins.variable}   /* --font-title    */
+          ${arapey.variable}    /* --font-arapey   */
+      antialiased text-primary`}
+      >
         <main className='text-primary'>{children}</main>
       </body>
     </html>

@@ -14,7 +14,9 @@ export default function Home() {
               height={64}
             />
           </div>
-          <p className='text-2xl font-bold text-primary'>Site em Construção</p>
+          <p className='font-arapey text-2xl font-bold text-primary'>
+            Site em Construção
+          </p>
           <p className='text-primary'>
             Estamos preparando tudo com muito amor e carinho para compartilhar
             cada detalhe do nosso grande dia com você. Em breve, nosso cantinho
@@ -26,7 +28,7 @@ export default function Home() {
             <p>Com amor,</p>
           </div>
           <div>
-            <p className='font-bold text-primary'>
+            <p className='font-arapey  font-bold text-primary'>
               Maria Eduarda & Rafael Geovani
             </p>
             <p className='text-primary font-black'>27 | SET | 2025</p>
