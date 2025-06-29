@@ -23,8 +23,9 @@ export const arapey = Arapey({
   variable: '--font-arapey',
 });
 
-const shareDescription =
-  'Um dia inesquecível está por vir! Com carinho, preparamos cada detalhe para celebrar nosso amor ao lado de quem mais amamos. Acompanhe nossa história, confira as informações da cerimônia, festa e deixe sua mensagem especial para nós.';
+const shareDescription = `Um dia inesquecível está por vir! Com carinho, preparamos cada detalhe para
+celebrar nosso amor ao lado de quem mais amamos. Acompanhe nossa história, confira as informações da
+cerimônia, festa e deixe sua mensagem especial para nós.`;
 
 export const metadata: Metadata = {
   title: 'Maria e Rafael',
