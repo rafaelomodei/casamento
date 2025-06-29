@@ -1,4 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
+import Countdown from '@/components/countdown';
 import Image from 'next/image';
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
               Maria Eduarda & Rafael Geovani
             </p>
             <p className='text-primary text-xl --font-body'>27 | SET | 2025</p>
+            <Countdown targetDate={'2025-09-27T00:00:00'} />
           </div>
         </div>
       </header>
