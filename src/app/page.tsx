@@ -1,9 +1,10 @@
-import { Card, CardContent } from '@/components/ui/card';
-import Countdown from '@/components/countdown';
+import Countdown from '@/components/Countdown/Countdown';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
+  const weddingDate = new Date('September 27, 2025 16:00:00');
+
   return (
     <main className='min-h-screen flex flex-col py-8  px-4  text-primary'>
       <header className='flex h-screen'>
@@ -19,7 +20,7 @@ export default function Home() {
               Maria Eduarda & Rafael Geovani
             </p>
             <p className='text-primary text-xl --font-body'>27 | SET | 2025</p>
-            <Countdown targetDate={'2025-09-27T00:00:00'} />
+            <Countdown targetDate={weddingDate} />
             <p className='text-primary text-xl'>27 | SET | 2025</p>
           </div>
         </div>
