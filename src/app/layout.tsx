@@ -4,9 +4,9 @@ import './globals.css';
 
 export const arbutus = Arbutus_Slab({
   subsets: ['latin'],
-  weight: ['400'], // único peso disponível
+  weight: ['400'],
   display: 'swap',
-  variable: '--font-body', // mapeamos p/ CSS var
+  variable: '--font-body',
 });
 
 export const poppins = Poppins({
@@ -45,10 +45,10 @@ export default function RootLayout({
   return (
     <html lang='pt-br' suppressHydrationWarning>
       <body
-        className={`${arbutus.className}  
-       ${arbutus.variable}   /* --font-body     */
-          ${poppins.variable}   /* --font-title    */
-          ${arapey.variable}    /* --font-arapey   */
+        className={`${arapey.className}  
+          ${arbutus.variable}   
+          ${poppins.variable}  
+          ${arapey.variable} 
       antialiased text-primary`}
       >
         <main className='text-primary'>{children}</main>
