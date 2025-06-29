@@ -23,14 +23,16 @@ export default function Countdown({ targetDate }: CountdownProps) {
   }, [targetDate]);
 
   return (
-    <div className='flex gap-2 text-2xl'>
-      <div>
-        <Image src={'/svg/calendar.svg'} alt='Dia' width={64} height={64} />
-        <span>{timeLeft.days}d</span>
-      </div>
-      <span>{timeLeft.hours}h</span>
-      <span>{timeLeft.minutes}m</span>
-      <span>{timeLeft.seconds}s</span>
+    <div className='relative flex h-16 w-16 items-center justify-center text-sm md:text-xl'>
+      <Image
+        src={'/svg/calendar.svg'}
+        alt='Calendário do casamento'
+        fill
+        className='object-contain'
+      />
+      <span className='absolute text-center font-semibold'>
+        {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
+      </span>
     </div>
   );
 }
