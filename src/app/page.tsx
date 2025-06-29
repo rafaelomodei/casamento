@@ -100,6 +100,21 @@ export default function Home() {
         <p>Colocar aqui o nome da igreja e o endereço escrito</p>
         <div className='flex flex-col sm:flex-row gap-2 w-full mt-4'></div>
       </section>
+
+      <section className='flex flex-col w-full py-8'>
+        <p className='text-2xl'>Festa</p>
+        Nossa felicidade é ainda maior quando compatilhada! te esperamos para
+        celebrar com a gente!
+        <Image
+          src={'/png/capa.png'}
+          alt='Igreja de Colorado - Paraná'
+          className='rounded-md'
+          height={360}
+          width={400}
+        />
+        <p>Pesqueiro São Luiz - Colorado Paraná</p>
+        <p>Colocar o hário também</p>
+      </section>
     </main>
   );
 }
