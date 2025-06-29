@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Arapey, Arbutus_Slab, Poppins } from 'next/font/google';
 import './globals.css';
+import NavBar from '@/components/NavBar/NavBar';
 
 export const arbutus = Arbutus_Slab({
   subsets: ['latin'],
@@ -43,15 +44,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='pt-br' suppressHydrationWarning>
+    <html
+      lang='pt-br'
+      suppressHydrationWarning
+      className='flex flex-col items-center'
+    >
       <body
         className={`${arapey.className}  
           ${arbutus.variable}   
           ${poppins.variable}  
           ${arapey.variable} 
-      antialiased text-primary`}
+      antialiased text-primary max-w-6xl`}
       >
-        <main className='text-primary'>{children}</main>
+        <main className='text-primary'>
+          <NavBar />
+          {children}
+        </main>
       </body>
     </html>
   );
