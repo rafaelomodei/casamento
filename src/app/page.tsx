@@ -1,4 +1,5 @@
 import Countdown from '@/components/Countdown/Countdown';
+import Map from '@/components/Map/Map';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -101,8 +102,10 @@ export default function Home() {
           height={360}
           width={400}
         />
-        <p>Colocar aqui o nome da igreja e o endereço escrito</p>
-        <div className='flex flex-col sm:flex-row gap-2 w-full mt-4'></div>
+        <p>Igreja de Colorado - Colorado, Paraná</p>
+        <div className='flex flex-col sm:flex-row gap-2 w-full mt-4'>
+          <Map query='Igreja de Colorado, Colorado - PR' label='Mapa da igreja' />
+        </div>
       </section>
 
       <section className='flex flex-col w-full py-8'>
@@ -116,8 +119,11 @@ export default function Home() {
           height={360}
           width={400}
         />
-        <p>Pesqueiro São Luiz - Colorado Paraná</p>
-        <p>Colocar o hário também</p>
+        <p>Pesqueiro São Luiz - Colorado, Paraná</p>
+        <p>Colocar o horário também</p>
+        <div className='flex flex-col sm:flex-row gap-2 w-full mt-4'>
+          <Map query='Pesqueiro São Luiz, Colorado - PR' label='Mapa do pesqueiro' />
+        </div>
       </section>
     </main>
   );
