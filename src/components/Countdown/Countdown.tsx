@@ -23,16 +23,46 @@ export default function Countdown({ targetDate }: CountdownProps) {
   }, [targetDate]);
 
   return (
-    <div className='relative flex h-16 w-16 items-center justify-center text-sm md:text-xl'>
-      <Image
-        src={'/svg/calendar.svg'}
-        alt='Calendário do casamento'
-        fill
-        className='object-contain'
-      />
-      <span className='absolute text-center font-semibold'>
-        {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s
-      </span>
+    <div className='flex gap-4'>
+      <div className='relative flex h-16 w-16 items-center justify-center text-2xl'>
+        <Image
+          src={'/svg/calendar.svg'}
+          alt='Calendário do casamento'
+          fill
+          className='object-contain'
+        />
+        <span className='absolute text-center mt-3'>{timeLeft.days}d</span>
+      </div>
+
+      <div className='relative flex h-16 w-16 items-center justify-center text-2xl'>
+        <Image
+          src={'/svg/calendar.svg'}
+          alt='Calendário do casamento'
+          fill
+          className='object-contain'
+        />
+        <span className='absolute text-center mt-3'>{timeLeft.hours}h</span>
+      </div>
+
+      <div className='relative flex h-16 w-16 items-center justify-center text-2xl'>
+        <Image
+          src={'/svg/calendar.svg'}
+          alt='Calendário do casamento'
+          fill
+          className='object-contain'
+        />
+        <span className='absolute text-center mt-3'>{timeLeft.minutes}m</span>
+      </div>
+
+      <div className='relative flex h-16 w-16 items-center justify-center text-2xl'>
+        <Image
+          src={'/svg/calendar.svg'}
+          alt='Calendário do casamento'
+          fill
+          className='object-contain'
+        />
+        <span className='absolute text-center mt-3'>{timeLeft.seconds}s</span>
+      </div>
     </div>
   );
 }

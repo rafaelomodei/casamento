@@ -15,13 +15,16 @@ export default function Home() {
             height={540}
             width={725}
           />
-          <div className='flex flex-col items-center'>
-            <p className='font-arapey text-2xl sm:text-5xl lg:text-6xl text-primary'>
-              Maria Eduarda & Rafael Geovani
-            </p>
-            <p className='text-primary text-xl --font-body'>27 | SET | 2025</p>
+          <div className='flex flex-col items-center gap-4'>
+            <div className='flex flex-col items-center'>
+              <p className='font-arapey text-2xl sm:text-5xl lg:text-6xl text-primary'>
+                Maria Eduarda & Rafael Geovani
+              </p>
+              <p className='text-primary text-xl --font-body'>
+                27 | SET | 2025
+              </p>
+            </div>
             <Countdown targetDate={weddingDate} />
-            <p className='text-primary text-xl'>27 | SET | 2025</p>
           </div>
         </div>
       </header>
@@ -60,7 +63,7 @@ export default function Home() {
             Continuar lendo
           </Link>
         </div>
-        <div className=' hidden  w-full max-w-container mx-auto mt-[1px]'>
+        <div className=' hidden md:flex  w-full max-w-container mx-auto mt-[1px]'>
           <Image
             src={'/png/preWedding/DSC03547.jpg'}
             alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
@@ -91,17 +94,20 @@ export default function Home() {
       </section>
 
       <section className='flex flex-col w-full py-8'>
-        <p className='text-2xl'>Cerimônia religiosa</p>
+        <p className='text-2xl'>Cerimônia</p>
         Não percam esse momento lindo e emocionante das nossas vidas. Contamos
         com você para ser ainda mais especial.
-        <Image
-          src={'/png/capa.png'}
-          alt='Igreja de Colorado - Paraná'
-          className='rounded-md'
-          height={360}
-          width={400}
-        />
-        <p>Colocar aqui o nome da igreja e o endereço escrito</p>
+        <div className='flex flex-col items-centertext-center'>
+          <Image
+            src={'/png/capa.png'}
+            alt='Igreja de Colorado - Paraná'
+            className='rounded-md'
+            height={360}
+            width={400}
+          />
+          <p className='uppercase'>Paróquia Nossa Senhora Auxliadora</p>
+          <p className='italic'>Praça Dom Bosco, s/n - Cnetro, Corodo - PR</p>
+        </div>
         <div className='flex flex-col sm:flex-row gap-2 w-full mt-4'></div>
       </section>
 
