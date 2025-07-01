@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Arapey, Arbutus_Slab, Poppins } from 'next/font/google';
 import './globals.css';
 import NavBar from '@/components/NavBar/NavBar';
+import Footer from '@/components/Footer/Footer';
 
 export const arbutus = Arbutus_Slab({
   subsets: ['latin'],
@@ -59,6 +60,7 @@ export default function RootLayout({
         <main className='text-primary'>
           <NavBar />
           {children}
+          <Footer />
         </main>
       </body>
     </html>
