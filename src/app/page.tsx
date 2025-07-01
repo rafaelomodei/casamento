@@ -95,20 +95,35 @@ export default function Home() {
 
       <section className='flex flex-col w-full py-8'>
         <p className='text-2xl'>Cerimônia</p>
-        Não percam esse momento lindo e emocionante das nossas vidas. Contamos
-        com você para ser ainda mais especial.
-        <div className='flex flex-col items-centertext-center'>
-          <Image
-            src={'/png/capa.png'}
-            alt='Igreja de Colorado - Paraná'
-            className='rounded-md'
-            height={360}
-            width={400}
-          />
-          <p className='uppercase'>Paróquia Nossa Senhora Auxliadora</p>
-          <p className='italic'>Praça Dom Bosco, s/n - Cnetro, Corodo - PR</p>
+        <p>
+          Não percam esse momento lindo e emocionante das nossas vidas. Contamos
+          com você para ser ainda mais especial.
+        </p>
+        <div className='flex flex-col md:flex-row w-full gap-8 md:gap-12'>
+          <div className='flex flex-col items-center text-center'>
+            <Image
+              src={'/png/capa.png'}
+              alt='Igreja de Colorado - Paraná'
+              className='rounded-md'
+              height={360}
+              width={400}
+            />
+            <p className='uppercase'>Paróquia Nossa Senhora Auxliadora</p>
+            <p className='italic'>Praça Dom Bosco, s/n - Cnetro, Corodo - PR</p>
+          </div>
+          <div className='flex flex-col items-center text-center'>
+            <Image
+              src={'/png/mapaIgreja.png'}
+              alt='Igreja de Colorado - Paraná'
+              className='rounded-md'
+              height={360}
+              width={400}
+            />
+            <p className='uppercase'>
+              Clieque no mapa para redirecionar para GPS
+            </p>
+          </div>
         </div>
-        <div className='flex flex-col sm:flex-row gap-2 w-full mt-4'></div>
       </section>
 
       <section className='flex flex-col w-full py-8'>
@@ -116,7 +131,7 @@ export default function Home() {
         Nossa felicidade é ainda maior quando compatilhada! te esperamos para
         celebrar com a gente!
         <Image
-          src={'/png/capa.png'}
+          src={'/png/mapaPesqueiro.png'}
           alt='Igreja de Colorado - Paraná'
           className='rounded-md'
           height={360}

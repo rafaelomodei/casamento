@@ -19,21 +19,24 @@ const Footer = () => {
           target='_blank'
           rel='noopener noreferrer'
         >
-          <Instagram size={16} />@maria.rissatti
+          <Instagram size={16} />
+          @maria.rissatti
         </Link>
         <Link
-          href='https://www.instagram.com/rafael.omodei'
+          href='https://www.instagram.com/rafael_omodei'
           className='flex items-center gap-1'
           target='_blank'
           rel='noopener noreferrer'
         >
-          <Instagram size={16} />@rafael.omodei
+          <Instagram size={16} />
+          @rafael_omodei
         </Link>
       </div>
-      <p className="text-center">Feito com amor para celebrar nossa união.</p>
+      <p className='text-center'>Feito com amor para celebrar nossa união.</p>
 
       <p className='text-sm text-center'>
-        &copy; {new Date().getFullYear()} OmodeiLabs. Todos os direitos reservados.
+        &copy; {new Date().getFullYear()} OmodeiLabs. Todos os direitos
+        reservados.
       </p>
     </footer>
   );
