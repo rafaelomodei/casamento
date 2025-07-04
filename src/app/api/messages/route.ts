@@ -1,26 +1,22 @@
 import { NextResponse } from 'next/server';
-import { GetAllProductsUseCase } from '@/domain/products/useCases/getAllProducts/GetAllProductsUseCase';
-import { CreateProductUseCase } from '@/domain/products/useCases/createProduct/CreateProductUseCase';
-import { productRepository } from '@/infra/repositories/firebase/ProductServerFirebaseRepositories';
-import { getCurrentTenant } from '@/lib/getTenant';
-import { ProductDTO } from '@/domain/products/entities/ProductDTO';
+import { GetAllMessagesUseCase } from '@/domain/messages/useCases/getAllMessages/GetAllMessagesUseCase';
+import { CreateMessageUseCase } from '@/domain/messages/useCases/createMessage/CreateMessageUseCase';
+import { messageRepository } from '@/infra/repositories/firebase/MessageServerFirebaseRepositories';
+import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 
 export async function GET() {
-  const tenant = await getCurrentTenant();
+  const getAllMessages = new GetAllMessagesUseCase(messageRepository);
+  const messages = await getAllMessages.execute();
 
-  const getAllProducts = new GetAllProductsUseCase(productRepository);
-  const products = await getAllProducts.execute(tenant);
-
-  return NextResponse.json(products, { status: 200 });
+  return NextResponse.json(messages, { status: 200 });
 }
 
 export async function POST(req: Request) {
   try {
-    const tenant = await getCurrentTenant();
-    const data = (await req.json()) as ProductDTO;
+    const data = (await req.json()) as MessageDTO;
 
-    const createProduct = new CreateProductUseCase(productRepository);
-    await createProduct.execute({ ...data, storeId: data.storeId || tenant });
+    const createMessage = new CreateMessageUseCase(messageRepository);
+    await createMessage.execute(data);
 
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (error) {
