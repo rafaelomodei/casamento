@@ -1,27 +1,41 @@
+'use client';
+
 import CommentCard from '@/components/CommentCard/CommentCard';
 import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
+import { BRIDE_AND_GROOM } from '@/lib/constants';
+import { useEffect, useState } from 'react';
 
-async function getMessages(): Promise<MessageDTO[]> {
-  const res = await fetch(`/api/messages`, {
-    next: { revalidate: 0 },
-  });
+export default function MensagensPage() {
+  const [messages, setMessages] = useState<MessageDTO[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  if (!res.ok) {
-    return [];
-  }
+  useEffect(() => {
+    async function getMessages() {
+      try {
+        const res = await fetch('/api/messages');
+        const data = await res.json();
 
-  return (await res.json()) as MessageDTO[];
-}
+        const messagesData: MessageDTO[] = data.map((m: MessageDTO) => ({
+          ...m,
+        }));
 
-export default async function MensagensPage() {
-  const messages = await getMessages();
+        setMessages(messagesData);
+      } catch (err) {
+        console.error('Erro ao carregar as mensagens:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    getMessages();
+  }, []);
 
   return (
     <div className='flex flex-col gap-4 py-8'>
       <h1 className='text-2xl'>Mensagens</h1>
       {messages.length === 0 ? (
         <p className='py-4'>
-          Seja o primeiro a deixar uma mensagem para Marie, Duarte e Rafael.
+          Seja o primeiro a deixar uma mensagem para {BRIDE_AND_GROOM}.
         </p>
       ) : (
         <div className='flex flex-wrap gap-4'>
