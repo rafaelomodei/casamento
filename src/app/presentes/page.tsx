@@ -31,6 +31,12 @@ export default function PresentesPage() {
   return (
     <div className='flex flex-col gap-4 py-8'>
       <h1 className='text-2xl'>Presentes</h1>
+      <a
+        href='/presentes/adicionar-novo-presente'
+        className='self-start bg-primary text-white rounded-sm text-lg py-2 px-4'
+      >
+        Adicionar novo presente
+      </a>
       {products.length === 0 ? (
         <p className='py-4'>Nenhum presente cadastrado.</p>
       ) : (

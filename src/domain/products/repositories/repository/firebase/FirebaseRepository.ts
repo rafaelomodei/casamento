@@ -6,6 +6,7 @@ import {
   addDoc,
   doc,
   getDoc,
+  where,
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore';
@@ -30,7 +31,7 @@ export class FirebaseRepository implements IProductRepository {
 
   async create(product: ProductDTO): Promise<void> {
     const { id, ...data } = product;
-    await addDoc(this.collection, { ...data });
+    await addDoc(this.collection, { ...data, views: data.views ?? 0 });
   }
 
   async findAll(): Promise<ProductDTO[]> {
@@ -46,6 +47,14 @@ export class FirebaseRepository implements IProductRepository {
     const docRef = doc(this.db, this.collectionPath, id);
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) return null;
+    return { ...(docSnap.data() as ProductDTO), id: docSnap.id };
+  }
+
+  async findBySlug(slug: string): Promise<ProductDTO | null> {
+    const q = query(this.collection, where('slug', '==', slug));
+    const snapshot = await getDocs(q);
+    const docSnap = snapshot.docs[0];
+    if (!docSnap) return null;
     return { ...(docSnap.data() as ProductDTO), id: docSnap.id };
   }
 

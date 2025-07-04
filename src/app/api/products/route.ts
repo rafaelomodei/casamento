@@ -3,6 +3,7 @@ import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 import { GetAllProductsUseCase } from '@/domain/products/useCases/getAllProducts/GetAllProductsUseCase';
 import { CreateProductUseCase } from '@/domain/products/useCases/createProduct/CreateProductUseCase';
 import { GetProductByIdUseCase } from '@/domain/products/useCases/getProductById/GetProductByIdUseCase';
+import { GetProductBySlugUseCase } from '@/domain/products/useCases/getProductBySlug/GetProductBySlugUseCase';
 import { UpdateProductUseCase } from '@/domain/products/useCases/updateProduct/UpdateProductUseCase';
 import { DeleteProductUseCase } from '@/domain/products/useCases/deleteProduct/DeleteProductUseCase';
 import { productRepository } from '@/infra/repositories/firebase/ProductServerFirebaseRepositories';
@@ -10,10 +11,22 @@ import { productRepository } from '@/infra/repositories/firebase/ProductServerFi
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get('id');
+  const slug = searchParams.get('slug');
 
   if (id) {
     const getProduct = new GetProductByIdUseCase(productRepository);
     const product = await getProduct.execute(id);
+
+    if (!product) {
+      return NextResponse.json({ error: 'Produto não encontrado' }, { status: 404 });
+    }
+
+    return NextResponse.json(product, { status: 200 });
+  }
+
+  if (slug) {
+    const getProductBySlug = new GetProductBySlugUseCase(productRepository);
+    const product = await getProductBySlug.execute(slug);
 
     if (!product) {
       return NextResponse.json({ error: 'Produto não encontrado' }, { status: 404 });

@@ -5,4 +5,5 @@ export interface ProductDTO {
   price: number;
   images: string[];
   description?: string;
+  views?: number;
 }
