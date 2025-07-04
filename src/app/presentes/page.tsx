@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
 import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 
-export default function ProdutosPage() {
+export default function PresentesPage() {
   const [products, setProducts] = useState<ProductDTO[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -15,7 +15,7 @@ export default function ProdutosPage() {
         const data = await res.json();
         setProducts(data as ProductDTO[]);
       } catch (err) {
-        console.error('Erro ao carregar produtos:', err);
+        console.error('Erro ao carregar presentes:', err);
       } finally {
         setLoading(false);
       }
@@ -32,7 +32,7 @@ export default function ProdutosPage() {
     <div className='flex flex-col gap-4 py-8'>
       <h1 className='text-2xl'>Presentes</h1>
       {products.length === 0 ? (
-        <p className='py-4'>Nenhum produto cadastrado.</p>
+        <p className='py-4'>Nenhum presente cadastrado.</p>
       ) : (
         <div className='flex flex-wrap gap-4'>
           {products.map((product) => (
