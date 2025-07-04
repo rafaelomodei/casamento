@@ -9,6 +9,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ interface Message extends MessageDTO {
 export default function MensagensPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
 
   const getMessages = async () => {
     try {
@@ -63,6 +65,7 @@ export default function MensagensPage() {
       });
       event.currentTarget.reset();
       await getMessages();
+      setOpen(false);
     } catch (err) {
       console.error("Erro ao enviar mensagem:", err);
     }
@@ -71,16 +74,23 @@ export default function MensagensPage() {
   return (
     <div className="flex flex-col gap-4 py-8">
       <h1 className="text-2xl">Mensagens</h1>
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button variant="outline">Escrever mensagem</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-[500px]">
           <form onSubmit={handleSubmit} className="grid gap-4">
             <DialogHeader>
               <DialogTitle>Nova mensagem</DialogTitle>
+              <DialogDescription>
+                Escreva uma mensagem carinhosa. Ex: "Que Deus abençoe essa união"
+              </DialogDescription>
             </DialogHeader>
-            <Textarea name="message" placeholder="Sua mensagem" />
+            <Textarea
+              name="message"
+              placeholder="Ex: Felicidades aos noivos!"
+              className="min-h-32"
+            />
             <DialogFooter>
               <DialogClose asChild>
                 <Button variant="outline" type="button">
