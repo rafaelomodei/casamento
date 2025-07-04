@@ -1,41 +1,39 @@
-import Image from 'next/image'
-import Link from 'next/link'
+'use client';
 
-import {
-  Card,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card'
+import Link from 'next/link';
+import { Card, CardContent } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
 
-interface ProductCardProps {
-  imageSrc: string
-  title: string
-  href: string
+interface ProductProps {
+  slug: string;
+  images: string[];
+  title: string;
+  price: number;
 }
 
-export default function ProductCard({ imageSrc, title, href }: ProductCardProps) {
+export function ProductCard(props: ProductProps) {
+  const { slug, images, title, price } = props;
   return (
-    <Card className='overflow-hidden p-0 gap-0'>
-      <Link href={href}>
-        <Image
-          src={imageSrc}
+    <Link href={`/product/${slug}`} className='w-xs'>
+      <Card
+        className={cn(
+          'text-primary relative transition border border-border bg-white shadow-none overflow-hidden rounded-md',
+          'hover:border-primary hover:border-2  dark:hover:bg-muted/30'
+        )}
+      >
+        <ImageCarousel
+          images={images}
           alt={title}
-          width={320}
-          height={240}
-          className='h-48 w-full object-cover'
+          hoverControls
+          className='h-64 w-full'
         />
-      </Link>
-      <CardContent className='px-4 pt-4'>
-        <h3 className='font-semibold text-center'>{title}</h3>
-      </CardContent>
-      <CardFooter className='px-4 pb-4'>
-        <Link
-          href={href}
-          className='bg-primary text-white text-center w-full rounded-sm py-2'
-        >
-          Comprar
-        </Link>
-      </CardFooter>
-    </Card>
-  )
+
+        <CardContent className='flex flex-col gap-2 pt-2'>
+          <h3 className='text-md text-muted-foreground'>{title}</h3>
+          <p className='text-lg font-semibold'>R$ {Number(price).toFixed(2)}</p>
+        </CardContent>
+      </Card>
+    </Link>
+  );
 }

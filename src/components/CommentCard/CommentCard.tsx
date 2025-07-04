@@ -1,8 +1,13 @@
-import Image from 'next/image'
-import { Card, CardContent } from '@/components/ui/card'
-import type { CommentCardProps } from './interface'
+import Image from 'next/image';
+import { Card, CardContent } from '@/components/ui/card';
+import type { CommentCardProps } from './interface';
 
-export default function CommentCard({ avatarUrl, name, date, message }: CommentCardProps) {
+export default function CommentCard({
+  avatarUrl,
+  name,
+  date,
+  message,
+}: CommentCardProps) {
   return (
     <Card>
       <div className='flex items-start gap-4 px-6'>
@@ -22,5 +27,5 @@ export default function CommentCard({ avatarUrl, name, date, message }: CommentC
         <p>{message}</p>
       </CardContent>
     </Card>
-  )
+  );
 }

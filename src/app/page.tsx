@@ -1,4 +1,8 @@
+import CommentCard from '@/components/CommentCard/CommentCard';
 import Countdown from '@/components/Countdown/Countdown';
+import { ProductCard } from '@/components/ProductCard/ProductCard';
+
+import { BRIDE_AND_GROOM } from '@/lib/constants';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -18,7 +22,7 @@ export default function Home() {
           <div className='flex flex-col items-center gap-4'>
             <div className='flex flex-col items-center'>
               <p className='font-arapey text-2xl sm:text-5xl lg:text-6xl text-primary'>
-                Maria Eduarda & Rafael Geovani
+                {BRIDE_AND_GROOM}
               </p>
               <p className='text-primary text-xl --font-body'>
                 27 | SET | 2025
@@ -76,7 +80,34 @@ export default function Home() {
 
       <section className='flex flex-col w-full py-8'>
         <p className='text-2xl'>Mensagens</p>
-        Colocar aqui as mensagens...
+        <div className='flex  flex-wrap gap-8'>
+          <CommentCard
+            avatarUrl='https://instagram.fmgf12-1.fna.fbcdn.net/v/t51.2885-19/391204821_349662927437137_6887909049664376690_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_ht=instagram.fmgf12-1.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QHsS9OH0FohojeOP6q_5yvlnA1kiQt6uNnu22uZtuq41xrtLxsaYIlBtZpg3F7zVwc&_nc_ohc=bLCcF_hY-WQQ7kNvwFFuftV&_nc_gid=i1pliSPtVIGhQamS22O4mA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfP-yIydobyDFBaat6Rs-rDaaRao53MyjsddeTMSiMsneg&oe=68690B69&_nc_sid=7a9f4b'
+            name='Thais Omodei'
+            date='13/06/2025'
+            message='Que cada amanhecer juntos seja um convite para novos sonhos e que cada pôr do sol celebre as conquistas que vocês construirão lado a lado. Que o respeito e a alegria sejam sempre o alicerce desse amor tão lindo. Estaremos vibrando com vocês em cada passo!'
+          />
+
+          <CommentCard
+            avatarUrl='https://instagram.fmgf12-1.fna.fbcdn.net/v/t51.2885-19/391204821_349662927437137_6887909049664376690_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_ht=instagram.fmgf12-1.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QHsS9OH0FohojeOP6q_5yvlnA1kiQt6uNnu22uZtuq41xrtLxsaYIlBtZpg3F7zVwc&_nc_ohc=bLCcF_hY-WQQ7kNvwFFuftV&_nc_gid=i1pliSPtVIGhQamS22O4mA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfP-yIydobyDFBaat6Rs-rDaaRao53MyjsddeTMSiMsneg&oe=68690B69&_nc_sid=7a9f4b'
+            name='Thais Omodei'
+            date='13/06/2025'
+            message='Que cada amanhecer juntos seja um convite para novos sonhos e que cada pôr do sol celebre as conquistas que vocês construirão lado a lado. Que o respeito e a alegria sejam sempre o alicerce desse amor tão lindo. Estaremos vibrando com vocês em cada passo!'
+          />
+
+          <CommentCard
+            avatarUrl='https://instagram.fmgf12-1.fna.fbcdn.net/v/t51.2885-19/391204821_349662927437137_6887909049664376690_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_ht=instagram.fmgf12-1.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QHsS9OH0FohojeOP6q_5yvlnA1kiQt6uNnu22uZtuq41xrtLxsaYIlBtZpg3F7zVwc&_nc_ohc=bLCcF_hY-WQQ7kNvwFFuftV&_nc_gid=i1pliSPtVIGhQamS22O4mA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfP-yIydobyDFBaat6Rs-rDaaRao53MyjsddeTMSiMsneg&oe=68690B69&_nc_sid=7a9f4b'
+            name='Thais Omodei'
+            date='13/06/2025'
+            message='Que cada amanhecer juntos seja um convite para novos sonhos e que cada pôr do sol celebre as conquistas que vocês construirão lado a lado. Que o respeito e a alegria sejam sempre o alicerce desse amor tão lindo. Estaremos vibrando com vocês em cada passo!'
+          />
+          <CommentCard
+            avatarUrl='https://instagram.fmgf12-1.fna.fbcdn.net/v/t51.2885-19/391204821_349662927437137_6887909049664376690_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_ht=instagram.fmgf12-1.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QHsS9OH0FohojeOP6q_5yvlnA1kiQt6uNnu22uZtuq41xrtLxsaYIlBtZpg3F7zVwc&_nc_ohc=bLCcF_hY-WQQ7kNvwFFuftV&_nc_gid=i1pliSPtVIGhQamS22O4mA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfP-yIydobyDFBaat6Rs-rDaaRao53MyjsddeTMSiMsneg&oe=68690B69&_nc_sid=7a9f4b'
+            name='Thais Omodei'
+            date='13/06/2025'
+            message='Que cada amanhecer juntos seja um convite para novos sonhos e que cada pôr do sol celebre as conquistas que vocês construirão lado a lado. Que o respeito e a alegria sejam sempre o alicerce desse amor tão lindo. Estaremos vibrando com vocês em cada passo!'
+          />
+        </div>
         <div className='flex flex-col sm:flex-row gap-2 w-full mt-4'>
           <Link
             href='deixar-mensagem/'
@@ -139,6 +170,61 @@ export default function Home() {
         />
         <p>Pesqueiro São Luiz - Colorado Paraná</p>
         <p>Colocar o hário também</p>
+      </section>
+
+      <section className='flex flex-col w-full py-8'>
+        <p className='text-2xl'>Presentes</p>
+        <p>
+          Queridos familiares e amigos, para nós, a presença de vocês neste dia
+          tão especial é o maior presente que poderíamos receber. Mas, se vocês
+          também quiserem nos presentear, ficaremos muito agradecidos. Com amor,
+          {` ${BRIDE_AND_GROOM}`}.
+        </p>
+        <div className='flex flex-wrap gap-4'>
+          <ProductCard
+            slug='tv-smart'
+            images={['/png/capa.png']}
+            price={1600}
+            title='Tv Smart'
+          />
+          <ProductCard
+            slug='tv-smart'
+            images={['/png/capa.png']}
+            price={1600}
+            title='Tv Smart'
+          />
+          <ProductCard
+            slug='tv-smart'
+            images={['/png/capa.png']}
+            price={1600}
+            title='Tv Smart'
+          />
+          <ProductCard
+            slug='tv-smart'
+            images={['/png/capa.png']}
+            price={1600}
+            title='Tv Smart'
+          />
+          <ProductCard
+            slug='tv-smart'
+            images={['/png/products/roboAspiradorXiame.png']}
+            price={1600}
+            title='Xiaomi Robot Vacuum X20'
+          />
+          <ProductCard
+            slug='tv-smart'
+            images={['/png/products/tvSmart.png']}
+            price={1600}
+            title='Tv Smart'
+          />
+        </div>
+      </section>
+      <section className='flex flex-col w-full py-8'>
+        <p className='text-2xl'>Dicas</p>
+        <div className='flex gap-8'>
+          <p className='text-lg'>Padrinos</p>
+          <p className='text-lg'>Madrinhas</p>
+        </div>
       </section>
     </main>
   );
