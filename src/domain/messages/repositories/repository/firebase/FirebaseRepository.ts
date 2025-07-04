@@ -6,10 +6,10 @@ import {
   getDocs,
   addDoc,
   serverTimestamp,
-} from 'firebase/firestore';
-import { appFirebase } from '../../../../../infra/repositories/firebase/config';
-import { IMessageRepository } from '@/domain/messages/repositories/IMessageRepository';
-import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
+} from "firebase/firestore";
+import { appFirebase } from "../../../../../infra/repositories/firebase/config";
+import { IMessageRepository } from "@/domain/messages/repositories/IMessageRepository";
+import { MessageDTO } from "@/domain/messages/entities/MessageDTO";
 
 export class FirebaseRepository implements IMessageRepository {
   private readonly db;
@@ -18,10 +18,10 @@ export class FirebaseRepository implements IMessageRepository {
 
   constructor() {
     if (!appFirebase) {
-      throw new Error('Firebase not initialized');
+      throw new Error("Firebase not initialized");
     }
 
-    this.collectionPath = 'messages';
+    this.collectionPath = "messages";
     this.db = getFirestore(appFirebase);
     this.collection = collection(this.db, this.collectionPath);
   }
@@ -42,15 +42,15 @@ export class FirebaseRepository implements IMessageRepository {
       const data = doc.data();
 
       return {
-        ...(data as MessageDTO),
         id: doc.id,
+        message: data.message as string,
         date: data.date.toDate(),
       };
     });
   }
 
   async findById(id: string): Promise<MessageDTO | null> {
-    const q = query(this.collection, where('id', '==', id));
+    const q = query(this.collection, where("id", "==", id));
 
     const snapshot = await getDocs(q);
     const doc = snapshot.docs[0];
@@ -58,8 +58,8 @@ export class FirebaseRepository implements IMessageRepository {
 
     const data = doc.data();
     return {
-      ...(data as MessageDTO),
       id: doc.id,
+      message: data.message as string,
       date: data.date.toDate(),
     };
   }
