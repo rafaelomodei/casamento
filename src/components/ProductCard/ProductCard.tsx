@@ -15,7 +15,7 @@ interface ProductProps {
 export function ProductCard(props: ProductProps) {
   const { slug, images, title, price } = props;
   return (
-    <Link href={`/product/${slug}`} className='w-xs'>
+    <Link href={`/presentes/${slug}`} className='w-xs'>
       <Card
         className={cn(
           'text-primary relative transition border border-border bg-white shadow-none overflow-hidden rounded-md',
