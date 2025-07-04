@@ -1,26 +1,28 @@
-import CommentCard from '@/components/CommentCard/CommentCard'
-import { MessageDTO } from '@/domain/messages/entities/MessageDTO'
+import CommentCard from '@/components/CommentCard/CommentCard';
+import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 
 async function getMessages(): Promise<MessageDTO[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL ?? ''}/api/messages`, {
+  const res = await fetch(`/api/messages`, {
     next: { revalidate: 0 },
-  })
+  });
 
   if (!res.ok) {
-    return []
+    return [];
   }
 
-  return (await res.json()) as MessageDTO[]
+  return (await res.json()) as MessageDTO[];
 }
 
 export default async function MensagensPage() {
-  const messages = await getMessages()
+  const messages = await getMessages();
 
   return (
     <div className='flex flex-col gap-4 py-8'>
       <h1 className='text-2xl'>Mensagens</h1>
       {messages.length === 0 ? (
-        <p className='py-4'>Seja o primeiro a deixar uma mensagem para Marie, Duarte e Rafael.</p>
+        <p className='py-4'>
+          Seja o primeiro a deixar uma mensagem para Marie, Duarte e Rafael.
+        </p>
       ) : (
         <div className='flex flex-wrap gap-4'>
           {messages.map((msg) => (
@@ -39,5 +41,5 @@ export default async function MensagensPage() {
         </div>
       )}
     </div>
-  )
+  );
 }
