@@ -55,13 +55,11 @@ export default function RootLayout({
           ${arbutus.variable}   
           ${poppins.variable}  
           ${arapey.variable} 
-      antialiased text-primary`}
+      antialiased text-primary flex flex-col w-full justify-center items-center`}
       >
-        <div className='min-h-screen text-primary'>
-          <NavBar />
-          {children}
-          <Footer />
-        </div>
+        <NavBar />
+        {children}
+        <Footer />
       </body>
     </html>
   );

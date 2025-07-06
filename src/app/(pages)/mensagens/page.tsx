@@ -42,7 +42,7 @@ export default function MensagensPage() {
 
   const blockquoteRender = () => {
     return (
-      <header className='flex w-full flex-col gap-4'>
+      <header className='flex w-full flex-col gap-8'>
         <blockquote className='flex flex-col md:flex-row  gap-2 pl-6 border-l-4 border-primary bg-background-highlights p-4 rounded-md text-lg italic text-beige-800'>
           <p className='md:max-w-2xl'>
             “Oi, queridos convidados! Sua presença já é um presente, mas suas
@@ -59,14 +59,14 @@ export default function MensagensPage() {
           <Modal open={open} setOpen={setOpen} />
         </blockquote>
 
-        <h1 className='text-2xl'>Mensagens</h1>
+        <h1 className='text-2xl md:text-3xl'>Mensagens</h1>
       </header>
     );
   };
 
   if (loading) {
     return (
-      <main className='flex flex-col gap-4 p-4 min-h-screen w-full'>
+      <main className='flex flex-col gap-4 p-4 min-h-screen w-full max-w-6xl'>
         {blockquoteRender()}
         <div className='flex flex-wrap gap-4'>
           {Array.from({ length: 4 }).map((_, i) => (
@@ -81,7 +81,7 @@ export default function MensagensPage() {
 
   if (messages.length === 0) {
     return (
-      <main className='flex flex-col gap-4 p-4 min-h-screen '>
+      <main className='flex flex-col gap-4 p-4 min-h-screen max-w-6xl'>
         {blockquoteRender()}
 
         <p className='text-lg py-4'>
@@ -92,7 +92,7 @@ export default function MensagensPage() {
   }
 
   return (
-    <div className='flex flex-col gap-4 p-4 min-h-screen '>
+    <main className='flex flex-col gap-4 p-4 min-h-screen max-w-6xl'>
       {blockquoteRender()}
       <div className='flex flex-wrap gap-4'>
         {messages.map((msg) => (
@@ -106,6 +106,6 @@ export default function MensagensPage() {
           </div>
         ))}
       </div>
-    </div>
+    </main>
   );
 }

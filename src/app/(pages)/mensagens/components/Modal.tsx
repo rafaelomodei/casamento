@@ -47,7 +47,7 @@ export default function Modal(props: ModalProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className='md:h-16! not-italic text-xl mt-4 md:m-auto'>
+        <Button className='h-16! not-italic text-xl mt-4 md:m-auto'>
           Deixar uma mensagem
         </Button>
       </DialogTrigger>
