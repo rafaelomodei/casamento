@@ -51,11 +51,11 @@ export default function RootLayout({
       className='flex flex-col items-center'
     >
       <body
-        className={`${arapey.className}  
-          ${arbutus.variable}   
-          ${poppins.variable}  
-          ${arapey.variable} 
-      antialiased text-primary`}
+        className={`${arapey.className}
+          ${arbutus.variable}
+          ${poppins.variable}
+          ${arapey.variable}
+      antialiased text-primary overflow-y-scroll`}
       >
         <div className='min-h-screen text-primary'>
           <NavBar />
