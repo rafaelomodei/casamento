@@ -1,6 +1,7 @@
 'use client';
 
 import CommentCard from '@/components/CommentCard/CommentCard';
+import CommentCardSkeleton from '@/components/CommentCard/CommentCardSkeleton';
 import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import { useEffect, useState } from 'react';
@@ -67,8 +68,13 @@ export default function MensagensPage() {
     return (
       <main className='flex flex-col gap-4 p-4 min-h-screen w-full'>
         {blockquoteRender()}
-
-        <p className='text-lg py-4'>Carregando mensagens</p>
+        <div className='flex flex-wrap gap-4'>
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className='flex w-full md:flex-1/3'>
+              <CommentCardSkeleton />
+            </div>
+          ))}
+        </div>
       </main>
     );
   }
