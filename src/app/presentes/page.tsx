@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
 import { ProductDTO } from '@/domain/products/entities/ProductDTO';
+import Link from 'next/link';
 
 export default function PresentesPage() {
   const [products, setProducts] = useState<ProductDTO[]>([]);
@@ -31,12 +32,12 @@ export default function PresentesPage() {
   return (
     <div className='flex flex-col gap-4 py-8'>
       <h1 className='text-2xl'>Presentes</h1>
-      <a
+      <Link
         href='/presentes/adicionar-novo-presente'
         className='self-start bg-primary text-white rounded-sm text-lg py-2 px-4'
       >
         Adicionar novo presente
-      </a>
+      </Link>
       {products.length === 0 ? (
         <p className='py-4'>Nenhum presente cadastrado.</p>
       ) : (

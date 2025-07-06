@@ -4,21 +4,21 @@ import './globals.css';
 import NavBar from '@/components/NavBar/NavBar';
 import Footer from '@/components/Footer/Footer';
 
-export const arbutus = Arbutus_Slab({
+const arbutus = Arbutus_Slab({
   subsets: ['latin'],
   weight: ['400'],
   display: 'swap',
   variable: '--font-body',
 });
 
-export const poppins = Poppins({
+const poppins = Poppins({
   subsets: ['latin'],
   weight: ['600', '700', '800'],
   display: 'swap',
   variable: '--font-title',
 });
 
-export const arapey = Arapey({
+const arapey = Arapey({
   subsets: ['latin'],
   weight: ['400'],
   display: 'swap',
@@ -55,13 +55,13 @@ export default function RootLayout({
           ${arbutus.variable}   
           ${poppins.variable}  
           ${arapey.variable} 
-      antialiased text-primary max-w-6xl`}
+      antialiased text-primary`}
       >
-        <main className='text-primary'>
+        <div className='min-h-screen text-primary'>
           <NavBar />
           {children}
           <Footer />
-        </main>
+        </div>
       </body>
     </html>
   );

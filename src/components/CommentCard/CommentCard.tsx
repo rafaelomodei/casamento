@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import type { CommentCardProps } from './interface';
+import { capitalizeFirst } from '@/lib/utlils/text';
 
 export default function CommentCard({
   avatarUrl,
@@ -9,14 +10,14 @@ export default function CommentCard({
   message,
 }: CommentCardProps) {
   return (
-    <Card>
+    <Card className='w-full text-primary'>
       <div className='flex items-start gap-4 px-6'>
         <Image
           src={avatarUrl}
           alt={name}
           width={48}
           height={48}
-          className='h-12 w-12 rounded-full object-cover'
+          className='h-16 w-16 rounded-full object-cover'
         />
         <div className='flex flex-col'>
           <p className='font-semibold'>{name}</p>
@@ -24,7 +25,7 @@ export default function CommentCard({
         </div>
       </div>
       <CardContent>
-        <p>{message}</p>
+        <p>{capitalizeFirst(message)}</p>
       </CardContent>
     </Card>
   );

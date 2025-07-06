@@ -30,7 +30,7 @@ export class FirebaseRepository implements IProductRepository {
   }
 
   async create(product: ProductDTO): Promise<void> {
-    const { id, ...data } = product;
+    const { ...data } = product;
     await addDoc(this.collection, { ...data, views: data.views ?? 0 });
   }
 
@@ -60,7 +60,7 @@ export class FirebaseRepository implements IProductRepository {
 
   async update(id: string, product: ProductDTO): Promise<void> {
     const docRef = doc(this.db, this.collectionPath, id);
-    const { id: _id, ...data } = product;
+    const { ...data } = product;
     await updateDoc(docRef, { ...data });
   }
 

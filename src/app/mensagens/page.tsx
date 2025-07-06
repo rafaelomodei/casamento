@@ -1,21 +1,11 @@
-"use client";
+'use client';
 
-import CommentCard from "@/components/CommentCard/CommentCard";
-import { MessageDTO } from "@/domain/messages/entities/MessageDTO";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { BRIDE_AND_GROOM } from "@/lib/constants";
-import { useEffect, useState } from "react";
+import CommentCard from '@/components/CommentCard/CommentCard';
+import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
+import { BRIDE_AND_GROOM } from '@/lib/constants';
+import { useEffect, useState } from 'react';
+import Modal from './components/Modal';
+import { getRandomAvatar } from '@/lib/utlils/randomAvatar';
 
 interface Message extends MessageDTO {
   avatarUrl: string;
@@ -29,17 +19,17 @@ export default function MensagensPage() {
 
   const getMessages = async () => {
     try {
-      const res = await fetch("/api/messages");
+      const res = await fetch('/api/messages');
       const data = await res.json();
       const messagesData: Message[] = data.map((m: MessageDTO) => ({
         ...m,
-        avatarUrl: "/logo.svg",
-        name: "Convidado",
+        avatarUrl: getRandomAvatar('female'),
+        name: 'Convidado',
       }));
 
       setMessages(messagesData);
     } catch (err) {
-      console.error("Erro ao carregar as mensagens:", err);
+      console.error('Erro ao carregar as mensagens:', err);
     } finally {
       setLoading(false);
     }
@@ -49,80 +39,67 @@ export default function MensagensPage() {
     getMessages();
   }, []);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const message = formData.get("message") as string;
-    if (!message?.trim()) return;
+  const blockquoteRender = () => {
+    return (
+      <header className='flex w-full flex-col gap-4'>
+        <blockquote className='flex flex-col md:flex-row  gap-2 pl-6 border-l-4 border-primary bg-background-highlights p-4 rounded-md text-lg italic text-beige-800'>
+          <p className='md:max-w-2xl'>
+            “Oi, queridos convidados! Sua presença já é um presente, mas suas
+            palavras vão ficar pra sempre em nossos corações. Clique no botão
+            <a
+              className='mx-2 cursor-pointer border-b border-primary/60'
+              onClick={() => setOpen(true)}
+            >
+              Deixar uma mensagem
+            </a>
+            e compartilhe um recado para
+            {` ${BRIDE_AND_GROOM}`}”
+          </p>
+          <Modal open={open} setOpen={setOpen} />
+        </blockquote>
 
-    try {
-      await fetch("/api/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
-      });
-      event.currentTarget.reset();
-      await getMessages();
-      setOpen(false);
-    } catch (err) {
-      console.error("Erro ao enviar mensagem:", err);
-    }
+        <h1 className='text-2xl'>Mensagens</h1>
+      </header>
+    );
   };
 
-  return (
-    <div className="flex flex-col gap-4 py-8">
-      <h1 className="text-2xl">Mensagens</h1>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button variant="outline">Escrever mensagem</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[500px]">
-          <form onSubmit={handleSubmit} className="grid gap-4">
-            <DialogHeader>
-              <DialogTitle>Nova mensagem</DialogTitle>
-              <DialogDescription>
-                Escreva uma mensagem carinhosa. Ex: "Que Deus abençoe essa união"
-              </DialogDescription>
-            </DialogHeader>
-            <Textarea
-              name="message"
-              placeholder="Ex: Felicidades aos noivos!"
-              className="min-h-32"
-            />
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline" type="button">
-                  Cancelar
-                </Button>
-              </DialogClose>
-              <Button type="submit">Enviar</Button>
-            </DialogFooter>
-          </form>
-        </DialogContent>
-      </Dialog>
-      {messages.length === 0 ? (
-        <p className="py-4">
+  if (loading) {
+    return (
+      <main className='flex flex-col gap-4 p-4 min-h-screen w-full'>
+        {blockquoteRender()}
+
+        <p className='text-lg py-4'>Carregando mensagens</p>
+      </main>
+    );
+  }
+
+  if (messages.length === 0) {
+    return (
+      <main className='flex flex-col gap-4 p-4 min-h-screen '>
+        {blockquoteRender()}
+
+        <p className='text-lg py-4'>
           Seja o primeiro a deixar uma mensagem para {BRIDE_AND_GROOM}.
         </p>
-      ) : (
-        <div className="flex flex-wrap gap-4">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className="flex-1 min-w-[min(100%,20rem)] sm:max-w-[calc(50%-0.5rem)]"
-            >
-              <CommentCard
-                avatarUrl={msg.avatarUrl}
-                name={msg.name}
-                date={new Date(msg.date).toLocaleDateString("pt-BR")}
-                message={msg.message}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+      </main>
+    );
+  }
+
+  return (
+    <div className='flex flex-col gap-4 p-4 min-h-screen '>
+      {blockquoteRender()}
+      <div className='flex flex-wrap gap-4'>
+        {messages.map((msg) => (
+          <div key={msg.id} className='flex w-full md:flex-1/3'>
+            <CommentCard
+              avatarUrl={msg.avatarUrl}
+              name={msg.name}
+              date={new Date(msg.date).toLocaleDateString('pt-BR')}
+              message={msg.message}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

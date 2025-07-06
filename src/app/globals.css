@@ -5,6 +5,7 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-highlights: var(--background-highlights);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-arapey);
   --font-mono: var(--font-geist-mono);
@@ -46,6 +47,7 @@
 :root {
   --radius: 0.625rem;
   --background: #fcf7eb;
+  --background-highlights: #f6eddf;
   --foreground: #000000;
   --card: #fcf7eb;
   --card-foreground: #000000;
