@@ -1,7 +1,6 @@
 const FEMALE_AVATARS: string[] = [
   '/png/avatars/female/01.png',
   '/png/avatars/female/02.png',
-  '/png/avatars/female/03.png',
 ];
 
 const MALE_AVATARS: string[] = [
