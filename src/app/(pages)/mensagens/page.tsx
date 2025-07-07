@@ -2,6 +2,7 @@
 
 import CommentCard from '@/components/CommentCard/CommentCard';
 import CommentCardSkeleton from '@/components/CommentCard/CommentCardSkeleton';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import { useEffect, useState } from 'react';
@@ -43,6 +44,7 @@ export default function MensagensPage() {
   const blockquoteRender = () => {
     return (
       <header className='flex w-full flex-col gap-8'>
+        <Breadcrumbs />
         <blockquote className='flex flex-col md:flex-row  gap-2 pl-6 border-l-4 border-primary bg-background-highlights p-4 rounded-md text-lg italic text-beige-800'>
           <p className='md:max-w-2xl'>
             “Oi, queridos convidados! Sua presença já é um presente, mas suas

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
 import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 import Link from 'next/link';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 
 export default function PresentesPage() {
   const [products, setProducts] = useState<ProductDTO[]>([]);
@@ -31,6 +32,7 @@ export default function PresentesPage() {
 
   return (
     <div className='flex flex-col gap-4 py-8'>
+      <Breadcrumbs />
       <h1 className='text-2xl'>Presentes</h1>
       <Link
         href='/presentes/adicionar-novo-presente'

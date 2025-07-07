@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 import Image from 'next/image';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 
 export default function PresenteDetailPage() {
   const params = useParams();
@@ -35,15 +36,26 @@ export default function PresenteDetailPage() {
   }, [slug]);
 
   if (loading) {
-    return <p className='py-8'>Carregando...</p>;
+    return (
+      <div className='py-8'>
+        <Breadcrumbs />
+        <p>Carregando...</p>
+      </div>
+    );
   }
 
   if (!product) {
-    return <p className='py-8'>Presente não encontrado.</p>;
+    return (
+      <div className='py-8'>
+        <Breadcrumbs />
+        <p>Presente não encontrado.</p>
+      </div>
+    );
   }
 
   return (
     <div className='flex flex-col gap-4 py-8'>
+      <Breadcrumbs />
       <h1 className='text-2xl'>{product.title}</h1>
       {product.images && product.images[0] && (
         <Image

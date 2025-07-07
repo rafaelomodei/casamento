@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs';
 
 export default function AdicionarNovoPresentePage() {
   const [title, setTitle] = useState('');
@@ -37,6 +38,7 @@ export default function AdicionarNovoPresentePage() {
 
   return (
     <div className='flex flex-col gap-4 py-8'>
+      <Breadcrumbs />
       <h1 className='text-2xl'>Adicionar Novo Presente</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4 max-w-md'>
         <input
