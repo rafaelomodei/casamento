@@ -25,7 +25,7 @@ const NavBar = () => {
   ];
 
   return (
-    <SidebarProvider>
+    <SidebarProvider className='contents min-h-0'>
       <main className='flex w-full py-8 border-b justify-center'>
         <div className='flex w-full max-w-6xl items-center justify-between'>
           <Link href='/'>
