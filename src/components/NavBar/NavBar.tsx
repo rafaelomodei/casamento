@@ -1,28 +1,74 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarTrigger,
+} from '@/components/ui/sidebar';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const NavBar = () => {
-  return (
-    <main className='flex w-full  py-8 border-b justify-center'>
-      <div className='flex w-full  max-w-6xl justify-between'>
-        <Link href='/'>
-          <Image
-            src={'/svg/logoNavBar.svg'}
-            alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
-            height={42}
-            width={42}
-          />
-        </Link>
+  const isMobile = useIsMobile();
 
-        <nav className='flex gap-4'>
-          <Link href='nossas-historias/'>Nossas Histórias</Link>
-          <Link href='mensagens/'>Mensagens</Link>
-          <Link href='cerimonia/'>Cerimónia</Link>
-          <Link href='festa/'>Festa</Link>
-          <Link href='presentes/'>Presentes</Link>
-        </nav>
-      </div>
-    </main>
+  const items = [
+    { href: 'nossas-historias/', label: 'Nossas Histórias' },
+    { href: 'mensagens/', label: 'Mensagens' },
+    { href: 'cerimonia/', label: 'Cerimónia' },
+    { href: 'festa/', label: 'Festa' },
+    { href: 'presentes/', label: 'Presentes' },
+  ];
+
+  return (
+    <SidebarProvider>
+      <main className='flex w-full py-8 border-b justify-center'>
+        <div className='flex w-full max-w-6xl items-center justify-between'>
+          <Link href='/'>
+            <Image
+              src={'/svg/logoNavBar.svg'}
+              alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
+              height={42}
+              width={42}
+            />
+          </Link>
+
+          <nav className='hidden md:flex gap-4'>
+            {items.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className='border-b-2 border-transparent hover:border-primary'
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+
+          <SidebarTrigger className='md:hidden' />
+        </div>
+      </main>
+
+      {isMobile && (
+        <Sidebar side='left' className='md:hidden'>
+          <SidebarContent>
+            <SidebarMenu>
+              {items.map(({ href, label }) => (
+                <SidebarMenuItem key={href}>
+                  <SidebarMenuButton asChild>
+                    <Link href={href}>{label}</Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarContent>
+        </Sidebar>
+      )}
+    </SidebarProvider>
   );
 };
 
