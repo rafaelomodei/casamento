@@ -11,6 +11,7 @@ import {
   SidebarMenuButton,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { BRIDE_AND_GROOM } from '@/lib/constants';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const NavBar = () => {
@@ -57,13 +58,28 @@ const NavBar = () => {
       </main>
 
       {isMobile && (
-        <Sidebar side='left' className='md:hidden'>
+        <Sidebar side='right' className='md:hidden'>
           <SidebarContent>
+            <div className='flex flex-col items-center gap-2 p-4'>
+              <Link href='/'>
+                <Image
+                  src={'/svg/logoNavBar.svg'}
+                  alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
+                  height={42}
+                  width={42}
+                />
+              </Link>
+              <span className='text-primary font-arapey text-lg text-center'>
+                {BRIDE_AND_GROOM}
+              </span>
+            </div>
             <SidebarMenu>
               {items.map(({ href, label }) => (
                 <SidebarMenuItem key={href}>
                   <SidebarMenuButton asChild>
-                    <Link href={href}>{label}</Link>
+                    <Link href={href} className='text-primary'>
+                      {label}
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
