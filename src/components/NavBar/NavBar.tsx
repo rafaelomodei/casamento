@@ -25,7 +25,10 @@ const NavBar = () => {
   ];
 
   return (
-    <SidebarProvider className='contents min-h-0'>
+    <SidebarProvider
+      className='contents'
+      style={{ minHeight: 'auto', display: 'contents' }}
+    >
       <main className='flex w-full py-8 border-b justify-center'>
         <div className='flex w-full max-w-6xl items-center justify-between'>
           <Link href='/'>
@@ -42,7 +45,7 @@ const NavBar = () => {
               <Link
                 key={href}
                 href={href}
-                className='border-b-2 border-transparent hover:border-primary'
+                className='border-b border-transparent hover:border-primary hover:rounded-b'
               >
                 {label}
               </Link>
