@@ -1,6 +1,7 @@
 'use client'
 
 import { MediaCarousel, MediaItem } from '@/components/MediaCarousel/MediaCarousel'
+import PreWeddingGallery from '@/components/PreWeddingGallery/PreWeddingGallery'
 import Link from 'next/link'
 
 export default function NossasHistoriasPage() {
@@ -12,6 +13,7 @@ export default function NossasHistoriasPage() {
 
   return (
     <main className='flex flex-col gap-4 py-8 px-4 max-w-6xl'>
+      <PreWeddingGallery className='mb-4' />
       <h1 className='text-2xl'>Nossa História</h1>
       <div className='flex flex-col md:flex-row gap-8'>
         <div className='order-2 md:order-1 md:w-1/2 flex flex-col gap-4'>
