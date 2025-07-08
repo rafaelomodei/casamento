@@ -69,7 +69,7 @@ export default function Modal(props: ModalProps) {
   const Close = isMobile ? DrawerClose : DialogClose;
 
   const contentClassName = cn(
-    'sm:max-w-[500px]',
+    'sm:max-w-[500px] text-primary px-4',
     !isMobile && 'rounded-md px-8 py-6'
   );
 
