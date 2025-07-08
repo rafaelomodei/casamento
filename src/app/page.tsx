@@ -61,7 +61,7 @@ export default function Home() {
             de verdade...
           </p>
           <Link
-            href='nossas-hostoias/'
+            href='nossas-historias/'
             className='bg-primary md:flex text-white text-center rounded-sm text-lg py-2'
           >
             Continuar lendo
