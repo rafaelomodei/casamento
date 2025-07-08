@@ -8,11 +8,11 @@ import MobileSidebar from '@/components/MobileSidebar/MobileSidebar';
 const NavBar = () => {
 
   const items = [
-    { href: 'nossas-historias/', label: 'Nossas Histórias' },
-    { href: 'mensagens/', label: 'Mensagens' },
-    { href: 'cerimonia/', label: 'Cerimónia' },
-    { href: 'festa/', label: 'Festa' },
-    { href: 'presentes/', label: 'Presentes' },
+    { href: '/nossas-historias', label: 'Nossas Histórias' },
+    { href: '/mensagens', label: 'Mensagens' },
+    { href: '/#cerimonia', label: 'Cerimónia' },
+    { href: '/#festa', label: 'Festa' },
+    { href: '/presentes', label: 'Presentes' },
   ];
 
   return (

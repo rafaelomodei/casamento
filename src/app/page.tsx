@@ -61,7 +61,7 @@ export default function Home() {
             de verdade...
           </p>
           <Link
-            href='nossas-hostoias/'
+            href='/nossas-hostoias'
             className='bg-primary md:flex text-white text-center rounded-sm text-lg py-2'
           >
             Continuar lendo
@@ -110,13 +110,13 @@ export default function Home() {
         </div>
         <div className='flex flex-col sm:flex-row gap-2 w-full mt-4'>
           <Link
-            href='deixar-mensagem/'
+            href='/deixar-mensagem'
             className=' text-primary border-primary border text-center rounded-sm text-lg py-2 p-4'
           >
             Deixar uma mensagem
           </Link>
           <Link
-            href='mensagens/'
+            href='/mensagens'
             className='bg-primary text-white text-center rounded-sm text-lg py-2 px-4'
           >
             Ver todas as mensagens
@@ -124,7 +124,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className='flex flex-col w-full py-8'>
+      <section id='cerimonia' className='flex flex-col w-full py-8'>
         <p className='text-2xl'>Cerimônia</p>
         <p>
           Não percam esse momento lindo e emocionante das nossas vidas. Contamos
@@ -157,7 +157,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className='flex flex-col w-full py-8'>
+      <section id='festa' className='flex flex-col w-full py-8'>
         <p className='text-2xl'>Festa</p>
         Nossa felicidade é ainda maior quando compatilhada! te esperamos para
         celebrar com a gente!
