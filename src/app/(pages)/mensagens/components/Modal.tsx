@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -9,10 +11,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer';
 import { Textarea } from '@/components/ui/textarea';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Loader2 } from 'lucide-react'; // spinner
 import { capitalizeFirst } from '@/lib/utlils/text';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 interface ModalProps {
   open: boolean;
@@ -21,6 +35,7 @@ interface ModalProps {
 
 export default function Modal(props: ModalProps) {
   const { open, setOpen } = props;
+  const isMobile = useIsMobile();
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
 
@@ -44,21 +59,35 @@ export default function Modal(props: ModalProps) {
     }
   };
 
+  const Wrapper = isMobile ? Drawer : Dialog;
+  const Trigger = isMobile ? DrawerTrigger : DialogTrigger;
+  const Content = isMobile ? DrawerContent : DialogContent;
+  const Header = isMobile ? DrawerHeader : DialogHeader;
+  const Title = isMobile ? DrawerTitle : DialogTitle;
+  const Description = isMobile ? DrawerDescription : DialogDescription;
+  const Footer = isMobile ? DrawerFooter : DialogFooter;
+  const Close = isMobile ? DrawerClose : DialogClose;
+
+  const contentClassName = cn(
+    'sm:max-w-[500px] text-primary px-4',
+    !isMobile && 'rounded-md px-8 py-6'
+  );
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+    <Wrapper open={open} onOpenChange={setOpen}>
+      <Trigger asChild>
         <Button className='h-16! not-italic text-xl mt-4 md:m-auto'>
           Deixar uma mensagem
         </Button>
-      </DialogTrigger>
-      <DialogContent className='sm:max-w-[500px]'>
+      </Trigger>
+      <Content className={contentClassName}>
         <form onSubmit={handleSubmit} className='grid gap-4'>
-          <DialogHeader>
-            <DialogTitle className='text-xl'>Deixe sua mensagem</DialogTitle>
-            <DialogDescription className='text-lg'>
+          <Header>
+            <Title className='text-xl'>Deixe sua mensagem</Title>
+            <Description className='text-lg'>
               Escreva uma mensagem carinhosa.
-            </DialogDescription>
-          </DialogHeader>
+            </Description>
+          </Header>
 
           <Textarea
             name='message'
@@ -69,12 +98,12 @@ export default function Modal(props: ModalProps) {
             disabled={isSending}
           />
 
-          <DialogFooter>
-            <DialogClose asChild>
+          <Footer>
+            <Close asChild>
               <Button variant='outline' type='button' disabled={isSending}>
                 Cancelar
               </Button>
-            </DialogClose>
+            </Close>
             <Button type='submit' disabled={!message.trim() || isSending}>
               {isSending ? (
                 <div className='flex gap-2'>
@@ -85,9 +114,9 @@ export default function Modal(props: ModalProps) {
                 'Enviar'
               )}
             </Button>
-          </DialogFooter>
+          </Footer>
         </form>
-      </DialogContent>
-    </Dialog>
+      </Content>
+    </Wrapper>
   );
 }
