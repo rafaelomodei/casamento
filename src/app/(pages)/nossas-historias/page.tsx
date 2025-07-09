@@ -1,10 +1,36 @@
 'use client'
 
 import { MediaCarousel, MediaItem } from '@/components/MediaCarousel/MediaCarousel'
-import PreWeddingGallery from '@/components/PreWeddingGallery/PreWeddingGallery'
+import Image from 'next/image'
 import Link from 'next/link'
+import { useMemo } from 'react'
+
+const PRE_WEDDING_IMAGES = [
+  '/png/preWedding/DSC03183.jpg',
+  '/png/preWedding/DSC03184.jpg',
+  '/png/preWedding/DSC03190.jpg',
+  '/png/preWedding/DSC03198.jpg',
+  '/png/preWedding/DSC03208.jpg',
+  '/png/preWedding/DSC03225.jpg',
+  '/png/preWedding/DSC03238.jpg',
+  '/png/preWedding/DSC03273.jpg',
+  '/png/preWedding/DSC03286.jpg',
+  '/png/preWedding/DSC03384.jpg',
+  '/png/preWedding/DSC03399.jpg',
+  '/png/preWedding/DSC03420.jpg',
+  '/png/preWedding/DSC04263.jpg',
+  '/png/preWedding/DSC04279.jpg',
+  '/png/preWedding/DSC04890.jpg',
+  '/png/preWedding/DSC04993.jpg'
+]
 
 export default function NossasHistoriasPage() {
+  const randomImages = useMemo(() => {
+    return [...PRE_WEDDING_IMAGES]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3)
+  }, [])
+
   const media: MediaItem[] = [
     { type: 'image', src: '/png/preWedding/DSC03183.jpg' },
     { type: 'image', src: '/png/preWedding/DSC03184.jpg' },
@@ -13,7 +39,24 @@ export default function NossasHistoriasPage() {
 
   return (
     <main className='flex flex-col gap-4 py-8 px-4 max-w-6xl'>
-      <PreWeddingGallery className='mb-4' />
+      <div className='flex gap-8 mb-4'>
+        {randomImages.map((src, idx) => (
+          <div
+            key={idx}
+            className='flex-1 overflow-hidden rounded-md transition-transform duration-300 hover:scale-105'
+          >
+            <Image
+              src={src}
+              alt={`Foto do casal ${idx + 1}`}
+              width={600}
+              height={400}
+              quality={75}
+              className='w-full h-48 sm:h-60 object-cover'
+              loading='lazy'
+            />
+          </div>
+        ))}
+      </div>
       <h1 className='text-2xl'>Nossa História</h1>
       <div className='flex flex-col md:flex-row gap-8'>
         <div className='order-2 md:order-1 md:w-1/2 flex flex-col gap-4'>
