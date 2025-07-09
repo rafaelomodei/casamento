@@ -1,6 +1,7 @@
 import CommentCard from '@/components/CommentCard/CommentCard';
 import Countdown from '@/components/Countdown/Countdown';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
+import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
 
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import Image from 'next/image';
@@ -219,11 +220,148 @@ export default function Home() {
           />
         </div>
       </section>
-      <section className='flex flex-col w-full py-8'>
+      <section className='flex flex-col w-full py-8 gap-8'>
         <p className='text-2xl'>Dicas</p>
-        <div className='flex gap-8'>
-          <p className='text-lg'>Padrinos</p>
-          <p className='text-lg'>Madrinhas</p>
+
+        {/* Madrinhas */}
+        <div className='flex flex-col gap-4'>
+          <h2 className='text-xl font-semibold'>Madrinhas</h2>
+          <h3 className='italic'>Sintam-se lindas e cheias de charme</h3>
+
+          <div className='flex flex-col gap-2'>
+            <p className='font-semibold'>Guia de Estilo</p>
+            <ul className='list-disc list-inside'>
+              <li>Comprimento: longo (até o calcanhar)</li>
+              <li>Tecidos: fluidos, sem pedrarias nem brilhos</li>
+            </ul>
+
+            <p className='font-semibold mt-2'>Paleta de cores</p>
+            <ul className='flex flex-col sm:flex-row gap-2'>
+              <li>💗 Fúcsia vibrante</li>
+              <li>💗 Rosa médio</li>
+              <li>💗 Rosa claro</li>
+            </ul>
+
+            <p className='font-semibold mt-2'>Cores proibidas</p>
+            <ul className='list-disc list-inside'>
+              <li>✕ Branco puro ou off-white</li>
+              <li>✕ Tons de bege, creme ou nude (reservados aos convidados)</li>
+            </ul>
+          </div>
+
+          <div className='flex flex-col gap-2'>
+            <p className='font-semibold'>Inspire-se</p>
+            <ImageCarousel
+              images={[
+                '/png/preWedding/DSC03183.jpg',
+                '/png/preWedding/DSC03184.jpg',
+                '/png/preWedding/DSC03190.jpg',
+                '/png/preWedding/DSC03198.jpg',
+              ]}
+              alt='Referências para madrinhas'
+              className='h-64 w-full'
+              showIndicators
+            />
+          </div>
+
+          <div className='flex flex-col gap-2'>
+            <p className='font-semibold'>Dicas de Comportamento</p>
+            <ul className='list-disc list-inside'>
+              <li>⏰ Chegue com antecedência</li>
+              <li>📷 Evite ficar no corredor durante a cerimônia</li>
+              <li>🎉 Aproveite cada momento (sem atrapalhar fotógrafos)</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Padrinhos */}
+        <div className='flex flex-col gap-4'>
+          <h2 className='text-xl font-semibold'>Padrinhos</h2>
+          <h3 className='italic'>Elegância é a nossa palavra-chave</h3>
+
+          <div className='flex flex-col gap-2'>
+            <p className='font-semibold'>Guia de Traje</p>
+            <ul className='list-disc list-inside'>
+              <li>Terno: cinza chumbo (corte slim ou reto)</li>
+              <li>Camisa: branca, sem estampas</li>
+              <li>Gravata: prata suave</li>
+              <li>Sapato: social preto, bem lustrado</li>
+            </ul>
+
+            <p className='font-semibold mt-2'>Paleta de Cores</p>
+            <ul className='flex flex-col sm:flex-row gap-2'>
+              <li>🔷 Cinza chumbo</li>
+              <li>🔷 Branco</li>
+              <li>🔷 Prata</li>
+            </ul>
+          </div>
+
+          <div className='flex flex-col gap-2'>
+            <p className='font-semibold'>Inspire-se</p>
+            <ImageCarousel
+              images={[
+                '/png/preWedding/DSC03208.jpg',
+                '/png/preWedding/DSC03211.jpg',
+                '/png/preWedding/DSC03225.jpg',
+              ]}
+              alt='Referências para padrinhos'
+              className='h-64 w-full'
+              showIndicators
+            />
+          </div>
+
+          <div className='flex flex-col gap-2'>
+            <p className='font-semibold'>Dicas de Comportamento</p>
+            <ul className='list-disc list-inside'>
+              <li>⏰ Esteja pronto 15 min antes</li>
+              <li>📷 Dê espaço ao fotógrafo</li>
+              <li>🎉 Curta o momento junto aos noivos</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Convidados */}
+        <div className='flex flex-col gap-4'>
+          <h2 className='text-xl font-semibold'>Convidados</h2>
+          <h3 className='italic'>Seja parte dessa festa com elegância e bom senso</h3>
+
+          <div className='flex flex-col gap-2'>
+            <p className='font-semibold'>Guia de Vestimenta</p>
+            <ul className='list-disc list-inside'>
+              <li>Homens: terno escuro ou social; camisa clara</li>
+              <li>Mulheres: vestidos ou terninhos em tons pastel ou escuros</li>
+            </ul>
+
+            <p className='font-semibold mt-2'>Cores proibidas</p>
+            <ul className='list-disc list-inside'>
+              <li>⚪ Branco puro / off-white / bege / nude</li>
+            </ul>
+          </div>
+
+          <div className='flex flex-col gap-2'>
+            <p className='font-semibold'>Inspire-se</p>
+            <ImageCarousel
+              images={[
+                '/png/preWedding/DSC03232.jpg',
+                '/png/preWedding/DSC03238.jpg',
+                '/png/preWedding/DSC03250.jpg',
+                '/png/preWedding/DSC03264.jpg',
+              ]}
+              alt='Referências para convidados'
+              className='h-64 w-full'
+              showIndicators
+            />
+          </div>
+
+          <div className='flex flex-col gap-2'>
+            <p className='font-semibold'>Dicas de Comportamento</p>
+            <ul className='list-disc list-inside'>
+              <li>⏰ Respeite os horários de chegada</li>
+              <li>📷 Não use flash nem fique no corredor</li>
+              <li>🤫 Mantenha o celular no silencioso</li>
+              <li>🥂 Brinde e divirta-se com educação</li>
+            </ul>
+          </div>
         </div>
       </section>
     </main>
