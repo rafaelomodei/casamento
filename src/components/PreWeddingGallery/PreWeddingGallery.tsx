@@ -47,6 +47,8 @@ export default function PreWeddingGallery({ className }: PreWeddingGalleryProps)
           <Image
             src={src}
             alt={`Foto do casal ${idx + 1}`}
+            width={1920}
+            height={1280}
             sizes='(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw'
             quality={75}
             className='w-full h-auto object-contain'
