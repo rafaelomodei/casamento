@@ -1,9 +1,37 @@
 'use client'
 
 import { MediaCarousel, MediaItem } from '@/components/MediaCarousel/MediaCarousel'
+import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel'
 import Link from 'next/link'
+import { useMemo } from 'react'
 
 export default function NossasHistoriasPage() {
+  const imagesPool = [
+    '/png/preWedding/DSC03183.jpg',
+    '/png/preWedding/DSC03184.jpg',
+    '/png/preWedding/DSC03190.jpg',
+    '/png/preWedding/DSC03198.jpg',
+    '/png/preWedding/DSC03208.jpg',
+    '/png/preWedding/DSC03211.jpg',
+    '/png/preWedding/DSC03225.jpg',
+    '/png/preWedding/DSC03232.jpg',
+    '/png/preWedding/DSC03238.jpg',
+    '/png/preWedding/DSC03250.jpg',
+    '/png/preWedding/DSC03264.jpg',
+    '/png/preWedding/DSC03273.jpg',
+    '/png/preWedding/DSC03274.jpg',
+    '/png/preWedding/DSC03278.jpg',
+    '/png/preWedding/DSC03286.jpg',
+  ]
+
+  const carouselImages = useMemo(
+    () =>
+      [...imagesPool]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3),
+    []
+  )
+
   const media: MediaItem[] = [
     { type: 'image', src: '/png/preWedding/DSC03183.jpg' },
     { type: 'image', src: '/png/preWedding/DSC03184.jpg' },
@@ -12,6 +40,14 @@ export default function NossasHistoriasPage() {
 
   return (
     <main className='flex flex-col gap-4 py-8 px-4 max-w-6xl'>
+      <ImageCarousel
+        images={carouselImages}
+        alt='Fotos aleatórias do casal'
+        className='h-[150px] md:h-[300px] w-full mb-6'
+        width={450}
+        height={300}
+        showIndicators
+      />
       <h1 className='text-2xl'>Nossa História</h1>
       <div className='flex flex-col md:flex-row gap-8'>
         <div className='order-2 md:order-1 md:w-1/2 flex flex-col gap-4'>

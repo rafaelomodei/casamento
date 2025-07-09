@@ -6,13 +6,16 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ImageCarouselProps {
-  images: string[];
-  alt: string;
-  className?: string;
-  hoverControls?: boolean;
-  showControls?: boolean;
-  showIndicators?: boolean;
-  rounded?: boolean;
+  images: string[]
+  alt: string
+  className?: string
+  hoverControls?: boolean
+  showControls?: boolean
+  showIndicators?: boolean
+  rounded?: boolean
+  width?: number
+  height?: number
+  quality?: number
 }
 
 export function ImageCarousel({
@@ -23,6 +26,9 @@ export function ImageCarousel({
   showControls = true,
   showIndicators = false,
   rounded = true,
+  width,
+  height,
+  quality = 75,
 }: ImageCarouselProps) {
   const [currentImage, setCurrentImage] = useState(0);
   const [hovered, setHovered] = useState(false);
@@ -67,8 +73,8 @@ export function ImageCarousel({
       <Image
         src={images[currentImage]}
         alt={alt}
-        fill
-        sizes='100vw'
+        {...(width && height ? { width, height } : { fill: true, sizes: '100vw' })}
+        quality={quality}
         className={cn(
           'object-cover transition duration-300',
           rounded && 'rounded-md'
