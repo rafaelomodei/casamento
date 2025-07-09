@@ -8,6 +8,21 @@ interface Hotel {
   notes: string;
 }
 
+interface Taxi {
+  image: string;
+  name: string;
+  phone: string;
+  pickup: string;
+}
+
+interface Rental {
+  image: string;
+  name: string;
+  counter: string;
+  phone: string;
+  site: string;
+}
+
 const hotels: Hotel[] = [
   {
     image: '/png/capa.png',
@@ -46,13 +61,61 @@ const hotels: Hotel[] = [
   },
 ];
 
+const taxis: Taxi[] = [
+  {
+    image: '/png/capa.png',
+    name: 'Ponto de Táxi (Rodoviária)',
+    phone: '(44) 3323-2124',
+    pickup: 'Av. Brasil, Rodoviária',
+  },
+  {
+    image: '/png/capa.png',
+    name: 'Táxi Jacir Garcia',
+    phone: '(44) 99971-90 xx (24 h)',
+    pickup: 'Centro',
+  },
+  {
+    image: '/png/capa.png',
+    name: 'João Vieira Táxi',
+    phone: '(44) — (consultar na chegada)',
+    pickup: 'Av. Paraná, 21',
+  },
+];
+
+const rentals: Rental[] = [
+  {
+    image: '/png/capa.png',
+    name: 'Localiza',
+    counter: 'Saguão de desembarque',
+    phone: '(44) 3266-6565',
+    site: 'localiza.com',
+  },
+  {
+    image: '/png/capa.png',
+    name: 'Avis',
+    counter: 'Saguão de desembarque',
+    phone: '(44) 3301-7874',
+    site: 'avis.com.br',
+  },
+];
+
 export default function GuiaPage() {
   return (
     <main className='flex flex-col gap-8 py-8 px-4 max-w-6xl'>
       <h1 className='text-2xl'>Guia para convidados</h1>
+      <p className='text-sm'>
+        Se você é de fora e não conhece muito bem Colorado, aqui
+        reunimos algumas dicas rápidas para facilitar sua estadia. Veja
+        opções de hospedagem e transporte para aproveitar a cidade sem
+        preocupações.
+      </p>
 
       <section className='flex flex-col gap-4'>
         <h2 className='text-xl font-semibold'>Hospedagem em Colorado</h2>
+        <p className='text-sm'>
+          Algumas acomodações simples e bem localizadas para você descansar
+          próximo à igreja.
+        </p>
         <div className='grid sm:grid-cols-2 gap-4'>
           {hotels.map((hotel) => (
             <GuideCard key={hotel.name} imageSrc={hotel.image} title={hotel.name}>
@@ -67,67 +130,41 @@ export default function GuiaPage() {
 
       <section className='flex flex-col gap-4'>
         <h2 className='text-xl font-semibold'>Transporte dentro de Colorado</h2>
-        <table className='w-full text-sm border-collapse'>
-          <thead>
-            <tr className='border-b'>
-              <th className='text-left py-2'>Serviço</th>
-              <th className='text-left py-2'>Telefone/WhatsApp</th>
-              <th className='text-left py-2'>Ponto de embarque</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className='border-b'>
-              <td>Ponto de Táxi (Rodoviária)</td>
-              <td>(44) 3323-2124</td>
-              <td>Av. Brasil, Rodoviária</td>
-            </tr>
-            <tr className='border-b'>
-              <td>Táxi Jacir Garcia</td>
-              <td>(44) 99971-90 xx (24 h)</td>
-              <td>Centro</td>
-            </tr>
-            <tr>
-              <td>João Vieira Táxi</td>
-              <td>(44) — (consultar na chegada)</td>
-              <td>Av. Paraná, 21</td>
-            </tr>
-          </tbody>
-        </table>
-        <p className='text-sm italic'>A cidade não conta com Uber/99; combine o trajeto com antecedência ou considere alugar carro.</p>
+        <p className='text-sm'>
+          Serviços de táxi disponíveis na cidade. Como não há Uber ou 99,
+          combine o trajeto com antecedência ou considere alugar um carro.
+        </p>
+        <div className='grid sm:grid-cols-2 gap-4'>
+          {taxis.map((taxi) => (
+            <GuideCard key={taxi.name} imageSrc={taxi.image} title={taxi.name}>
+              <p className='text-sm'>{taxi.phone}</p>
+              <p className='text-sm'>{taxi.pickup}</p>
+            </GuideCard>
+          ))}
+        </div>
       </section>
 
       <section className='flex flex-col gap-4'>
         <h2 className='text-xl font-semibold'>Aluguel de carro (Aeroporto de Maringá – MGF)</h2>
-        <table className='w-full text-sm border-collapse'>
-          <thead>
-            <tr className='border-b'>
-              <th className='text-left py-2'>Locadora</th>
-              <th className='text-left py-2'>Balcão</th>
-              <th className='text-left py-2'>Telefone</th>
-              <th className='text-left py-2'>Reserva on-line</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className='border-b'>
-              <td>Localiza</td>
-              <td>Saguão de desembarque</td>
-              <td>(44) 3266-6565</td>
-              <td>localiza.com</td>
-            </tr>
-            <tr>
-              <td>Avis</td>
-              <td>Saguão de desembarque</td>
-              <td>(44) 3301-7874</td>
-              <td>avis.com.br</td>
-            </tr>
-          </tbody>
-        </table>
+        <p className='text-sm'>
+          Se preferir sair do aeroporto dirigindo, veja algumas locadoras que atendem no saguão de desembarque em Maringá.
+        </p>
+        <div className='grid sm:grid-cols-2 gap-4'>
+          {rentals.map((rental) => (
+            <GuideCard key={rental.name} imageSrc={rental.image} title={rental.name}>
+              <p className='text-sm'>{rental.counter}</p>
+              <p className='text-sm'>{rental.phone}</p>
+              <p className='text-sm'>{rental.site}</p>
+            </GuideCard>
+          ))}
+        </div>
         <p className='text-sm'>Distância Maringá ⇄ Colorado: ~82 km (1 h 15 min de carro).</p>
         <p className='text-sm italic'>A maioria das locadoras permite retirada e devolução fora do horário mediante taxa adicional.</p>
       </section>
 
       <section className='flex flex-col gap-4'>
         <h2 className='text-xl font-semibold'>Festa &amp; deslocamento</h2>
+        <p className='text-sm'>Endereços da cerimônia e da festa para você se programar.</p>
         <table className='w-full text-sm border-collapse'>
           <thead>
             <tr className='border-b'>

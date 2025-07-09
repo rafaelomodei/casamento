@@ -18,7 +18,7 @@ export default function GuideCard({ imageSrc, title, children }: GuideCardProps)
         className='h-40 w-full object-cover'
       />
       <CardContent className='flex flex-col gap-2 pt-4'>
-        <h3 className='text-lg font-semibold'>{title}</h3>
+        <h3 className='text-lg'>{title}</h3>
         {children}
       </CardContent>
     </Card>
