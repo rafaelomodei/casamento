@@ -59,6 +59,31 @@ export default function AdicionarNovoPresentePage() {
     setImageUrls((prev) => prev.map((img, i) => (i === index ? value : img)));
   }
 
+  function getPreviewImages() {
+    const allowedDomains = [
+      'instagram.fmgf12-1.fna.fbcdn.net',
+      'm.media-amazon.com',
+      'imgs.casasbahia.com.br',
+    ];
+    const urls = imageUrls.filter((url) => url.trim());
+    const sanitized = urls.map((url) => {
+      try {
+        const parsed = new URL(url, 'http://dummy');
+        if (
+          parsed.hostname &&
+          parsed.hostname !== 'dummy' &&
+          !allowedDomains.includes(parsed.hostname)
+        ) {
+          return '/png/defaultImage.png';
+        }
+        return url;
+      } catch {
+        return '/png/defaultImage.png';
+      }
+    });
+    return sanitized.length > 0 ? sanitized : ['/png/defaultImage.png'];
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
@@ -123,6 +148,14 @@ export default function AdicionarNovoPresentePage() {
           />
           {imageUrls.map((url, idx) => (
             <div key={idx} className='flex items-center gap-2'>
+              <Input
+                type='text'
+                placeholder='URL da imagem'
+                value={url}
+                onChange={(e) => handleImageChange(idx, e.target.value)}
+                required={idx === 0}
+                className='flex-1'
+              />
               <Button
                 type='button'
                 size='icon'
@@ -132,18 +165,12 @@ export default function AdicionarNovoPresentePage() {
               >
                 <Trash className='w-4 h-4' />
               </Button>
-              <Input
-                type='text'
-                placeholder='URL da imagem'
-                value={url}
-                onChange={(e) => handleImageChange(idx, e.target.value)}
-                required={idx === 0}
-              />
             </div>
           ))}
           <Button
             type='button'
-            variant='secondary'
+            variant='outline'
+            className='border-primary text-primary hover:bg-primary/5'
             onClick={handleAddImage}
           >
             Adicionar mais imagem
@@ -164,11 +191,7 @@ export default function AdicionarNovoPresentePage() {
       <div>
         <ProductCard
           slug={'aaa'}
-          images={
-            imageUrls.filter((url) => url.trim()).length > 0
-              ? imageUrls.filter((url) => url.trim())
-              : ['/png/defaultImage.png']
-          }
+          images={getPreviewImages()}
           title={title.length > 0 ? title : 'Sem título'}
           description={description.length > 0 ? description : 'Sem descrição'}
           price={price}
