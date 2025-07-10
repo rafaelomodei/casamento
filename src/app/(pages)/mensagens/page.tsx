@@ -4,6 +4,7 @@ import CommentCard from '@/components/CommentCard/CommentCard';
 import CommentCardSkeleton from '@/components/CommentCard/CommentCardSkeleton';
 import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
+import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { useEffect, useState } from 'react';
 import Modal from './components/Modal';
 import { getRandomAvatar } from '@/lib/utlils/randomAvatar';
@@ -67,6 +68,7 @@ export default function MensagensPage() {
   if (loading) {
     return (
       <main className='flex flex-col gap-4 p-4 min-h-screen w-full max-w-6xl'>
+        <PageBreadcrumb />
         {blockquoteRender()}
         <div className='flex flex-wrap gap-4'>
           {Array.from({ length: 4 }).map((_, i) => (
@@ -82,6 +84,7 @@ export default function MensagensPage() {
   if (messages.length === 0) {
     return (
       <main className='flex flex-col gap-4 p-4 min-h-screen max-w-6xl'>
+        <PageBreadcrumb />
         {blockquoteRender()}
 
         <p className='text-lg py-4'>
@@ -93,6 +96,7 @@ export default function MensagensPage() {
 
   return (
     <main className='flex flex-col gap-4 p-4 min-h-screen max-w-6xl'>
+      <PageBreadcrumb />
       {blockquoteRender()}
       <div className='flex flex-wrap gap-4'>
         {messages.map((msg) => (

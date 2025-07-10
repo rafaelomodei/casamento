@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
+import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { formatCurrency, formatCurrencyInput } from '@/lib/utlils/currency';
 
 export default function AdicionarNovoPresentePage() {
@@ -71,6 +72,7 @@ export default function AdicionarNovoPresentePage() {
   return (
     <div className='flex w-full max-w-6xl m-auto py-8'>
       <div className='flex flex-col w-full gap-4'>
+        <PageBreadcrumb />
         <h1 className='text-2xl'>Adicionar Novo Presente</h1>
         <form onSubmit={handleSubmit} className='flex flex-col gap-4 max-w-md'>
           <div>
