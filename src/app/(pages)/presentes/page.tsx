@@ -30,7 +30,7 @@ export default function PresentesPage() {
   }
 
   return (
-    <div className='flex flex-col gap-4 py-8'>
+    <div className='flex flex-col w-col max-w-6xl gap-4 py-8'>
       <h1 className='text-2xl'>Presentes</h1>
       <Link
         href='/presentes/adicionar-novo-presente'
@@ -51,6 +51,7 @@ export default function PresentesPage() {
                 slug={product.slug}
                 images={product.images}
                 title={product.title}
+                description={product.description}
                 price={product.price}
               />
             </div>

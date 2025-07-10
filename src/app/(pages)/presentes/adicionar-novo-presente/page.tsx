@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { ProductCard } from '@/components/ProductCard/ProductCard';
 
 export default function AdicionarNovoPresentePage() {
   const [title, setTitle] = useState('');
@@ -66,56 +67,68 @@ export default function AdicionarNovoPresentePage() {
   }
 
   return (
-    <div className='flex flex-col gap-4 py-8'>
-      <h1 className='text-2xl'>Adicionar Novo Presente</h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4 max-w-md'>
-        <div>
+    <div className='flex w-full max-w-6xl m-auto py-8'>
+      <div className='flex flex-col w-full gap-4'>
+        <h1 className='text-2xl'>Adicionar Novo Presente</h1>
+        <form onSubmit={handleSubmit} className='flex flex-col gap-4 max-w-md'>
+          <div>
+            <Input
+              type='text'
+              placeholder='Slug'
+              value={slug}
+              onBlur={handleSlugBlur}
+              onChange={(e) => setSlug(e.target.value)}
+              aria-invalid={slugError ? true : undefined}
+              required
+            />
+            {slugError && (
+              <p className='text-destructive text-sm pl-2'>{slugError}</p>
+            )}
+          </div>
           <Input
             type='text'
-            placeholder='Slug'
-            value={slug}
-            onBlur={handleSlugBlur}
-            onChange={(e) => setSlug(e.target.value)}
-            aria-invalid={slugError ? true : undefined}
+            placeholder='Título'
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             required
           />
-          {slugError && (
-            <p className='text-destructive text-sm pl-2'>{slugError}</p>
-          )}
-        </div>
-        <Input
-          type='text'
-          placeholder='Título'
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
+          <Input
+            type='number'
+            placeholder='Preço'
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
+          />
+          <Input
+            type='text'
+            placeholder='URL da imagem'
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
+            required
+          />
+          <Textarea
+            placeholder='Descrição'
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <Button
+            type='submit'
+            disabled={loading || checkingSlug || !isFormValid}
+          >
+            {loading ? 'Salvando...' : 'Salvar'}
+          </Button>
+        </form>
+      </div>
+      <div>
+        <ProductCard
+          slug={'aaa'}
+          images={imageUrl.length > 0 ? [imageUrl] : ['/png/defaultImage.png']}
+          title={title.length > 0 ? title : 'Sem título'}
+          description={description.length > 0 ? description : 'Sem descrição'}
+          price={Number(price)}
+          classNameCard='max-w-sm'
         />
-        <Input
-          type='number'
-          placeholder='Preço'
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          required
-        />
-        <Input
-          type='text'
-          placeholder='URL da imagem'
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          required
-        />
-        <Textarea
-          placeholder='Descrição'
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <Button
-          type='submit'
-          disabled={loading || checkingSlug || !isFormValid}
-        >
-          {loading ? 'Salvando...' : 'Salvar'}
-        </Button>
-      </form>
+      </div>
     </div>
   );
 }

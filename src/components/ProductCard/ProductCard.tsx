@@ -9,17 +9,19 @@ interface ProductProps {
   slug: string;
   images: string[];
   title: string;
+  description?: string;
   price: number;
+  classNameCard?: string;
 }
 
 export function ProductCard(props: ProductProps) {
-  const { slug, images, title, price } = props;
+  const { slug, images, title, price, description, classNameCard } = props;
   return (
     <Link href={`/presentes/${slug}`} className='w-xs'>
       <Card
         className={cn(
-          'text-primary relative transition border border-border bg-white shadow-none overflow-hidden rounded-md',
-          'hover:border-primary hover:border-2  dark:hover:bg-muted/30'
+          'min-w-sm text-primary py-0 relative transition border border-border bg-white shadow-none overflow-hidden rounded-md',
+          `hover:border-primary hover:border-2  dark:hover:bg-muted/30 ${classNameCard}`
         )}
       >
         <ImageCarousel
@@ -30,8 +32,9 @@ export function ProductCard(props: ProductProps) {
         />
 
         <CardContent className='flex flex-col gap-2 pt-2'>
-          <h3 className='text-md text-muted-foreground'>{title}</h3>
-          <p className='text-lg font-semibold'>R$ {Number(price).toFixed(2)}</p>
+          <h3 className='text-lg'>{title}</h3>
+          <p className='text-muted-foreground'>{description}</p>
+          <p className='text-xl'>R$ {Number(price).toFixed(2)}</p>
         </CardContent>
       </Card>
     </Link>
