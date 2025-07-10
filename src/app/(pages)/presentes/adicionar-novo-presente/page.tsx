@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,7 +14,7 @@ export default function AdicionarNovoPresentePage() {
   const [slug, setSlug] = useState('');
   const [price, setPrice] = useState(0);
   const [priceInput, setPriceInput] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrls, setImageUrls] = useState<string[]>(['']);
   const [description, setDescription] = useState('');
   const [slugError, setSlugError] = useState('');
   const [checkingSlug, setCheckingSlug] = useState(false);
@@ -24,7 +25,7 @@ export default function AdicionarNovoPresentePage() {
     slug.trim() &&
     title.trim() &&
     priceInput.trim() &&
-    imageUrl.trim() &&
+    imageUrls.some((url) => url.trim()) &&
     !slugError;
 
   async function handleSlugBlur() {
@@ -45,6 +46,19 @@ export default function AdicionarNovoPresentePage() {
     }
   }
 
+  function handleAddImage() {
+    setImageUrls((prev) => [...prev, '']);
+  }
+
+  function handleRemoveImage(index: number) {
+    if (imageUrls.length === 1) return;
+    setImageUrls((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function handleImageChange(index: number, value: string) {
+    setImageUrls((prev) => prev.map((img, i) => (i === index ? value : img)));
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
@@ -56,7 +70,7 @@ export default function AdicionarNovoPresentePage() {
           slug,
           title,
           price: price,
-          images: [imageUrl],
+          images: imageUrls.filter((url) => url.trim()),
           description,
           views: 0,
         }),
@@ -107,13 +121,33 @@ export default function AdicionarNovoPresentePage() {
             }}
             required
           />
-          <Input
-            type='text'
-            placeholder='URL da imagem'
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            required
-          />
+          {imageUrls.map((url, idx) => (
+            <div key={idx} className='flex items-center gap-2'>
+              <Button
+                type='button'
+                size='icon'
+                variant='ghost'
+                onClick={() => handleRemoveImage(idx)}
+                disabled={imageUrls.length === 1}
+              >
+                <Trash className='w-4 h-4' />
+              </Button>
+              <Input
+                type='text'
+                placeholder='URL da imagem'
+                value={url}
+                onChange={(e) => handleImageChange(idx, e.target.value)}
+                required={idx === 0}
+              />
+            </div>
+          ))}
+          <Button
+            type='button'
+            variant='secondary'
+            onClick={handleAddImage}
+          >
+            Adicionar mais imagem
+          </Button>
           <Textarea
             placeholder='Descrição'
             value={description}
@@ -130,7 +164,11 @@ export default function AdicionarNovoPresentePage() {
       <div>
         <ProductCard
           slug={'aaa'}
-          images={imageUrl.length > 0 ? [imageUrl] : ['/png/defaultImage.png']}
+          images={
+            imageUrls.filter((url) => url.trim()).length > 0
+              ? imageUrls.filter((url) => url.trim())
+              : ['/png/defaultImage.png']
+          }
           title={title.length > 0 ? title : 'Sem título'}
           description={description.length > 0 ? description : 'Sem descrição'}
           price={price}
