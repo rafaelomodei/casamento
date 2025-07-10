@@ -6,6 +6,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
 
+function capitalizeFirstLetter(text: string) {
+  if (!text) return text;
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 export default function AdicionarNovoPresentePage() {
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
@@ -89,7 +94,10 @@ export default function AdicionarNovoPresentePage() {
             type='text'
             placeholder='Título'
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            maxLength={20}
+            onChange={(e) =>
+              setTitle(capitalizeFirstLetter(e.target.value.slice(0, 20)))
+            }
             required
           />
           <Input
@@ -109,7 +117,10 @@ export default function AdicionarNovoPresentePage() {
           <Textarea
             placeholder='Descrição'
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            maxLength={50}
+            onChange={(e) =>
+              setDescription(capitalizeFirstLetter(e.target.value.slice(0, 50)))
+            }
           />
           <Button
             type='submit'

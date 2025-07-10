@@ -8,6 +8,22 @@ import { UpdateProductUseCase } from '@/domain/products/useCases/updateProduct/U
 import { DeleteProductUseCase } from '@/domain/products/useCases/deleteProduct/DeleteProductUseCase';
 import { productRepository } from '@/infra/repositories/firebase/ProductServerFirebaseRepositories';
 
+function capitalizeFirstLetter(text: string) {
+  if (!text) return text;
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function normalizeProductData(data: ProductDTO): ProductDTO {
+  const normalized = { ...data };
+  if (normalized.title) {
+    normalized.title = capitalizeFirstLetter(normalized.title.trim()).slice(0, 20);
+  }
+  if (normalized.description) {
+    normalized.description = capitalizeFirstLetter(normalized.description.trim()).slice(0, 50);
+  }
+  return normalized;
+}
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get('id');
@@ -43,7 +59,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const data = (await req.json()) as ProductDTO;
+    const data = normalizeProductData((await req.json()) as ProductDTO);
     const createProduct = new CreateProductUseCase(productRepository);
     await createProduct.execute(data);
     return NextResponse.json({ ok: true }, { status: 201 });
@@ -57,7 +73,7 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   try {
-    const data = (await req.json()) as ProductDTO;
+    const data = normalizeProductData((await req.json()) as ProductDTO);
 
     if (!data.id) {
       return NextResponse.json({ error: 'ID obrigatório' }, { status: 400 });
