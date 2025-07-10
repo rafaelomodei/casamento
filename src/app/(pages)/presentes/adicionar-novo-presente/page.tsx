@@ -5,11 +5,13 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
+import { formatCurrency, formatCurrencyInput } from '@/lib/utlils/currency';
 
 export default function AdicionarNovoPresentePage() {
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
-  const [price, setPrice] = useState('');
+  const [price, setPrice] = useState(0);
+  const [priceInput, setPriceInput] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [description, setDescription] = useState('');
   const [slugError, setSlugError] = useState('');
@@ -20,7 +22,7 @@ export default function AdicionarNovoPresentePage() {
   const isFormValid =
     slug.trim() &&
     title.trim() &&
-    price.trim() &&
+    priceInput.trim() &&
     imageUrl.trim() &&
     !slugError;
 
@@ -52,7 +54,7 @@ export default function AdicionarNovoPresentePage() {
         body: JSON.stringify({
           slug,
           title,
-          price: Number(price),
+          price: price,
           images: [imageUrl],
           description,
           views: 0,
@@ -93,10 +95,14 @@ export default function AdicionarNovoPresentePage() {
             required
           />
           <Input
-            type='number'
+            type='text'
             placeholder='Preço'
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            value={priceInput}
+            onChange={(e) => {
+              const { formatted, numeric } = formatCurrencyInput(e.target.value);
+              setPriceInput(formatted);
+              setPrice(numeric);
+            }}
             required
           />
           <Input
@@ -125,7 +131,7 @@ export default function AdicionarNovoPresentePage() {
           images={imageUrl.length > 0 ? [imageUrl] : ['/png/defaultImage.png']}
           title={title.length > 0 ? title : 'Sem título'}
           description={description.length > 0 ? description : 'Sem descrição'}
-          price={Number(price)}
+          price={price}
           classNameCard='max-w-sm'
         />
       </div>
