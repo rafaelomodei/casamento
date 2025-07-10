@@ -16,12 +16,14 @@ export default function PageBreadcrumb() {
   const pathname = usePathname();
   const segments = pathname.split('/').filter(Boolean);
 
+  if (segments.length === 0) return null;
+
   return (
-    <Breadcrumb className='text-primary font-medium mb-4'>
+    <Breadcrumb className='font-medium mb-4'>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <Link href='/'>Home</Link>
+          <BreadcrumbLink asChild className='text-primary/60'>
+            <Link href='/'>Inicio</Link>
           </BreadcrumbLink>
         </BreadcrumbItem>
         {segments.map((segment, index) => {
@@ -33,9 +35,11 @@ export default function PageBreadcrumb() {
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 {isLast ? (
-                  <BreadcrumbPage className='capitalize'>{label}</BreadcrumbPage>
+                  <BreadcrumbPage className='capitalize text-primary'>
+                    {label}
+                  </BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink asChild className='capitalize'>
+                  <BreadcrumbLink asChild className='capitalize text-primary/60'>
                     <Link href={href}>{label}</Link>
                   </BreadcrumbLink>
                 )}

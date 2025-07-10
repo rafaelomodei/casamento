@@ -6,14 +6,12 @@ import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import Image from 'next/image';
 import Link from 'next/link';
-import PageBreadcrumb from '@/components/PageBreadcrumb';
 
 export default function Home() {
   const weddingDate = new Date('September 27, 2025 16:00:00');
 
   return (
     <main className='min-h-screen flex flex-col py-8  px-4  text-primary max-w-6xl'>
-      <PageBreadcrumb />
       <header className='flex h-screen'>
         <div className='flex flex-col w-full items-center justify-center'>
           <Image
