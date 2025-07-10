@@ -8,7 +8,9 @@ import { formatCurrency } from '@/lib/utlils/currency';
 
 export default function PresenteDetailPage() {
   const params = useParams();
-  const slug = Array.isArray(params.slug) ? params.slug[0] : (params.slug as string);
+  const slug = Array.isArray(params.slug)
+    ? params.slug[0]
+    : (params.slug as string);
   const [product, setProduct] = useState<ProductDTO | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -45,9 +47,13 @@ export default function PresenteDetailPage() {
   }
 
   return (
-    <div className='flex flex-col gap-4 py-8'>
+    <div className='flex flex-col w-full max-w-6xl gap-4 py-8'>
       <PageBreadcrumb />
       <h1 className='text-2xl'>{product.title}</h1>
+      <p className='text-sm text-muted-foreground'>
+        Visualizações: {product.views ?? 0}
+      </p>
+
       {product.images && product.images[0] && (
         <Image
           src={product.images[0]}
@@ -57,9 +63,11 @@ export default function PresenteDetailPage() {
           className='rounded'
         />
       )}
-        <p className='font-semibold'>{formatCurrency(product.price)}</p>
-      {product.description && <p>{product.description}</p>}
-      <p className='text-sm text-muted-foreground'>Visualizações: {product.views ?? 0}</p>
+      <p className='font-semibold'>{formatCurrency(product.price)}</p>
+      <div className='flex flex-col gap-2'>
+        <h2 className='text-xl'>Descrição</h2>
+        {product.description && <p>{product.description}</p>}
+      </div>
     </div>
   );
 }
