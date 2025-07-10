@@ -6,12 +6,14 @@ interface ProductCardSkeletonProps {
   classNameCard?: string;
 }
 
-export default function ProductCardSkeleton({ classNameCard }: ProductCardSkeletonProps) {
+export default function ProductCardSkeleton({
+  classNameCard,
+}: ProductCardSkeletonProps) {
   return (
     <Card
       className={cn(
-        'min-w-sm py-0 relative overflow-hidden rounded-md border border-border shadow-none',
-        classNameCard,
+        'min-w-sm pt-0 relative overflow-hidden rounded-md border border-border shadow-none',
+        classNameCard
       )}
     >
       <Skeleton className='h-64 w-full bg-primary/50' />

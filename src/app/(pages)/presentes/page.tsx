@@ -29,7 +29,7 @@ export default function PresentesPage() {
 
   if (loading) {
     return (
-      <div className='flex flex-col w-col max-w-6xl gap-4 py-8'>
+      <div className='flex flex-col w-col max-w-6xl gap-4 py-8 px-4'>
         <PageBreadcrumb />
         <h1 className='text-2xl'>Presentes</h1>
         <Link
@@ -53,7 +53,7 @@ export default function PresentesPage() {
   }
 
   return (
-    <div className='flex flex-col w-col max-w-6xl gap-4 py-8'>
+    <div className='flex flex-col w-col max-w-6xl gap-4 py-8  px-4'>
       <PageBreadcrumb />
       <h1 className='text-2xl'>Presentes</h1>
       <Link

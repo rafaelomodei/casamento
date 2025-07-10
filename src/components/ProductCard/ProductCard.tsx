@@ -7,7 +7,6 @@ import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
 import { capitalizeFirst, truncateWithEllipsis } from '@/lib/utlils/text';
 import { formatCurrency } from '@/lib/utlils/currency';
 
-
 interface ProductProps {
   slug: string;
   images: string[];
@@ -27,7 +26,7 @@ export function ProductCard(props: ProductProps) {
     <Link href={`/presentes/${slug}`} className='w-xs'>
       <Card
         className={cn(
-          'min-w-sm text-primary py-0 relative transition border border-border bg-white shadow-none overflow-hidden rounded-md',
+          'min-w-sm text-primary pt-0 relative transition border border-border bg-white shadow-none overflow-hidden rounded-md',
           `hover:border-primary hover:border-2  dark:hover:bg-muted/30 ${classNameCard}`
         )}
       >
