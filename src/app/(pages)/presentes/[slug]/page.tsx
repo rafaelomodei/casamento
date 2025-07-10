@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 import Image from 'next/image';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
+import { formatCurrency } from '@/lib/utlils/currency';
 
 export default function PresenteDetailPage() {
   const params = useParams();
@@ -56,7 +57,7 @@ export default function PresenteDetailPage() {
           className='rounded'
         />
       )}
-      <p className='font-semibold'>R$ {Number(product.price).toFixed(2)}</p>
+        <p className='font-semibold'>{formatCurrency(product.price)}</p>
       {product.description && <p>{product.description}</p>}
       <p className='text-sm text-muted-foreground'>Visualizações: {product.views ?? 0}</p>
     </div>
