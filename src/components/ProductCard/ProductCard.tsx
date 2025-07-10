@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
+import { formatCurrency } from '@/lib/utlils/currency';
 
 interface ProductProps {
   slug: string;
@@ -34,7 +35,7 @@ export function ProductCard(props: ProductProps) {
         <CardContent className='flex flex-col gap-2 pt-2'>
           <h3 className='text-lg'>{title}</h3>
           <p className='text-muted-foreground'>{description}</p>
-          <p className='text-xl'>R$ {Number(price).toFixed(2)}</p>
+          <p className='text-xl'>{formatCurrency(price)}</p>
         </CardContent>
       </Card>
     </Link>
