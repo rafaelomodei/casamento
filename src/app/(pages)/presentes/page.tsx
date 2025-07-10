@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
+import ProductCardSkeleton from '@/components/ProductCard/ProductCardSkeleton';
 import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 import Link from 'next/link';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
@@ -27,7 +28,28 @@ export default function PresentesPage() {
   }, []);
 
   if (loading) {
-    return <p className='py-8'>Carregando...</p>;
+    return (
+      <div className='flex flex-col w-col max-w-6xl gap-4 py-8'>
+        <PageBreadcrumb />
+        <h1 className='text-2xl'>Presentes</h1>
+        <Link
+          href='/presentes/adicionar-novo-presente'
+          className='self-start bg-primary text-white rounded-sm text-lg py-2 px-4'
+        >
+          Adicionar novo presente
+        </Link>
+        <div className='flex flex-wrap gap-4'>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div
+              key={i}
+              className='flex-1 min-w-[min(100%,20rem)] sm:max-w-[calc(50%-0.5rem)]'
+            >
+              <ProductCardSkeleton />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
   return (
