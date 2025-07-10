@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 import Image from 'next/image';
+import PageBreadcrumb from '@/components/PageBreadcrumb';
 
 export default function PresenteDetailPage() {
   const params = useParams();
@@ -44,6 +45,7 @@ export default function PresenteDetailPage() {
 
   return (
     <div className='flex flex-col gap-4 py-8'>
+      <PageBreadcrumb />
       <h1 className='text-2xl'>{product.title}</h1>
       {product.images && product.images[0] && (
         <Image

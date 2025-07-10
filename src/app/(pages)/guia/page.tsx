@@ -1,4 +1,5 @@
 import GuideCard from '@/components/GuideCard';
+import PageBreadcrumb from '@/components/PageBreadcrumb';
 
 interface Hotel {
   image: string;
@@ -102,6 +103,7 @@ const rentals: Rental[] = [
 export default function GuiaPage() {
   return (
     <main className='flex flex-col gap-8 py-8 px-4 max-w-6xl'>
+      <PageBreadcrumb />
       <h1 className='text-2xl'>Guia para convidados</h1>
       <p className='text-sm'>
         Se você é de fora e não conhece muito bem Colorado, aqui
