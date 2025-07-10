@@ -69,18 +69,20 @@ export default function AdicionarNovoPresentePage() {
     <div className='flex flex-col gap-4 py-8'>
       <h1 className='text-2xl'>Adicionar Novo Presente</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4 max-w-md'>
-        <Input
-          type='text'
-          placeholder='Slug'
-          value={slug}
-          onBlur={handleSlugBlur}
-          onChange={(e) => setSlug(e.target.value)}
-          aria-invalid={slugError ? true : undefined}
-          required
-        />
-        {slugError && (
-          <p className='text-destructive text-sm'>{slugError}</p>
-        )}
+        <div>
+          <Input
+            type='text'
+            placeholder='Slug'
+            value={slug}
+            onBlur={handleSlugBlur}
+            onChange={(e) => setSlug(e.target.value)}
+            aria-invalid={slugError ? true : undefined}
+            required
+          />
+          {slugError && (
+            <p className='text-destructive text-sm pl-2'>{slugError}</p>
+          )}
+        </div>
         <Input
           type='text'
           placeholder='Título'
@@ -107,7 +109,10 @@ export default function AdicionarNovoPresentePage() {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-        <Button type='submit' disabled={loading || checkingSlug || !isFormValid}>
+        <Button
+          type='submit'
+          disabled={loading || checkingSlug || !isFormValid}
+        >
           {loading ? 'Salvando...' : 'Salvar'}
         </Button>
       </form>
