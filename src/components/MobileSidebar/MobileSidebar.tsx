@@ -10,6 +10,8 @@ import {
   SidebarMenuButton,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { Button } from '@/components/ui/button';
+import { useAuth } from '@/Providers/auth-provider';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -24,6 +26,7 @@ interface MobileSidebarProps {
 
 export default function MobileSidebar({ items }: MobileSidebarProps) {
   const isMobile = useIsMobile();
+  const { user, signOut } = useAuth();
 
   return (
     <>
@@ -55,6 +58,27 @@ export default function MobileSidebar({ items }: MobileSidebarProps) {
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
+            <div className='mt-auto flex flex-col gap-2 p-4'>
+              {user ? (
+                <>
+                  <Button variant='outline' onClick={signOut}>Sair</Button>
+                  <div className='flex items-center gap-2'>
+                    <Image
+                      src={user.avatar}
+                      alt={user.name}
+                      width={32}
+                      height={32}
+                      className='size-8 rounded-full object-cover'
+                    />
+                    <span className='font-medium'>{user.name}</span>
+                  </div>
+                </>
+              ) : (
+                <Button asChild variant='secondary'>
+                  <Link href='/entrar'>Entrar</Link>
+                </Button>
+              )}
+            </div>
           </SidebarContent>
         </Sidebar>
       )}

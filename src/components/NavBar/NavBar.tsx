@@ -4,8 +4,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import MobileSidebar from '@/components/MobileSidebar/MobileSidebar';
+import { Button } from '@/components/ui/button';
+import UserMenu from './UserMenu';
+import { useAuth } from '@/Providers/auth-provider';
 
 const NavBar = () => {
+  const { user } = useAuth();
 
   const items = [
     { href: '/nossas-historias', label: 'Nossas Histórias' },
@@ -42,6 +46,15 @@ const NavBar = () => {
               </Link>
             ))}
           </nav>
+          <div className='hidden md:block'>
+            {user ? (
+              <UserMenu />
+            ) : (
+              <Button asChild variant='secondary'>
+                <Link href='/entrar'>Entrar</Link>
+              </Button>
+            )}
+          </div>
           <MobileSidebar items={items} />
         </div>
       </main>
