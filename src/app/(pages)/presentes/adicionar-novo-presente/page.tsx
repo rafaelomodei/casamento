@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { formatCurrency, formatCurrencyInput } from '@/lib/utlils/currency';
+import { isValidImage } from '@/lib/utlils/image';
 
 export default function AdicionarNovoPresentePage() {
   const [title, setTitle] = useState('');
@@ -25,7 +26,7 @@ export default function AdicionarNovoPresentePage() {
     slug.trim() &&
     title.trim() &&
     priceInput.trim() &&
-    imageUrls.some((url) => url.trim()) &&
+    imageUrls.some((url) => url.trim() && isValidImage(url)) &&
     !slugError;
 
   async function handleSlugBlur() {
@@ -67,6 +68,9 @@ export default function AdicionarNovoPresentePage() {
     ];
     const urls = imageUrls.filter((url) => url.trim());
     const sanitized = urls.map((url) => {
+      if (!isValidImage(url)) {
+        return '/png/defaultImage.png';
+      }
       try {
         const parsed = new URL(url, 'http://dummy');
         if (
@@ -95,7 +99,7 @@ export default function AdicionarNovoPresentePage() {
           slug,
           title,
           price: price,
-          images: imageUrls.filter((url) => url.trim()),
+          images: imageUrls.filter((url) => url.trim()).filter(isValidImage),
           description,
           views: 0,
         }),
