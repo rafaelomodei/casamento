@@ -65,7 +65,7 @@ export default function PresentesPage() {
       {products.length === 0 ? (
         <p className='py-4'>Nenhum presente cadastrado.</p>
       ) : (
-        <div className='flex flex-wrap gap-4'>
+        <div className='flex flex-wrap gap-16'>
           {products.map((product) => (
             <div
               key={product.id}
