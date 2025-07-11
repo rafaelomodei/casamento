@@ -5,7 +5,7 @@ import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 import { formatCurrency } from '@/lib/utlils/currency';
 import { Button } from '@/components/ui/button';
-import Gift, { GiftHandle } from '@/components/IconsAnimated/Gift/Gift';
+import Gift, { type GiftHandle } from '@/components/IconsAnimated/Gift/Gift';
 import { useRef } from 'react';
 
 interface Props {

@@ -6,6 +6,8 @@ import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { ProductDesktopPage } from './ProductDesktopPage';
 import { ProductMobilePage } from './ProductMobilePage';
+import ProductDesktopPageSkeleton from './ProductDesktopPageSkeleton';
+import ProductMobilePageSkeleton from './ProductMobilePageSkeleton';
 
 export default function PresenteDetailPage() {
   const params = useParams();
@@ -48,7 +50,10 @@ export default function PresenteDetailPage() {
   }, [slug]);
 
   if (loading) {
-    return <p className='py-8'>Carregando...</p>;
+    if (isMobile) {
+      return <ProductMobilePageSkeleton />;
+    }
+    return <ProductDesktopPageSkeleton />;
   }
 
   if (!product) {
