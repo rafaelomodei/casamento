@@ -7,11 +7,13 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import PageBreadcrumb from '@/components/PageBreadcrumb'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/Providers/auth-provider'
 
 export default function CadastroPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callback = searchParams.get('callback') || '/'
+  const { signIn } = useAuth()
 
   const [name, setName] = useState('')
   const [sex, setSex] = useState<'male' | 'female'>('male')
@@ -34,6 +36,7 @@ export default function CadastroPage() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!isFormValid) return
+    signIn({ name, avatar })
     router.push(callback)
   }
 

@@ -3,6 +3,7 @@ import { Arapey, Arbutus_Slab, Poppins } from 'next/font/google';
 import './globals.css';
 import NavBar from '@/components/NavBar/NavBar';
 import Footer from '@/components/Footer/Footer';
+import { AuthProvider } from '@/Providers/auth-provider';
 
 const arbutus = Arbutus_Slab({
   subsets: ['latin'],
@@ -51,15 +52,17 @@ export default function RootLayout({
       className='flex flex-col items-center'
     >
       <body
-        className={`${arapey.className}  
-          ${arbutus.variable}   
-          ${poppins.variable}  
-          ${arapey.variable} 
+        className={`${arapey.className}
+          ${arbutus.variable}
+          ${poppins.variable}
+          ${arapey.variable}
       antialiased text-primary flex flex-col w-full justify-center items-center`}
       >
-        <NavBar />
-        {children}
-        <Footer />
+        <AuthProvider>
+          <NavBar />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

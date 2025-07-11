@@ -4,8 +4,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import MobileSidebar from '@/components/MobileSidebar/MobileSidebar';
+import { Button } from '@/components/ui/button';
+import UserMenu from './UserMenu';
+import { useAuth } from '@/Providers/auth-provider';
+import { usePathname } from 'next/navigation';
 
 const NavBar = () => {
+  const { user } = useAuth();
+  const pathname = usePathname();
+  const isAuthPage = pathname.startsWith('/entrar') || pathname.startsWith('/codigo');
 
   const items = [
     { href: '/nossas-historias', label: 'Nossas Histórias' },
@@ -31,17 +38,30 @@ const NavBar = () => {
             />
           </Link>
 
-          <nav className='hidden md:flex gap-4'>
-            {items.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className='border-b border-transparent hover:border-primary hover:rounded-b'
-              >
-                {label}
-              </Link>
-            ))}
-          </nav>
+          {!isAuthPage && (
+            <nav className='hidden md:flex gap-4'>
+              {items.map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className='border-b border-transparent hover:border-primary hover:rounded-b'
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+          )}
+          {!isAuthPage && (
+            <div className='hidden md:block'>
+              {user ? (
+                <UserMenu />
+              ) : (
+                <Button asChild variant='secondary' className='text-white'>
+                  <Link href='/entrar'>Entrar</Link>
+                </Button>
+              )}
+            </div>
+          )}
           <MobileSidebar items={items} />
         </div>
       </main>
