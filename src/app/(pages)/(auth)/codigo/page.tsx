@@ -40,7 +40,9 @@ export default function CodigoPage() {
     setError(false)
     setTimeout(() => {
       if (code === '123456') {
-        router.push(callback)
+        router.push(
+          `/cadastro?callback=${encodeURIComponent(callback)}&phone=${encodeURIComponent(phone)}`,
+        )
       } else {
         setError(true)
       }

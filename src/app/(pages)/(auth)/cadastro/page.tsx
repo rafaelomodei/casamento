@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import PageBreadcrumb from '@/components/PageBreadcrumb'
 import { cn } from '@/lib/utils'
-import { formatPhone, isValidPhone } from '@/lib/utlils/phone'
 
 export default function CadastroPage() {
   const router = useRouter()
@@ -16,9 +15,6 @@ export default function CadastroPage() {
 
   const [name, setName] = useState('')
   const [sex, setSex] = useState<'male' | 'female'>('male')
-  const [phoneDigits, setPhoneDigits] = useState('')
-  const phone = formatPhone(phoneDigits)
-  const isPhoneValid = isValidPhone(phoneDigits)
   const [avatar, setAvatar] = useState('')
 
   const avatars = {
@@ -33,22 +29,18 @@ export default function CadastroPage() {
   }, [sex])
 
   const isNameValid = name.trim().length >= 3
-  const isFormValid = isPhoneValid && isNameValid && avatar
+  const isFormValid = isNameValid && avatar
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!isFormValid) return
-    router.push(
-      `/codigo?callback=${encodeURIComponent(callback)}&phone=${encodeURIComponent(
-        phoneDigits,
-      )}`,
-    )
+    router.push(callback)
   }
 
   return (
     <main className='flex flex-col gap-4 p-4 max-w-6xl'>
       <PageBreadcrumb />
-      <h1 className='text-2xl'>Cadastro</h1>
+      <h1 className='text-2xl'>Concluir cadastro</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4 max-w-sm'>
         <Input
           type='text'
@@ -82,17 +74,6 @@ export default function CadastroPage() {
             Feminino
           </label>
         </div>
-        <Input
-          type='tel'
-          placeholder='Número de telefone'
-          pattern='\(\d{2}\) \d \d{4} - \d{4}'
-          inputMode='numeric'
-          value={phone}
-          onChange={(e) =>
-            setPhoneDigits(e.currentTarget.value.replace(/\D/g, '').slice(0, 11))
-          }
-          required
-        />
         <div className='flex gap-2'>
           {avatars[sex].map((img) => (
             <button
@@ -110,7 +91,7 @@ export default function CadastroPage() {
         </div>
         <input type='hidden' name='avatar' value={avatar} />
         <Button type='submit' disabled={!isFormValid}>
-          Realizar cadastro
+          Concluir cadastro
         </Button>
       </form>
     </main>
