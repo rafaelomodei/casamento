@@ -5,7 +5,8 @@ import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 import { formatCurrency } from '@/lib/utlils/currency';
 import { Button } from '@/components/ui/button';
-import Gift from '@/components/IconsAnimated/Gift/Gift';
+import Gift, { GiftHandle } from '@/components/IconsAnimated/Gift/Gift';
+import { useRef } from 'react';
 
 interface Props {
   product: ProductDTO;
@@ -21,6 +22,7 @@ export function ProductDesktopPage({
   const fallback = '/png/defaultImage.png';
   const images =
     product.images && product.images.length > 0 ? product.images : [fallback];
+  const giftRef = useRef<GiftHandle>(null);
 
   return (
     <div className='flex flex-col w-full max-w-6xl gap-4 py-8 px-4'>
@@ -86,9 +88,15 @@ export function ProductDesktopPage({
             <p className='text-xl'>Em até 6x</p>
           </div>
 
-          <Button className='text-2xl py-8  text-white' variant='secondary'>
+          <Button
+            className='text-2xl py-8 text-white group'
+            variant='secondary'
+            onMouseEnter={() => giftRef.current?.hoverStart()}
+            onMouseLeave={() => giftRef.current?.hoverEnd()}
+            onClick={() => giftRef.current?.click()}
+          >
             <div className='mb-6'>
-              <Gift />
+              <Gift ref={giftRef} />
             </div>
             Dar este presente
           </Button>

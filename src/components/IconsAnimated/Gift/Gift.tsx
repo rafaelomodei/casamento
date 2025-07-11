@@ -1,16 +1,30 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+  forwardRef,
+} from 'react';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import reveal from '@/assets/lotties/Gift/wired-flat-412-gift-in-reveal.json';
 import hover from '@/assets/lotties/Gift/wired-flat-412-gift-hover-roll.json';
 import open from '@/assets/lotties/Gift/wired-flat-412-gift-morph-open.json';
 import { cn } from '@/lib/utils';
 
+export interface GiftHandle {
+  hoverStart: () => void;
+  hoverEnd: () => void;
+  click: () => void;
+}
+
 interface GiftProps {
   className?: string;
   size?: number;
 }
 
-export default function Gift({ className, size = 100 }: GiftProps) {
+const Gift = forwardRef<GiftHandle, GiftProps>(
+  ({ className, size = 100 }: GiftProps, forwardedRef) => {
   const ref = useRef<LottieRefCurrentProps>(null);
   const [animationData, setAnimationData] = useState(reveal);
   const [autoplay, setAutoplay] = useState(true);
@@ -29,21 +43,27 @@ export default function Gift({ className, size = 100 }: GiftProps) {
     };
   }, []);
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = useCallback(() => {
     setAnimationData(hover);
     setAutoplay(true);
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     setAutoplay(false);
-  };
+  }, []);
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     setAnimationData(open);
     setAutoplay(true);
     setEnlarge(true);
     setTimeout(() => setEnlarge(false), 300);
-  };
+  }, []);
+
+  useImperativeHandle(forwardedRef, () => ({
+    hoverStart: handleMouseEnter,
+    hoverEnd: handleMouseLeave,
+    click: handleClick,
+  }));
 
   return (
     <div
@@ -61,4 +81,7 @@ export default function Gift({ className, size = 100 }: GiftProps) {
       />
     </div>
   );
-}
+ }
+);
+
+export default Gift;
