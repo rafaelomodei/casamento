@@ -9,7 +9,7 @@ export default function ProductMobilePageSkeleton() {
       <PageBreadcrumb />
       <Skeleton className='h-8 w-3/4 bg-primary/50' />
       <Skeleton className='w-full aspect-square bg-primary/50' />
-      <Skeleton className='h-4 w-32 bg-primary/50' />
+      <Skeleton className='h-4 w-32 bg-primary/50 mt-2' />
       <Skeleton className='h-4 w-full bg-primary/50' />
       <div>
         <Skeleton className='h-10 w-40 bg-primary/50' />

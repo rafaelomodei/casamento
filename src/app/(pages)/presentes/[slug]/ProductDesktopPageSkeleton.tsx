@@ -15,9 +15,9 @@ export default function ProductDesktopPageSkeleton() {
                 <Skeleton key={idx} className='h-20 w-20 rounded-md bg-primary/50' />
               ))}
             </div>
-            <Skeleton className='h-80 w-80 rounded-md bg-primary/50' />
+            <Skeleton className='h-96 w-96 rounded-md bg-primary/50' />
           </div>
-          <div className='flex flex-col gap-2 max-w-xl'>
+          <div className='flex flex-col gap-2 mt-6 max-w-xl'>
             <Skeleton className='h-6 w-32 bg-primary/50' />
             <Skeleton className='h-4 w-full bg-primary/50' />
             <Skeleton className='h-4 w-1/2 bg-primary/50' />
