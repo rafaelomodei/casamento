@@ -2,6 +2,11 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
+import {
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from 'firebase/auth'
+import { auth } from '@/infra/repositories/firebase/config'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import PageBreadcrumb from '@/components/PageBreadcrumb'
@@ -18,8 +23,20 @@ export default function EntrarPage() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!isValid) return
-    router.push(`/codigo?callback=${encodeURIComponent(callback)}&phone=${encodeURIComponent(phoneDigits)}`)
+    if (!isValid || !auth) return
+    const verifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      size: 'invisible',
+    })
+    signInWithPhoneNumber(auth, `+55${phoneDigits}`, verifier)
+      .then((result) => {
+        sessionStorage.setItem('verificationId', result.verificationId)
+        router.push(
+          `/codigo?callback=${encodeURIComponent(callback)}&phone=${encodeURIComponent(phoneDigits)}`,
+        )
+      })
+      .catch(() => {
+        // handle error silently
+      })
   }
 
   return (
@@ -41,6 +58,7 @@ export default function EntrarPage() {
         <Button type='submit' disabled={!isValid}>
           Entrar
         </Button>
+        <div id='recaptcha-container' />
       </form>
     </main>
   )

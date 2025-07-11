@@ -2,6 +2,13 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import {
+  PhoneAuthProvider,
+  signInWithCredential,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from 'firebase/auth'
+import { auth } from '@/infra/repositories/firebase/config'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 import PageBreadcrumb from '@/components/PageBreadcrumb'
 import { Button } from '@/components/ui/button'
@@ -15,9 +22,19 @@ export default function CodigoPage() {
 
   const length = 6
   const [code, setCode] = useState('')
+  const [verificationId, setVerificationId] = useState('')
   const [secondsLeft, setSecondsLeft] = useState(60)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(false)
+
+  useEffect(() => {
+    const id = sessionStorage.getItem('verificationId') || ''
+    if (!id) {
+      router.push('/entrar')
+      return
+    }
+    setVerificationId(id)
+  }, [])
 
   useEffect(() => {
     if (secondsLeft <= 0) return
@@ -35,24 +52,34 @@ export default function CodigoPage() {
   }, [code])
 
   function verify() {
-    if (isLoading || code.length !== length) return
+    if (isLoading || code.length !== length || !auth) return
     setIsLoading(true)
     setError(false)
-    setTimeout(() => {
-      if (code === '123456') {
-        router.push(
-          `/entrar/concluir?callback=${encodeURIComponent(callback)}&phone=${encodeURIComponent(phone)}`,
-        )
-      } else {
+    const credential = PhoneAuthProvider.credential(verificationId, code)
+    signInWithCredential(auth, credential)
+      .then(() => {
+        router.push(`/entrar/concluir?callback=${encodeURIComponent(callback)}`)
+      })
+      .catch(() => {
         setError(true)
-      }
-      setIsLoading(false)
-    }, 1000)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   function handleResend() {
-    setSecondsLeft(60)
-    // Código de reenvio real seria aqui
+    if (!auth) return
+    const verifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      size: 'invisible',
+    })
+    signInWithPhoneNumber(auth, `+55${phone}`, verifier)
+      .then((result) => {
+        sessionStorage.setItem('verificationId', result.verificationId)
+        setVerificationId(result.verificationId)
+        setSecondsLeft(60)
+      })
+      .catch(() => {})
   }
 
   return (
@@ -97,6 +124,7 @@ export default function CodigoPage() {
           {isLoading ? 'Validando...' : 'Confirmar código'}
         </Button>
       </div>
+      <div id='recaptcha-container' />
     </main>
   )
 }
