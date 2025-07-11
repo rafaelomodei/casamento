@@ -1,10 +1,11 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { ProductDTO } from '@/domain/products/entities/ProductDTO';
-import Image from 'next/image';
-import PageBreadcrumb from '@/components/PageBreadcrumb';
-import { formatCurrency } from '@/lib/utlils/currency';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { ProductDesktopPage } from './ProductDesktopPage';
+import { ProductMobilePage } from './ProductMobilePage';
 
 export default function PresenteDetailPage() {
   const params = useParams();
@@ -13,6 +14,8 @@ export default function PresenteDetailPage() {
     : (params.slug as string);
   const [product, setProduct] = useState<ProductDTO | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     async function loadProduct() {
@@ -46,28 +49,15 @@ export default function PresenteDetailPage() {
     return <p className='py-8'>Presente não encontrado.</p>;
   }
 
-  return (
-    <div className='flex flex-col w-full max-w-6xl gap-4 py-8'>
-      <PageBreadcrumb />
-      <h1 className='text-2xl'>{product.title}</h1>
-      <p className='text-sm text-muted-foreground'>
-        Visualizações: {product.views ?? 0}
-      </p>
+  if (isMobile) {
+    return <ProductMobilePage product={product} />;
+  }
 
-      {product.images && product.images[0] && (
-        <Image
-          src={product.images[0]}
-          alt={product.title}
-          width={400}
-          height={300}
-          className='rounded'
-        />
-      )}
-      <p className='font-semibold'>{formatCurrency(product.price)}</p>
-      <div className='flex flex-col gap-2'>
-        <h2 className='text-xl'>Descrição</h2>
-        {product.description && <p>{product.description}</p>}
-      </div>
-    </div>
+  return (
+    <ProductDesktopPage
+      product={product}
+      selectedImage={selectedImage}
+      setSelectedImage={setSelectedImage}
+    />
   );
 }
