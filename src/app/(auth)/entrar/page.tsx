@@ -5,18 +5,21 @@ import { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import PageBreadcrumb from '@/components/PageBreadcrumb'
+import { formatPhone, isValidPhone } from '@/lib/utlils/phone'
 
 export default function EntrarPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [phone, setPhone] = useState('')
+  const [phoneDigits, setPhoneDigits] = useState('')
+  const phone = formatPhone(phoneDigits)
+  const isValid = isValidPhone(phoneDigits)
 
   const callback = searchParams.get('callback') || '/'  
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!phone.trim()) return
-    router.push(`/codigo?callback=${encodeURIComponent(callback)}&phone=${encodeURIComponent(phone)}`)
+    if (!isValid) return
+    router.push(`/codigo?callback=${encodeURIComponent(callback)}&phone=${encodeURIComponent(phoneDigits)}`)
   }
 
   return (
@@ -27,11 +30,17 @@ export default function EntrarPage() {
         <Input
           type='tel'
           placeholder='Número de telefone'
+          pattern='\(\d{2}\) \d \d{4} - \d{4}'
+          inputMode='numeric'
           value={phone}
-          onChange={(e) => setPhone(e.currentTarget.value)}
+          onChange={(e) =>
+            setPhoneDigits(e.currentTarget.value.replace(/\D/g, '').slice(0, 11))
+          }
           required
         />
-        <Button type='submit'>Enviar código</Button>
+        <Button type='submit' disabled={!isValid}>
+          Entrar
+        </Button>
       </form>
     </main>
   )

@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import PageBreadcrumb from '@/components/PageBreadcrumb'
 import { Label } from '@/components/ui/label'
+import { formatPhone, isValidPhone } from '@/lib/utlils/phone'
 
 export default function CadastroPage() {
   const router = useRouter()
@@ -14,12 +15,15 @@ export default function CadastroPage() {
 
   const [name, setName] = useState('')
   const [sex, setSex] = useState<'male' | 'female'>('male')
-  const [phone, setPhone] = useState('')
+  const [phoneDigits, setPhoneDigits] = useState('')
+  const phone = formatPhone(phoneDigits)
+  const isValid = isValidPhone(phoneDigits)
   const [avatar, setAvatar] = useState('')
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    router.push(`/codigo?callback=${encodeURIComponent(callback)}`)
+    if (!isValid) return
+    router.push(`/codigo?callback=${encodeURIComponent(callback)}&phone=${encodeURIComponent(phoneDigits)}`)
   }
 
   return (
@@ -49,8 +53,12 @@ export default function CadastroPage() {
         <Input
           type='tel'
           placeholder='Número de telefone'
+          pattern='\(\d{2}\) \d \d{4} - \d{4}'
+          inputMode='numeric'
           value={phone}
-          onChange={(e) => setPhone(e.currentTarget.value)}
+          onChange={(e) =>
+            setPhoneDigits(e.currentTarget.value.replace(/\D/g, '').slice(0, 11))
+          }
           required
         />
         <Input
@@ -59,7 +67,9 @@ export default function CadastroPage() {
           value={avatar}
           onChange={(e) => setAvatar(e.currentTarget.value)}
         />
-        <Button type='submit'>Entrar</Button>
+        <Button type='submit' disabled={!isValid}>
+          Entrar
+        </Button>
       </form>
     </main>
   )
