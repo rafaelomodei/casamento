@@ -38,7 +38,7 @@ export default function PresentesPage() {
         >
           Adicionar novo presente
         </Link>
-        <div className='flex flex-wrap gap-4'>
+        <div className='flex flex-wrap gap-16'>
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
