@@ -17,10 +17,10 @@ export default function Gift({ className, size = 100 }: GiftProps) {
   const [enlarge, setEnlarge] = useState(false);
 
   useEffect(() => {
-    const anim = ref.current;
+    const anim = ref.current?.animationItem;
     if (!anim) return;
     const handleComplete = () => {
-      anim.stop();
+      ref.current?.stop();
       setAutoplay(false);
     };
     anim.addEventListener('complete', handleComplete);
