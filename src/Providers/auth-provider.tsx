@@ -1,10 +1,14 @@
 'use client'
 
 import React from 'react'
+import { signOut as firebaseSignOut } from 'firebase/auth'
+import { auth } from '@/infra/repositories/firebase/config'
 
 export interface User {
-  name: string
-  avatar: string
+  name: string;
+  avatar: string;
+  phone: string;
+  sex: 'male' | 'female';
 }
 
 interface AuthContextProps {
@@ -44,6 +48,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null)
     try {
       localStorage.removeItem(STORAGE_KEY)
+    } catch {
+      // ignore
+    }
+    try {
+      if (auth) firebaseSignOut(auth)
     } catch {
       // ignore
     }
