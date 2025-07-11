@@ -85,11 +85,42 @@ export function ProductDesktopPage({
           </p>
           <div>
             <p className='text-4xl'>{formatCurrency(product.price)}</p>
-            <p className='text-xl'>Em até 6x</p>
+            <p className='text-xl text-secondary'>Pague em até 6x!</p>
+          </div>
+          <div className='flex flex-col gap-2 '>
+            <h2 className='text-xl'>Meios de pagamento</h2>
+
+            <div className='flex gap-8'>
+              <Image
+                src='/png/paymentMethod/pix.png'
+                alt='pix'
+                width={71}
+                height={32}
+              />
+
+              <Image
+                src='/png/paymentMethod/elo.png'
+                alt='elo'
+                width={82}
+                height={32}
+              />
+              <Image
+                src='/png/paymentMethod/visa.png'
+                alt='visa'
+                width={42}
+                height={32}
+              />
+              <Image
+                src='/png/paymentMethod/mastercard.png'
+                alt='mastercard'
+                width={31}
+                height={32}
+              />
+            </div>
           </div>
 
           <Button
-            className='text-2xl py-8 text-white group'
+            className='text-2xl py-8 text-white group mt-10'
             variant='secondary'
             onMouseEnter={() => giftRef.current?.hoverStart()}
             onMouseLeave={() => giftRef.current?.hoverEnd()}
