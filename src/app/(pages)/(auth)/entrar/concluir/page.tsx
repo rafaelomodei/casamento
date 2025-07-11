@@ -74,6 +74,7 @@ export default function CadastroPage() {
             Feminino
           </label>
         </div>
+        <h2 className='text-xl'>Selecione sua foto de perfil</h2>
         <div className='flex gap-2'>
           {avatars[sex].map((img) => (
             <button
