@@ -54,11 +54,11 @@ export default function CodigoPage() {
   }
 
   return (
-    <main className='flex flex-col gap-4 p-4 max-w-6xl'>
+    <main className='flex flex-col gap-4 p-4 max-w-6xl items-center text-center'>
       <PageBreadcrumb />
       <h1 className='text-2xl'>Código de verificação</h1>
       <p>
-        Enviamos um código para o número {formatPhone(phone)}. Informe-o para
+        Enviamos um código para o número {formatPhone(phone)}.<br />Informe-o para
         continuar.
       </p>
       <InputOTP
@@ -78,7 +78,7 @@ export default function CodigoPage() {
           Código inválido. Verifique se está correto.
         </p>
       )}
-      <div className='flex gap-2'>
+      <div className='flex gap-2 justify-center'>
         <Button
           type='button'
           variant='outline'
