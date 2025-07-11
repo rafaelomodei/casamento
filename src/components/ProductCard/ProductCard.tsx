@@ -27,7 +27,7 @@ export function ProductCard(props: ProductProps) {
       <Card
         className={cn(
           'min-w-sm text-primary pt-0 relative transition border border-border bg-white shadow-none overflow-hidden rounded-md',
-          `hover:border-primary hover:border-2  dark:hover:bg-muted/30 ${classNameCard}`
+          `hover:border-primary hover:ring-2 hover:ring-primary dark:hover:bg-muted/30 ${classNameCard}`
         )}
       >
         <ImageCarousel
