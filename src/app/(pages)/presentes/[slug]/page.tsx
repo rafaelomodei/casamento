@@ -30,7 +30,13 @@ export default function PresenteDetailPage() {
           body: JSON.stringify({ ...data, views: (data.views || 0) + 1 }),
         });
 
-        setProduct({ ...data, views: (data.views || 0) + 1 });
+        const productData = { ...data, views: (data.views || 0) + 1 };
+        setProduct(productData);
+        if (productData.images && productData.images.length > 0) {
+          setSelectedImage(productData.images[0]);
+        } else {
+          setSelectedImage('/png/defaultImage.png');
+        }
       } catch (err) {
         console.error(err);
         setProduct(null);
