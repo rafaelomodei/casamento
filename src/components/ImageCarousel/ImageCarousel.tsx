@@ -74,6 +74,11 @@ export function ImageCarousel({
           rounded && 'rounded-md'
         )}
         priority={currentImage === 0}
+        onError={(e) => {
+          const target = e.currentTarget as HTMLImageElement
+          target.onerror = null
+          target.src = '/png/defaultImage.png'
+        }}
       />
 
       {showControls && ((hoverControls && hovered) || !hoverControls) && (

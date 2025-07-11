@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -7,13 +8,14 @@ import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { formatCurrency, formatCurrencyInput } from '@/lib/utlils/currency';
+import { isValidImage } from '@/lib/utlils/image';
 
 export default function AdicionarNovoPresentePage() {
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [price, setPrice] = useState(0);
   const [priceInput, setPriceInput] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrls, setImageUrls] = useState<string[]>(['']);
   const [description, setDescription] = useState('');
   const [slugError, setSlugError] = useState('');
   const [checkingSlug, setCheckingSlug] = useState(false);
@@ -24,7 +26,7 @@ export default function AdicionarNovoPresentePage() {
     slug.trim() &&
     title.trim() &&
     priceInput.trim() &&
-    imageUrl.trim() &&
+    imageUrls.some((url) => url.trim() && isValidImage(url)) &&
     !slugError;
 
   async function handleSlugBlur() {
@@ -45,6 +47,47 @@ export default function AdicionarNovoPresentePage() {
     }
   }
 
+  function handleAddImage() {
+    setImageUrls((prev) => [...prev, '']);
+  }
+
+  function handleRemoveImage(index: number) {
+    if (imageUrls.length === 1) return;
+    setImageUrls((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function handleImageChange(index: number, value: string) {
+    setImageUrls((prev) => prev.map((img, i) => (i === index ? value : img)));
+  }
+
+  function getPreviewImages() {
+    const allowedDomains = [
+      'instagram.fmgf12-1.fna.fbcdn.net',
+      'm.media-amazon.com',
+      'imgs.casasbahia.com.br',
+    ];
+    const urls = imageUrls.filter((url) => url.trim());
+    const sanitized = urls.map((url) => {
+      if (!isValidImage(url)) {
+        return '/png/defaultImage.png';
+      }
+      try {
+        const parsed = new URL(url, 'http://dummy');
+        if (
+          parsed.hostname &&
+          parsed.hostname !== 'dummy' &&
+          !allowedDomains.includes(parsed.hostname)
+        ) {
+          return '/png/defaultImage.png';
+        }
+        return url;
+      } catch {
+        return '/png/defaultImage.png';
+      }
+    });
+    return sanitized.length > 0 ? sanitized : ['/png/defaultImage.png'];
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
@@ -56,7 +99,7 @@ export default function AdicionarNovoPresentePage() {
           slug,
           title,
           price: price,
-          images: [imageUrl],
+          images: imageUrls.filter((url) => url.trim()).filter(isValidImage),
           description,
           views: 0,
         }),
@@ -107,13 +150,35 @@ export default function AdicionarNovoPresentePage() {
             }}
             required
           />
-          <Input
-            type='text'
-            placeholder='URL da imagem'
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            required
-          />
+          {imageUrls.map((url, idx) => (
+            <div key={idx} className='flex items-center gap-2'>
+              <Input
+                type='text'
+                placeholder='URL da imagem'
+                value={url}
+                onChange={(e) => handleImageChange(idx, e.target.value)}
+                required={idx === 0}
+                className='flex-1'
+              />
+              <Button
+                type='button'
+                size='icon'
+                variant='ghost'
+                onClick={() => handleRemoveImage(idx)}
+                disabled={imageUrls.length === 1}
+              >
+                <Trash className='w-4 h-4' />
+              </Button>
+            </div>
+          ))}
+          <Button
+            type='button'
+            variant='outline'
+            className='border-primary text-primary hover:bg-primary/5'
+            onClick={handleAddImage}
+          >
+            Adicionar mais imagem
+          </Button>
           <Textarea
             placeholder='Descrição'
             value={description}
@@ -130,7 +195,7 @@ export default function AdicionarNovoPresentePage() {
       <div>
         <ProductCard
           slug={'aaa'}
-          images={imageUrl.length > 0 ? [imageUrl] : ['/png/defaultImage.png']}
+          images={getPreviewImages()}
           title={title.length > 0 ? title : 'Sem título'}
           description={description.length > 0 ? description : 'Sem descrição'}
           price={price}
