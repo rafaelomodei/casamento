@@ -1,4 +1,4 @@
-import { FirebaseApp, initializeApp } from 'firebase/app';
+import { FirebaseApp, initializeApp, getApps, getApp } from 'firebase/app';
 import {
   Auth,
   browserLocalPersistence,
@@ -20,18 +20,25 @@ let appFirebase: FirebaseApp | null = null;
 let googleProvider: GoogleAuthProvider | null = null;
 let auth: Auth | null = null;
 
-try {
-  appFirebase = initializeApp(firebaseConfig);
-  auth = getAuth(appFirebase);
-  setPersistence(auth, browserLocalPersistence);
-  googleProvider = new GoogleAuthProvider();
-
-  console.debug('Firebase successfully initialized');
-} catch (error) {
-  console.error('Firebase initialization failed:', error);
-  appFirebase = null;
-  googleProvider = null;
-  auth = null;
+export function initFirebase() {
+  if (appFirebase) return;
+  try {
+    const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+    appFirebase = app;
+    if (typeof window !== 'undefined') {
+      auth = getAuth(app);
+      setPersistence(auth, browserLocalPersistence).catch(() => {});
+      googleProvider = new GoogleAuthProvider();
+    }
+    console.debug('Firebase successfully initialized');
+  } catch (error) {
+    console.error('Firebase initialization failed:', error);
+    appFirebase = null;
+    googleProvider = null;
+    auth = null;
+  }
 }
+
+initFirebase();
 
 export { appFirebase, auth, googleProvider };
