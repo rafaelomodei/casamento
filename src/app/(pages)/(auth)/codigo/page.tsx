@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   PhoneAuthProvider,
   signInWithCredential,
@@ -26,6 +26,7 @@ export default function CodigoPage() {
   const [secondsLeft, setSecondsLeft] = useState(60)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(false)
+  const verifierRef = useRef<RecaptchaVerifier | null>(null)
 
   useEffect(() => {
     const id = sessionStorage.getItem('verificationId') || ''
@@ -34,6 +35,10 @@ export default function CodigoPage() {
       return
     }
     setVerificationId(id)
+    if (auth && !verifierRef.current) {
+      verifierRef.current = new RecaptchaVerifier('recaptcha-container', { size: 'invisible' }, auth)
+      verifierRef.current.render().catch(() => {})
+    }
   }, [])
 
   useEffect(() => {
@@ -69,11 +74,8 @@ export default function CodigoPage() {
   }
 
   function handleResend() {
-    if (!auth) return
-    const verifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      size: 'invisible',
-    })
-    signInWithPhoneNumber(auth, `+55${phone}`, verifier)
+    if (!auth || !verifierRef.current) return
+    signInWithPhoneNumber(auth, `+55${phone}`, verifierRef.current)
       .then((result) => {
         sessionStorage.setItem('verificationId', result.verificationId)
         setVerificationId(result.verificationId)

@@ -1,11 +1,8 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
-import {
-  RecaptchaVerifier,
-  signInWithPhoneNumber,
-} from 'firebase/auth'
+import { useState, useEffect, useRef } from 'react'
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 import { auth } from '@/infra/repositories/firebase/config'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -19,15 +16,22 @@ export default function EntrarPage() {
   const phone = formatPhone(phoneDigits)
   const isValid = isValidPhone(phoneDigits)
 
-  const callback = searchParams.get('callback') || '/'  
+  const callback = searchParams.get('callback') || '/'
+
+  const verifierRef = useRef<RecaptchaVerifier | null>(null)
+
+  useEffect(() => {
+    if (!auth || verifierRef.current) return
+    verifierRef.current = new RecaptchaVerifier('recaptcha-container', {
+      size: 'invisible',
+    }, auth)
+    verifierRef.current.render().catch(() => {})
+  }, [])
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!isValid || !auth) return
-    const verifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      size: 'invisible',
-    })
-    signInWithPhoneNumber(auth, `+55${phoneDigits}`, verifier)
+    if (!isValid || !auth || !verifierRef.current) return
+    signInWithPhoneNumber(auth, `+55${phoneDigits}`, verifierRef.current)
       .then((result) => {
         sessionStorage.setItem('verificationId', result.verificationId)
         router.push(
