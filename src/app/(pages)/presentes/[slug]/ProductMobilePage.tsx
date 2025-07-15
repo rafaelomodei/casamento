@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import Gift, { GiftHandle } from '@/components/IconsAnimated/Gift/Gift'
 import { useRef } from 'react'
+import { useAuthRequired } from '@/hooks/use-auth-required'
 
 interface Props {
   product: ProductDTO
@@ -19,6 +20,7 @@ export function ProductMobilePage({ product }: Props) {
       ? product.images
       : ['/png/defaultImage.png']
   const giftRef = useRef<GiftHandle>(null)
+  const { requireAuth, dialog } = useAuthRequired()
 
   return (
     <div className='flex flex-col w-full max-w-6xl gap-4 py-8 px-4'>
@@ -60,7 +62,11 @@ export function ProductMobilePage({ product }: Props) {
         variant='secondary'
         onMouseEnter={() => giftRef.current?.hoverStart()}
         onMouseLeave={() => giftRef.current?.hoverEnd()}
-        onClick={() => giftRef.current?.click()}
+        onClick={() => {
+          if (requireAuth()) {
+            giftRef.current?.click()
+          }
+        }}
       >
         <div className='mb-6'>
           <Gift ref={giftRef} />
@@ -73,6 +79,7 @@ export function ProductMobilePage({ product }: Props) {
           <p>{product.description}</p>
         </div>
       )}
+      {dialog}
     </div>
   )
 }

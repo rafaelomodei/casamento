@@ -6,6 +6,7 @@ import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { useEffect, useState } from 'react';
+import { useAuthRequired } from '@/hooks/use-auth-required';
 import Modal from './components/Modal';
 import { getRandomAvatar } from '@/lib/utlils/randomAvatar';
 
@@ -18,6 +19,7 @@ export default function MensagensPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
+  const { requireAuth, dialog } = useAuthRequired();
 
   const getMessages = async () => {
     try {
@@ -50,14 +52,17 @@ export default function MensagensPage() {
             palavras vão ficar pra sempre em nossos corações. Clique no botão
             <a
               className='mx-2 cursor-pointer border-b border-primary/60'
-              onClick={() => setOpen(true)}
+              onClick={() => {
+                if (requireAuth()) setOpen(true);
+              }}
             >
               Deixar uma mensagem
             </a>
             e compartilhe um recado para
             {` ${BRIDE_AND_GROOM}`}”
           </p>
-          <Modal open={open} setOpen={setOpen} />
+          <Modal open={open} setOpen={setOpen} requireAuth={requireAuth} />
+          {dialog}
         </blockquote>
 
         <h1 className='text-2xl md:text-3xl'>Mensagens</h1>

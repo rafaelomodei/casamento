@@ -31,10 +31,11 @@ import { cn } from '@/lib/utils';
 interface ModalProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
+  requireAuth?: () => boolean;
 }
 
 export default function Modal(props: ModalProps) {
-  const { open, setOpen } = props;
+  const { open, setOpen, requireAuth } = props;
   const isMobile = useIsMobile();
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -74,9 +75,28 @@ export default function Modal(props: ModalProps) {
   );
 
   return (
-    <Wrapper open={open} onOpenChange={setOpen}>
+    <Wrapper
+      open={open}
+      onOpenChange={(o) => {
+        if (o) {
+          if (!requireAuth || requireAuth()) {
+            setOpen(true);
+          }
+        } else {
+          setOpen(false);
+        }
+      }}
+    >
       <Trigger asChild>
-        <Button className='h-16! not-italic text-xl mt-4 md:m-auto'>
+        <Button
+          className='h-16! not-italic text-xl mt-4 md:m-auto'
+          onClick={(e) => {
+            if (requireAuth && !requireAuth()) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
+        >
           Deixar uma mensagem
         </Button>
       </Trigger>
