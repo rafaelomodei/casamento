@@ -8,7 +8,9 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from 'firebase/auth'
-import { auth } from '@/infra/repositories/firebase/config'
+import { auth, appFirebase } from '@/infra/repositories/firebase/config'
+import { getFirestore, doc, getDoc } from 'firebase/firestore'
+import { useAuth } from '@/Providers/auth-provider'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 import PageBreadcrumb from '@/components/PageBreadcrumb'
 import { Button } from '@/components/ui/button'
@@ -27,6 +29,7 @@ export default function CodigoPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(false)
   const verifierRef = useRef<RecaptchaVerifier | null>(null)
+  const { signIn } = useAuth()
 
   useEffect(() => {
     const id = sessionStorage.getItem('verificationId') || ''
@@ -61,13 +64,30 @@ export default function CodigoPage() {
   }, [code])
 
   function verify() {
-    if (isLoading || code.length !== length || !auth) return
+    if (isLoading || code.length !== length || !auth || !appFirebase) return
     setIsLoading(true)
     setError(false)
     const credential = PhoneAuthProvider.credential(verificationId, code)
     signInWithCredential(auth, credential)
-      .then(() => {
-        router.push(`/entrar/concluir?callback=${encodeURIComponent(callback)}`)
+      .then(async (credResult) => {
+        const db = getFirestore(appFirebase)
+        try {
+          const snap = await getDoc(doc(db, 'users', credResult.user.uid))
+          if (snap.exists()) {
+            const data = snap.data() as any
+            signIn({
+              name: data.name as string,
+              avatar: data.avatar as string,
+              phone: data.phone as string,
+              sex: data.sex as 'male' | 'female',
+            })
+            router.push(callback)
+          } else {
+            router.push(`/entrar/concluir?callback=${encodeURIComponent(callback)}`)
+          }
+        } catch {
+          router.push(`/entrar/concluir?callback=${encodeURIComponent(callback)}`)
+        }
       })
       .catch(() => {
         setError(true)
