@@ -23,12 +23,12 @@ const poppins = Poppins({
 const arapey = localFont({
   src: [
     {
-      path: 'assets/fonts/Arapey/Arapey-Regular.ttf',
+      path: '../assets/fonts/Arapey/Arapey-Regular.ttf',
       weight: '400',
       style: 'normal',
     },
     {
-      path: 'assets/fonts/Arapey/Arapey-Italic.ttf',
+      path: '../assets/fonts/Arapey/Arapey-Italic.ttf',
       weight: '400',
       style: 'italic',
     },
@@ -69,7 +69,7 @@ export default function RootLayout({
         className={`${arapey.className}
           ${arbutus.variable}
           ${poppins.variable}
-          ${arapey}
+          ${arapey.className}
       antialiased text-primary flex flex-col w-full justify-center items-center`}
       >
         <AuthProvider>
