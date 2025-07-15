@@ -1,13 +1,13 @@
 'use client';
 
+import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { formatPhone, isValidPhone } from '@/lib/utlils/phone';
 
-export default function EntrarPage() {
+function EntrarForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [phoneDigits, setPhoneDigits] = useState('');
@@ -49,5 +49,13 @@ export default function EntrarPage() {
         </Button>
       </form>
     </main>
+  );
+}
+
+export default function EntrarPage() {
+  return (
+    <Suspense fallback={null}>
+      <EntrarForm />
+    </Suspense>
   );
 }

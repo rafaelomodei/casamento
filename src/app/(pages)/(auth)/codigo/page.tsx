@@ -1,13 +1,13 @@
 'use client'
 
+import { Suspense, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState, useEffect } from 'react'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 import PageBreadcrumb from '@/components/PageBreadcrumb'
 import { Button } from '@/components/ui/button'
 import { formatPhone } from '@/lib/utlils/phone'
 
-export default function CodigoPage() {
+function CodigoForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callback = searchParams.get('callback') || '/'
@@ -98,5 +98,13 @@ export default function CodigoPage() {
         </Button>
       </div>
     </main>
+  )
+}
+
+export default function CodigoPage() {
+  return (
+    <Suspense fallback={null}>
+      <CodigoForm />
+    </Suspense>
   )
 }
