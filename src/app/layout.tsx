@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { Arapey, Arbutus_Slab, Poppins } from 'next/font/google';
+import { Arbutus_Slab, Poppins } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import NavBar from '@/components/NavBar/NavBar';
 import Footer from '@/components/Footer/Footer';
@@ -19,11 +20,19 @@ const poppins = Poppins({
   variable: '--font-title',
 });
 
-const arapey = Arapey({
-  subsets: ['latin'],
-  weight: ['400'],
-  display: 'swap',
-  variable: '--font-arapey',
+const arapey = localFont({
+  src: [
+    {
+      path: 'assets/fonts/Arapey/Arapey-Regular.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: 'assets/fonts/Arapey/Arapey-Italic.ttf',
+      weight: '400',
+      style: 'italic',
+    },
+  ],
 });
 
 const shareDescription =
@@ -60,7 +69,7 @@ export default function RootLayout({
         className={`${arapey.className}
           ${arbutus.variable}
           ${poppins.variable}
-          ${arapey.variable}
+          ${arapey}
       antialiased text-primary flex flex-col w-full justify-center items-center`}
       >
         <AuthProvider>
