@@ -84,4 +84,6 @@ const Gift = forwardRef<GiftHandle, GiftProps>(
  }
 );
 
+Gift.displayName = 'Gift';
+
 export default Gift;
