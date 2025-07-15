@@ -1,112 +1,116 @@
-'use client'
+'use client';
 
-import { Suspense, useState, useEffect } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useState, useEffect, useRef } from 'react'
+import { Suspense, useState, useEffect, useRef } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   PhoneAuthProvider,
   signInWithCredential,
   RecaptchaVerifier,
   signInWithPhoneNumber,
-} from 'firebase/auth'
-import { auth, appFirebase } from '@/infra/repositories/firebase/config'
-import { getFirestore, doc, getDoc } from 'firebase/firestore'
-import { useAuth } from '@/Providers/auth-provider'
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
-import PageBreadcrumb from '@/components/PageBreadcrumb'
-import { Button } from '@/components/ui/button'
-import { formatPhone } from '@/lib/utlils/phone'
+} from 'firebase/auth';
+import { auth, appFirebase } from '@/infra/repositories/firebase/config';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { useAuth } from '@/Providers/auth-provider';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from '@/components/ui/input-otp';
+import PageBreadcrumb from '@/components/PageBreadcrumb';
+import { Button } from '@/components/ui/button';
+import { formatPhone } from '@/lib/utlils/phone';
 
 function CodigoForm() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const callback = searchParams.get('callback') || '/'
-  const phone = searchParams.get('phone') || ''
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callback = searchParams.get('callback') || '/';
+  const phone = searchParams.get('phone') || '';
 
-  const length = 6
-  const [code, setCode] = useState('')
-  const [verificationId, setVerificationId] = useState('')
-  const [secondsLeft, setSecondsLeft] = useState(60)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(false)
-  const verifierRef = useRef<RecaptchaVerifier | null>(null)
-  const { signIn } = useAuth()
+  const length = 6;
+  const [code, setCode] = useState('');
+  const [verificationId, setVerificationId] = useState('');
+  const [secondsLeft, setSecondsLeft] = useState(60);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const verifierRef = useRef<RecaptchaVerifier | null>(null);
+  const { signIn } = useAuth();
 
   useEffect(() => {
-    const id = sessionStorage.getItem('verificationId') || ''
+    const id = sessionStorage.getItem('verificationId') || '';
     if (!id) {
-      router.push('/entrar')
-      return
+      router.push('/entrar');
+      return;
     }
-    setVerificationId(id)
+    setVerificationId(id);
     if (auth && !verifierRef.current) {
-      verifierRef.current = new RecaptchaVerifier(
-        auth,
-        'recaptcha-container',
-        { size: 'invisible' },
-      )
-      verifierRef.current.render().catch(() => {})
+      verifierRef.current = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        size: 'invisible',
+      });
+      verifierRef.current.render().catch(() => {});
     }
-  }, [])
+  }, [router]);
 
   useEffect(() => {
-    if (secondsLeft <= 0) return
-    const id = setInterval(() => setSecondsLeft((s) => s - 1), 1000)
-    return () => clearInterval(id)
-  }, [secondsLeft])
+    if (secondsLeft <= 0) return;
+    const id = setInterval(() => setSecondsLeft((s) => s - 1), 1000);
+    return () => clearInterval(id);
+  }, [secondsLeft]);
 
   useEffect(() => {
     if (code.length === length) {
-      verify()
+      verify();
     } else {
-      setError(false)
+      setError(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code])
+  }, [code, verify]);
 
   function verify() {
-    if (isLoading || code.length !== length || !auth || !appFirebase) return
-    setIsLoading(true)
-    setError(false)
-    const credential = PhoneAuthProvider.credential(verificationId, code)
+    if (isLoading || code.length !== length || !auth || !appFirebase) return;
+    setIsLoading(true);
+    setError(false);
+    const credential = PhoneAuthProvider.credential(verificationId, code);
     signInWithCredential(auth, credential)
       .then(async (credResult) => {
-        const db = getFirestore(appFirebase)
+        const db = getFirestore(appFirebase);
         try {
-          const snap = await getDoc(doc(db, 'users', credResult.user.uid))
+          const snap = await getDoc(doc(db, 'users', credResult.user.uid));
           if (snap.exists()) {
-            const data = snap.data() as any
+            const data = snap.data();
             signIn({
               name: data.name as string,
               avatar: data.avatar as string,
               phone: data.phone as string,
               sex: data.sex as 'male' | 'female',
-            })
-            router.push(callback)
+            });
+            router.push(callback);
           } else {
-            router.push(`/entrar/concluir?callback=${encodeURIComponent(callback)}`)
+            router.push(
+              `/entrar/concluir?callback=${encodeURIComponent(callback)}`
+            );
           }
         } catch {
-          router.push(`/entrar/concluir?callback=${encodeURIComponent(callback)}`)
+          router.push(
+            `/entrar/concluir?callback=${encodeURIComponent(callback)}`
+          );
         }
       })
       .catch(() => {
-        setError(true)
+        setError(true);
       })
       .finally(() => {
-        setIsLoading(false)
-      })
+        setIsLoading(false);
+      });
   }
 
   function handleResend() {
-    if (!auth || !verifierRef.current) return
+    if (!auth || !verifierRef.current) return;
     signInWithPhoneNumber(auth, `+55${phone}`, verifierRef.current)
       .then((result) => {
-        sessionStorage.setItem('verificationId', result.verificationId)
-        setVerificationId(result.verificationId)
-        setSecondsLeft(60)
+        sessionStorage.setItem('verificationId', result.verificationId);
+        setVerificationId(result.verificationId);
+        setSecondsLeft(60);
       })
-      .catch(() => {})
+      .catch(() => {});
   }
 
   return (
@@ -114,8 +118,8 @@ function CodigoForm() {
       <PageBreadcrumb />
       <h1 className='text-2xl'>Código de verificação</h1>
       <p>
-        Enviamos um código para o número {formatPhone(phone)}.<br />Informe-o para
-        continuar.
+        Enviamos um código para o número {formatPhone(phone)}.<br />
+        Informe-o para continuar.
       </p>
       <InputOTP
         value={code}
@@ -141,7 +145,9 @@ function CodigoForm() {
           onClick={handleResend}
           disabled={secondsLeft > 0}
         >
-          {secondsLeft > 0 ? `Reenviar código (${secondsLeft}s)` : 'Reenviar código'}
+          {secondsLeft > 0
+            ? `Reenviar código (${secondsLeft}s)`
+            : 'Reenviar código'}
         </Button>
         <Button
           type='button'
@@ -153,7 +159,7 @@ function CodigoForm() {
       </div>
       <div id='recaptcha-container' />
     </main>
-  )
+  );
 }
 
 export default function CodigoPage() {
@@ -161,5 +167,5 @@ export default function CodigoPage() {
     <Suspense fallback={null}>
       <CodigoForm />
     </Suspense>
-  )
+  );
 }

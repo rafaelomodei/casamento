@@ -1,10 +1,10 @@
-import { FirebaseApp, initializeApp, getApps, getApp } from 'firebase/app';
+import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
 import {
-  Auth,
-  browserLocalPersistence,
   getAuth,
-  GoogleAuthProvider,
+  browserLocalPersistence,
   setPersistence,
+  GoogleAuthProvider,
+  type Auth,
 } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -16,29 +16,24 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
-let appFirebase: FirebaseApp | null = null;
-let googleProvider: GoogleAuthProvider | null = null;
-let auth: Auth | null = null;
 
-export function initFirebase() {
-  if (appFirebase) return;
-  try {
-    const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-    appFirebase = app;
-    if (typeof window !== 'undefined') {
-      auth = getAuth(app);
-      setPersistence(auth, browserLocalPersistence).catch(() => {});
-      googleProvider = new GoogleAuthProvider();
-    }
-    console.debug('Firebase successfully initialized');
-  } catch (error) {
-    console.error('Firebase initialization failed:', error);
-    appFirebase = null;
-    googleProvider = null;
-    auth = null;
-  }
+function createFirebaseApp(): FirebaseApp {
+  return getApps().length ? getApp() : initializeApp(firebaseConfig);
 }
 
-initFirebase();
+export const appFirebase: FirebaseApp = createFirebaseApp();
 
-export { appFirebase, auth, googleProvider };
+/**
+ * Instância de `Auth`.
+ * • No *server* (SSR ou Edge) não há `window`, então devolve `undefined`.
+ * • No *client* devolve o objeto `Auth` configurado com persistência local.
+ */
+export const auth: Auth | undefined = (() => {
+  if (typeof window === 'undefined') return undefined as never;
+
+  const instance = getAuth(appFirebase);
+  setPersistence(instance, browserLocalPersistence).catch(() => {});
+  return instance;
+})();
+
+export const googleProvider = new GoogleAuthProvider();
