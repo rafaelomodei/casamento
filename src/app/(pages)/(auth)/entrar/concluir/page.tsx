@@ -1,7 +1,7 @@
 'use client'
 
+import { Suspense, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -9,7 +9,7 @@ import PageBreadcrumb from '@/components/PageBreadcrumb'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/Providers/auth-provider'
 
-export default function CadastroPage() {
+function CadastroForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callback = searchParams.get('callback') || '/'
@@ -99,5 +99,13 @@ export default function CadastroPage() {
         </Button>
       </form>
     </main>
+  )
+}
+
+export default function CadastroPage() {
+  return (
+    <Suspense fallback={null}>
+      <CadastroForm />
+    </Suspense>
   )
 }
