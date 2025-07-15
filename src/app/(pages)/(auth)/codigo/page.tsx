@@ -2,6 +2,16 @@
 
 import { Suspense, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, useEffect, useRef } from 'react'
+import {
+  PhoneAuthProvider,
+  signInWithCredential,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from 'firebase/auth'
+import { auth, appFirebase } from '@/infra/repositories/firebase/config'
+import { getFirestore, doc, getDoc } from 'firebase/firestore'
+import { useAuth } from '@/Providers/auth-provider'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 import PageBreadcrumb from '@/components/PageBreadcrumb'
 import { Button } from '@/components/ui/button'
@@ -15,9 +25,29 @@ function CodigoForm() {
 
   const length = 6
   const [code, setCode] = useState('')
+  const [verificationId, setVerificationId] = useState('')
   const [secondsLeft, setSecondsLeft] = useState(60)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(false)
+  const verifierRef = useRef<RecaptchaVerifier | null>(null)
+  const { signIn } = useAuth()
+
+  useEffect(() => {
+    const id = sessionStorage.getItem('verificationId') || ''
+    if (!id) {
+      router.push('/entrar')
+      return
+    }
+    setVerificationId(id)
+    if (auth && !verifierRef.current) {
+      verifierRef.current = new RecaptchaVerifier(
+        auth,
+        'recaptcha-container',
+        { size: 'invisible' },
+      )
+      verifierRef.current.render().catch(() => {})
+    }
+  }, [])
 
   useEffect(() => {
     if (secondsLeft <= 0) return
@@ -35,24 +65,48 @@ function CodigoForm() {
   }, [code])
 
   function verify() {
-    if (isLoading || code.length !== length) return
+    if (isLoading || code.length !== length || !auth || !appFirebase) return
     setIsLoading(true)
     setError(false)
-    setTimeout(() => {
-      if (code === '123456') {
-        router.push(
-          `/entrar/concluir?callback=${encodeURIComponent(callback)}&phone=${encodeURIComponent(phone)}`,
-        )
-      } else {
+    const credential = PhoneAuthProvider.credential(verificationId, code)
+    signInWithCredential(auth, credential)
+      .then(async (credResult) => {
+        const db = getFirestore(appFirebase)
+        try {
+          const snap = await getDoc(doc(db, 'users', credResult.user.uid))
+          if (snap.exists()) {
+            const data = snap.data() as any
+            signIn({
+              name: data.name as string,
+              avatar: data.avatar as string,
+              phone: data.phone as string,
+              sex: data.sex as 'male' | 'female',
+            })
+            router.push(callback)
+          } else {
+            router.push(`/entrar/concluir?callback=${encodeURIComponent(callback)}`)
+          }
+        } catch {
+          router.push(`/entrar/concluir?callback=${encodeURIComponent(callback)}`)
+        }
+      })
+      .catch(() => {
         setError(true)
-      }
-      setIsLoading(false)
-    }, 1000)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   function handleResend() {
-    setSecondsLeft(60)
-    // Código de reenvio real seria aqui
+    if (!auth || !verifierRef.current) return
+    signInWithPhoneNumber(auth, `+55${phone}`, verifierRef.current)
+      .then((result) => {
+        sessionStorage.setItem('verificationId', result.verificationId)
+        setVerificationId(result.verificationId)
+        setSecondsLeft(60)
+      })
+      .catch(() => {})
   }
 
   return (
@@ -97,6 +151,7 @@ function CodigoForm() {
           {isLoading ? 'Validando...' : 'Confirmar código'}
         </Button>
       </div>
+      <div id='recaptcha-container' />
     </main>
   )
 }

@@ -1,11 +1,14 @@
 'use client';
 
-import { Suspense, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import PageBreadcrumb from '@/components/PageBreadcrumb';
-import { formatPhone, isValidPhone } from '@/lib/utlils/phone';
+
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, useEffect, useRef, Suspense } from 'react'
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
+import { auth } from '@/infra/repositories/firebase/config'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import PageBreadcrumb from '@/components/PageBreadcrumb'
+import { formatPhone, isValidPhone } from '@/lib/utlils/phone'
 
 function EntrarForm() {
   const router = useRouter();
@@ -14,16 +17,35 @@ function EntrarForm() {
   const phone = formatPhone(phoneDigits);
   const isValid = isValidPhone(phoneDigits);
 
-  const callback = searchParams.get('callback') || '/';
+  const callback = searchParams.get('callback') || '/'
+
+  const verifierRef = useRef<RecaptchaVerifier | null>(null)
+
+  useEffect(() => {
+    if (!auth || verifierRef.current) return
+    verifierRef.current = new RecaptchaVerifier(
+      auth,
+      'recaptcha-container',
+      {
+        size: 'invisible',
+      },
+    )
+    verifierRef.current.render().catch(() => {})
+  }, [])
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!isValid) return;
-    router.push(
-      `/codigo?callback=${encodeURIComponent(
-        callback
-      )}&phone=${encodeURIComponent(phoneDigits)}`
-    );
+    e.preventDefault()
+    if (!isValid || !auth || !verifierRef.current) return
+    signInWithPhoneNumber(auth, `+55${phoneDigits}`, verifierRef.current)
+      .then((result) => {
+        sessionStorage.setItem('verificationId', result.verificationId)
+        router.push(
+          `/codigo?callback=${encodeURIComponent(callback)}&phone=${encodeURIComponent(phoneDigits)}`,
+        )
+      })
+      .catch(() => {
+        // handle error silently
+      })
   }
 
   return (
@@ -47,6 +69,7 @@ function EntrarForm() {
         <Button type='submit' disabled={!isValid}>
           Entrar
         </Button>
+        <div id='recaptcha-container' />
       </form>
     </main>
   );

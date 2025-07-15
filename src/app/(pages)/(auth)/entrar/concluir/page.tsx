@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import PageBreadcrumb from '@/components/PageBreadcrumb'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/Providers/auth-provider'
+import { auth } from '@/infra/repositories/firebase/config'
 
 function CadastroForm() {
   const router = useRouter()
@@ -36,8 +37,22 @@ function CadastroForm() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!isFormValid) return
-    signIn({ name, avatar })
-    router.push(callback)
+    const phone = auth?.currentUser?.phoneNumber || ''
+    signIn({ name, avatar, phone, sex })
+    fetch('/api/users', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: auth?.currentUser?.uid,
+        name,
+        avatar,
+        sex,
+        phone,
+        downloads: 0,
+      }),
+    }).finally(() => {
+      router.push(callback)
+    })
   }
 
   return (
