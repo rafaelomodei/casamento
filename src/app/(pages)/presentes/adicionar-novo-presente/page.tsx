@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
-import { formatCurrency, formatCurrencyInput } from '@/lib/utlils/currency';
+import { formatCurrencyInput } from '@/lib/utlils/currency';
 import { isValidImage } from '@/lib/utlils/image';
 
 export default function AdicionarNovoPresentePage() {
@@ -144,7 +144,9 @@ export default function AdicionarNovoPresentePage() {
             placeholder='Preço'
             value={priceInput}
             onChange={(e) => {
-              const { formatted, numeric } = formatCurrencyInput(e.target.value);
+              const { formatted, numeric } = formatCurrencyInput(
+                e.target.value
+              );
               setPriceInput(formatted);
               setPrice(numeric);
             }}

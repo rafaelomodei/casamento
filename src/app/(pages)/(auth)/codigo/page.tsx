@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import {
@@ -16,7 +17,7 @@ import PageBreadcrumb from '@/components/PageBreadcrumb'
 import { Button } from '@/components/ui/button'
 import { formatPhone } from '@/lib/utlils/phone'
 
-export default function CodigoPage() {
+function CodigoForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callback = searchParams.get('callback') || '/'
@@ -152,5 +153,13 @@ export default function CodigoPage() {
       </div>
       <div id='recaptcha-container' />
     </main>
+  )
+}
+
+export default function CodigoPage() {
+  return (
+    <Suspense fallback={null}>
+      <CodigoForm />
+    </Suspense>
   )
 }

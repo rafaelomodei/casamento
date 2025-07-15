@@ -1,7 +1,8 @@
-'use client'
+'use client';
+
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 import { auth } from '@/infra/repositories/firebase/config'
 import { Input } from '@/components/ui/input'
@@ -9,12 +10,12 @@ import { Button } from '@/components/ui/button'
 import PageBreadcrumb from '@/components/PageBreadcrumb'
 import { formatPhone, isValidPhone } from '@/lib/utlils/phone'
 
-export default function EntrarPage() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const [phoneDigits, setPhoneDigits] = useState('')
-  const phone = formatPhone(phoneDigits)
-  const isValid = isValidPhone(phoneDigits)
+function EntrarForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [phoneDigits, setPhoneDigits] = useState('');
+  const phone = formatPhone(phoneDigits);
+  const isValid = isValidPhone(phoneDigits);
 
   const callback = searchParams.get('callback') || '/'
 
@@ -48,7 +49,7 @@ export default function EntrarPage() {
   }
 
   return (
-    <main className='flex flex-col gap-4 p-4 max-w-6xl'>
+    <main className='flex flex-col gap-4 p-4 w-full max-w-6xl '>
       <PageBreadcrumb />
       <h1 className='text-2xl'>Entrar</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4 max-w-sm'>
@@ -59,7 +60,9 @@ export default function EntrarPage() {
           inputMode='numeric'
           value={phone}
           onChange={(e) =>
-            setPhoneDigits(e.currentTarget.value.replace(/\D/g, '').slice(0, 11))
+            setPhoneDigits(
+              e.currentTarget.value.replace(/\D/g, '').slice(0, 11)
+            )
           }
           required
         />
@@ -69,5 +72,13 @@ export default function EntrarPage() {
         <div id='recaptcha-container' />
       </form>
     </main>
-  )
+  );
+}
+
+export default function EntrarPage() {
+  return (
+    <Suspense fallback={null}>
+      <EntrarForm />
+    </Suspense>
+  );
 }
