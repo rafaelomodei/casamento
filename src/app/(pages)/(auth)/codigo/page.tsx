@@ -36,7 +36,11 @@ export default function CodigoPage() {
     }
     setVerificationId(id)
     if (auth && !verifierRef.current) {
-      verifierRef.current = new RecaptchaVerifier('recaptcha-container', { size: 'invisible' }, auth)
+      verifierRef.current = new RecaptchaVerifier(
+        auth,
+        'recaptcha-container',
+        { size: 'invisible' },
+      )
       verifierRef.current.render().catch(() => {})
     }
   }, [])

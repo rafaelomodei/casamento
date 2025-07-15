@@ -22,9 +22,13 @@ export default function EntrarPage() {
 
   useEffect(() => {
     if (!auth || verifierRef.current) return
-    verifierRef.current = new RecaptchaVerifier('recaptcha-container', {
-      size: 'invisible',
-    }, auth)
+    verifierRef.current = new RecaptchaVerifier(
+      auth,
+      'recaptcha-container',
+      {
+        size: 'invisible',
+      },
+    )
     verifierRef.current.render().catch(() => {})
   }, [])
 
