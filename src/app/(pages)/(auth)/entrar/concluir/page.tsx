@@ -34,16 +34,19 @@ function CadastroForm() {
   const isNameValid = name.trim().length >= 3
   const isFormValid = isNameValid && avatar
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!isFormValid) return
     const phone = auth?.currentUser?.phoneNumber || ''
     signIn({ name, avatar, phone, sex })
+    const token = await auth?.currentUser?.getIdToken()
     fetch('/api/users', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token ? `Bearer ${token}` : '',
+      },
       body: JSON.stringify({
-        id: auth?.currentUser?.uid,
         name,
         avatar,
         sex,

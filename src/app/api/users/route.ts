@@ -3,8 +3,21 @@ import { CreateUserUseCase } from '@/domain/users/useCases/createUser/CreateUser
 import { GetUserByIdUseCase } from '@/domain/users/useCases/getUserById/GetUserByIdUseCase';
 import { userRepository } from '@/infra/repositories/firebase/UserServerFirebaseRepositories';
 import { UserDTO } from '@/domain/users/entities/UserDTO';
+import { adminAuth } from '@/infra/repositories/firebase/admin';
 
 export async function GET(req: Request) {
+  const authHeader = req.headers.get('authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const token = authHeader.split(' ')[1];
+  try {
+    await adminAuth.verifyIdToken(token);
+  } catch {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   const { searchParams } = new URL(req.url);
   const id = searchParams.get('id');
 
@@ -24,9 +37,22 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const token = authHeader.split(' ')[1];
+    let decoded;
+    try {
+      decoded = await adminAuth.verifyIdToken(token);
+    } catch {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const data = (await req.json()) as UserDTO;
     const createUser = new CreateUserUseCase(userRepository);
-    await createUser.execute(data);
+    await createUser.execute({ ...data, id: decoded.uid });
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (error) {
     return NextResponse.json(
