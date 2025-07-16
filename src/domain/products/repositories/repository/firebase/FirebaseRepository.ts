@@ -7,6 +7,8 @@ import {
   doc,
   getDoc,
   where,
+  orderBy,
+  limit as limitFn,
   updateDoc,
   deleteDoc,
 } from 'firebase/firestore';
@@ -56,6 +58,15 @@ export class FirebaseRepository implements IProductRepository {
     const docSnap = snapshot.docs[0];
     if (!docSnap) return null;
     return { ...(docSnap.data() as ProductDTO), id: docSnap.id };
+  }
+
+  async findMostViewed(limit: number): Promise<ProductDTO[]> {
+    const q = query(this.collection, orderBy('views', 'desc'), limitFn(limit));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((docSnap) => ({
+      ...(docSnap.data() as ProductDTO),
+      id: docSnap.id,
+    }));
   }
 
   async update(id: string, product: ProductDTO): Promise<void> {

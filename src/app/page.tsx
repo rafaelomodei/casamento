@@ -1,5 +1,5 @@
 import Countdown from '@/components/Countdown/Countdown';
-import { ProductCard } from '@/components/ProductCard/ProductCard';
+import HomeProducts from '@/components/HomeProducts/HomeProducts';
 import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
 import HomeMessages from '@/components/HomeMessages/HomeMessages';
 
@@ -129,53 +129,7 @@ export default function Home() {
         <p>Colocar o hário também</p>
       </section>
 
-      <section className='flex flex-col w-full py-8'>
-        <p className='text-2xl'>Presentes</p>
-        <p>
-          Queridos familiares e amigos, para nós, a presença de vocês neste dia
-          tão especial é o maior presente que poderíamos receber. Mas, se vocês
-          também quiserem nos presentear, ficaremos muito agradecidos. Com amor,
-          {` ${BRIDE_AND_GROOM}`}.
-        </p>
-        <div className='flex flex-wrap gap-4'>
-          <ProductCard
-            slug='tv-smart'
-            images={['/png/capa.png']}
-            price={1600}
-            title='Tv Smart'
-          />
-          <ProductCard
-            slug='tv-smart'
-            images={['/png/capa.png']}
-            price={1600}
-            title='Tv Smart'
-          />
-          <ProductCard
-            slug='tv-smart'
-            images={['/png/capa.png']}
-            price={1600}
-            title='Tv Smart'
-          />
-          <ProductCard
-            slug='tv-smart'
-            images={['/png/capa.png']}
-            price={1600}
-            title='Tv Smart'
-          />
-          <ProductCard
-            slug='tv-smart'
-            images={['/png/products/roboAspiradorXiame.png']}
-            price={1600}
-            title='Xiaomi Robot Vacuum X20'
-          />
-          <ProductCard
-            slug='tv-smart'
-            images={['/png/products/tvSmart.png']}
-            price={1600}
-            title='Tv Smart'
-          />
-        </div>
-      </section>
+      <HomeProducts />
       <section className='flex flex-col w-full py-8 gap-8'>
         <p className='text-2xl'>Dicas</p>
 
