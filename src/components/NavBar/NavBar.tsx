@@ -28,7 +28,7 @@ const NavBar = () => {
       style={{ minHeight: 'auto', display: 'contents' }}
     >
       <main className='flex w-full py-8 border-b justify-center'>
-        <div className='flex w-full max-w-6xl items-center justify-between'>
+        <div className='flex w-full max-w-6xl items-center justify-between px-4 md:px-0'>
           <Link href='/'>
             <Image
               src={'/svg/logoNavBar.svg'}
@@ -44,7 +44,7 @@ const NavBar = () => {
                 <Link
                   key={href}
                   href={href}
-                  className='border-b border-transparent hover:border-primary hover:rounded-b'
+                  className='border-b border-transparent hover:border-primary'
                 >
                   {label}
                 </Link>
