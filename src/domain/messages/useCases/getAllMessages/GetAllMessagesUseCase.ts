@@ -4,7 +4,7 @@ import { IMessageRepository } from '@/domain/messages/repositories/IMessageRepos
 export class GetAllMessagesUseCase {
   constructor(private messageRepository: IMessageRepository) {}
 
-  async execute(): Promise<MessageDTO[]> {
-    return this.messageRepository.findAll();
+  async execute(limit?: number): Promise<MessageDTO[]> {
+    return this.messageRepository.findAll(limit);
   }
 }

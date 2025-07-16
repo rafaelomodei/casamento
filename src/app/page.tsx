@@ -2,6 +2,7 @@ import CommentCard from '@/components/CommentCard/CommentCard';
 import Countdown from '@/components/Countdown/Countdown';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
 import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
+import HomeMessages from '@/components/HomeMessages/HomeMessages';
 
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import Image from 'next/image';
@@ -79,51 +80,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className='flex flex-col w-full py-8'>
-        <p className='text-2xl'>Mensagens</p>
-        <div className='flex  flex-wrap gap-8'>
-          <CommentCard
-            avatarUrl='https://instagram.fmgf12-1.fna.fbcdn.net/v/t51.2885-19/391204821_349662927437137_6887909049664376690_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_ht=instagram.fmgf12-1.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QHsS9OH0FohojeOP6q_5yvlnA1kiQt6uNnu22uZtuq41xrtLxsaYIlBtZpg3F7zVwc&_nc_ohc=bLCcF_hY-WQQ7kNvwFFuftV&_nc_gid=i1pliSPtVIGhQamS22O4mA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfP-yIydobyDFBaat6Rs-rDaaRao53MyjsddeTMSiMsneg&oe=68690B69&_nc_sid=7a9f4b'
-            name='Thais Omodei'
-            date='13/06/2025'
-            message='Que cada amanhecer juntos seja um convite para novos sonhos e que cada pôr do sol celebre as conquistas que vocês construirão lado a lado. Que o respeito e a alegria sejam sempre o alicerce desse amor tão lindo. Estaremos vibrando com vocês em cada passo!'
-          />
-
-          <CommentCard
-            avatarUrl='https://instagram.fmgf12-1.fna.fbcdn.net/v/t51.2885-19/391204821_349662927437137_6887909049664376690_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_ht=instagram.fmgf12-1.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QHsS9OH0FohojeOP6q_5yvlnA1kiQt6uNnu22uZtuq41xrtLxsaYIlBtZpg3F7zVwc&_nc_ohc=bLCcF_hY-WQQ7kNvwFFuftV&_nc_gid=i1pliSPtVIGhQamS22O4mA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfP-yIydobyDFBaat6Rs-rDaaRao53MyjsddeTMSiMsneg&oe=68690B69&_nc_sid=7a9f4b'
-            name='Thais Omodei'
-            date='13/06/2025'
-            message='Que cada amanhecer juntos seja um convite para novos sonhos e que cada pôr do sol celebre as conquistas que vocês construirão lado a lado. Que o respeito e a alegria sejam sempre o alicerce desse amor tão lindo. Estaremos vibrando com vocês em cada passo!'
-          />
-
-          <CommentCard
-            avatarUrl='https://instagram.fmgf12-1.fna.fbcdn.net/v/t51.2885-19/391204821_349662927437137_6887909049664376690_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_ht=instagram.fmgf12-1.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QHsS9OH0FohojeOP6q_5yvlnA1kiQt6uNnu22uZtuq41xrtLxsaYIlBtZpg3F7zVwc&_nc_ohc=bLCcF_hY-WQQ7kNvwFFuftV&_nc_gid=i1pliSPtVIGhQamS22O4mA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfP-yIydobyDFBaat6Rs-rDaaRao53MyjsddeTMSiMsneg&oe=68690B69&_nc_sid=7a9f4b'
-            name='Thais Omodei'
-            date='13/06/2025'
-            message='Que cada amanhecer juntos seja um convite para novos sonhos e que cada pôr do sol celebre as conquistas que vocês construirão lado a lado. Que o respeito e a alegria sejam sempre o alicerce desse amor tão lindo. Estaremos vibrando com vocês em cada passo!'
-          />
-          <CommentCard
-            avatarUrl='https://instagram.fmgf12-1.fna.fbcdn.net/v/t51.2885-19/391204821_349662927437137_6887909049664376690_n.jpg?stp=dst-jpg_s150x150_tt6&_nc_ht=instagram.fmgf12-1.fna.fbcdn.net&_nc_cat=101&_nc_oc=Q6cZ2QHsS9OH0FohojeOP6q_5yvlnA1kiQt6uNnu22uZtuq41xrtLxsaYIlBtZpg3F7zVwc&_nc_ohc=bLCcF_hY-WQQ7kNvwFFuftV&_nc_gid=i1pliSPtVIGhQamS22O4mA&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_AfP-yIydobyDFBaat6Rs-rDaaRao53MyjsddeTMSiMsneg&oe=68690B69&_nc_sid=7a9f4b'
-            name='Thais Omodei'
-            date='13/06/2025'
-            message='Que cada amanhecer juntos seja um convite para novos sonhos e que cada pôr do sol celebre as conquistas que vocês construirão lado a lado. Que o respeito e a alegria sejam sempre o alicerce desse amor tão lindo. Estaremos vibrando com vocês em cada passo!'
-          />
-        </div>
-        <div className='flex flex-col sm:flex-row gap-2 w-full mt-4'>
-          <Link
-            href='/deixar-mensagem'
-            className=' text-primary border-primary border text-center rounded-sm text-lg py-2 p-4'
-          >
-            Deixar uma mensagem
-          </Link>
-          <Link
-            href='/mensagens'
-            className='bg-primary text-white text-center rounded-sm text-lg py-2 px-4'
-          >
-            Ver todas as mensagens
-          </Link>
-        </div>
-      </section>
+      <HomeMessages />
 
       <section id='cerimonia' className='flex flex-col w-full py-8'>
         <p className='text-2xl'>Cerimônia</p>
