@@ -27,6 +27,7 @@ import { Loader2 } from 'lucide-react'; // spinner
 import { capitalizeFirst } from '@/lib/utlils/text';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
+import { auth } from '@/infra/repositories/firebase/config';
 
 interface ModalProps {
   open: boolean;
@@ -45,12 +46,22 @@ export default function Modal(props: ModalProps) {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!message.trim()) return;
+    if (!auth?.currentUser) {
+      if (requireAuth) {
+        requireAuth(loginMessage);
+      }
+      return;
+    }
 
     setIsSending(true);
     try {
+      const token = await auth.currentUser.getIdToken();
       await fetch('/api/messages', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ message }),
       });
       setMessage('');
