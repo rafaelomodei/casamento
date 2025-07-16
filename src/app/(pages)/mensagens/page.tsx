@@ -22,6 +22,8 @@ export default function MensagensPage() {
   const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
   const { requireAuth, dialog } = useAuthRequired();
+  const loginMessage =
+    'Para deixar seu recado, você precisa estar logado.\nClique em Entrar ou crie sua conta em poucos segundos e volte aqui para compartilhar sua mensagem com Maria Eduarda & Rafael.';
 
   const getMessages = async () => {
     try {
@@ -44,7 +46,9 @@ export default function MensagensPage() {
   useEffect(() => {
     getMessages();
     if (searchParams.get('modal')) {
-      setOpen(true);
+      if (requireAuth(loginMessage)) {
+        setOpen(true);
+      }
     }
   }, [searchParams]);
 

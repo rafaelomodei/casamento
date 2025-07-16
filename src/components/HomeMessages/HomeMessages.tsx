@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import CommentCard from '../CommentCard/CommentCard';
 import CommentCardSkeleton from '../CommentCard/CommentCardSkeleton';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuthRequired } from '@/hooks/useAuthRequired';
 import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 import { getRandomAvatar } from '@/lib/utlils/randomAvatar';
 
@@ -15,6 +17,10 @@ interface Message extends MessageDTO {
 export default function HomeMessages() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const { requireAuth, dialog } = useAuthRequired();
+  const loginMessage =
+    'Para deixar seu recado, você precisa estar logado.\nClique em Entrar ou crie sua conta em poucos segundos e volte aqui para compartilhar sua mensagem com Maria Eduarda & Rafael.';
 
   useEffect(() => {
     async function fetchMessages() {
@@ -79,6 +85,12 @@ export default function HomeMessages() {
         <Link
           href='/mensagens?modal=1'
           className=' text-primary border-primary border text-center rounded-sm text-lg py-2 p-4'
+          onClick={(e) => {
+            if (!requireAuth(loginMessage)) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
         >
           Deixar uma mensagem
         </Link>
@@ -88,6 +100,7 @@ export default function HomeMessages() {
         >
           Ver todas as mensagens
         </Link>
+        {dialog}
       </div>
     </section>
   );
