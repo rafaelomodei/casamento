@@ -5,7 +5,7 @@ import CommentCardSkeleton from '@/components/CommentCard/CommentCardSkeleton';
 import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import Modal from './components/Modal';
@@ -16,7 +16,7 @@ interface Message extends MessageDTO {
   name: string;
 }
 
-export default function MensagensPage() {
+function MensagensContent() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
@@ -130,5 +130,13 @@ export default function MensagensPage() {
         ))}
       </div>
     </main>
+  );
+}
+
+export default function MensagensPage() {
+  return (
+    <Suspense fallback={null}>
+      <MensagensContent />
+    </Suspense>
   );
 }
