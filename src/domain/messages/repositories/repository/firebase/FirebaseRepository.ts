@@ -1,72 +1,35 @@
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  getDocs,
-  addDoc,
-  serverTimestamp,
-  orderBy,
-  limit as limitFn,
-} from 'firebase/firestore';
-import { appFirebase } from '../../../../../infra/repositories/firebase/config';
+import { adminDb } from '@/infra/repositories/firebase/admin';
 import { IMessageRepository } from '@/domain/messages/repositories/IMessageRepository';
 import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 
 export class FirebaseRepository implements IMessageRepository {
-  private readonly db;
-  private readonly collectionPath: string;
   private readonly collection;
 
   constructor() {
-    if (!appFirebase) {
-      throw new Error('Firebase not initialized');
-    }
-
-    this.collectionPath = 'messages';
-    this.db = getFirestore(appFirebase);
-    this.collection = collection(this.db, this.collectionPath);
+    this.collection = adminDb.collection('messages');
   }
 
   async create(message: MessageDTO): Promise<void> {
-    const { ...data } = message;
-
-    await addDoc(this.collection, {
-      ...data,
-      date: serverTimestamp(),
+    const docRef = this.collection.doc();
+    await docRef.set({
+      message: message.message,
+      createdAt: new Date().toISOString(),
     });
   }
+
   async findAll(limit?: number): Promise<MessageDTO[]> {
-    const constraints = [orderBy('date', 'desc')];
+    let q = this.collection.orderBy('createdAt', 'desc');
     if (limit) {
-      constraints.push(limitFn(limit));
+      q = q.limit(limit);
     }
-    const q = query(this.collection, ...constraints);
 
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map((doc) => {
-      const data = doc.data();
-
-      return {
-        id: doc.id,
-        message: data.message as string,
-        date: data.date.toDate(),
-      };
-    });
+    const snap = await q.get();
+    return snap.docs.map((d) => ({ id: d.id, ...(d.data() as MessageDTO) }));
   }
 
   async findById(id: string): Promise<MessageDTO | null> {
-    const q = query(this.collection, where('id', '==', id));
-
-    const snapshot = await getDocs(q);
-    const doc = snapshot.docs[0];
-    if (!doc) return null;
-
-    const data = doc.data();
-    return {
-      id: doc.id,
-      message: data.message as string,
-      date: data.date.toDate(),
-    };
+    const doc = await this.collection.doc(id).get();
+    if (!doc.exists) return null;
+    return { id: doc.id, ...(doc.data() as MessageDTO) };
   }
 }

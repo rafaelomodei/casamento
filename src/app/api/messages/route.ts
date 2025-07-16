@@ -3,6 +3,7 @@ import { GetAllMessagesUseCase } from '@/domain/messages/useCases/getAllMessages
 import { CreateMessageUseCase } from '@/domain/messages/useCases/createMessage/CreateMessageUseCase';
 import { messageRepository } from '@/infra/repositories/firebase/MessageServerFirebaseRepositories';
 import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
+import { adminAuth } from '@/infra/repositories/firebase/admin';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -16,6 +17,18 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const token = authHeader.split(' ')[1];
+    try {
+      await adminAuth.verifyIdToken(token);
+    } catch {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const data = (await req.json()) as MessageDTO;
 
     const createMessage = new CreateMessageUseCase(messageRepository);
