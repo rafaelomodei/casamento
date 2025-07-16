@@ -8,10 +8,14 @@ export function useAuthRequired() {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [callback, setCallback] = useState('')
+  const [description, setDescription] = useState(
+    'Para continuar, faça login na plataforma.'
+  )
 
-  function requireAuth(): boolean {
+  function requireAuth(desc?: string): boolean {
     if (user) return true
     setCallback(window.location.href)
+    if (desc) setDescription(desc)
     setOpen(true)
     return false
   }
@@ -22,7 +26,12 @@ export function useAuthRequired() {
   }
 
   const dialog = (
-    <AuthPrompt open={open} onOpenChange={setOpen} onConfirm={handleConfirm} />
+    <AuthPrompt
+      open={open}
+      onOpenChange={setOpen}
+      onConfirm={handleConfirm}
+      description={description}
+    />
   )
 
   return { requireAuth, dialog }

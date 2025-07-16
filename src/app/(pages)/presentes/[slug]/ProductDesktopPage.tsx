@@ -25,6 +25,8 @@ export function ProductDesktopPage({
     product.images && product.images.length > 0 ? product.images : [fallback];
   const giftRef = useRef<GiftHandle>(null);
   const { requireAuth, dialog } = useAuthRequired();
+  const loginMessage =
+    '✨ Quer garantir este presente para os noivos?\nFaça login rapidinho e conclua sua compra.\nAssim registramos sua contribuição com carinho!';
 
   return (
     <div className='flex flex-col w-full max-w-6xl gap-4 py-8 px-4'>
@@ -127,7 +129,7 @@ export function ProductDesktopPage({
             onMouseEnter={() => giftRef.current?.hoverStart()}
             onMouseLeave={() => giftRef.current?.hoverEnd()}
             onClick={() => {
-              if (requireAuth()) {
+              if (requireAuth(loginMessage)) {
                 giftRef.current?.click();
               }
             }}

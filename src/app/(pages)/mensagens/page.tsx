@@ -53,7 +53,12 @@ export default function MensagensPage() {
             <a
               className='mx-2 cursor-pointer border-b border-primary/60'
               onClick={() => {
-                if (requireAuth()) setOpen(true);
+                if (
+                  requireAuth(
+                    '✨ Quer deixar um carinho para os noivos?\nFaça login rapidinho e escreva a sua mensagem.\nAssim ela ficará guardada para sempre no mural do casamento!'
+                  )
+                )
+                  setOpen(true);
               }}
             >
               Deixar uma mensagem

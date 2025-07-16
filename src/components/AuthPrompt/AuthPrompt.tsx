@@ -26,9 +26,10 @@ interface AuthPromptProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onConfirm: () => void
+  description: string
 }
 
-export default function AuthPrompt({ open, onOpenChange, onConfirm }: AuthPromptProps) {
+export default function AuthPrompt({ open, onOpenChange, onConfirm, description }: AuthPromptProps) {
   const isMobile = useIsMobile()
 
   const Wrapper = isMobile ? Drawer : Dialog
@@ -49,9 +50,7 @@ export default function AuthPrompt({ open, onOpenChange, onConfirm }: AuthPrompt
       <Content className={contentClassName}>
         <Header>
           <Title className='text-xl'>Login necessário</Title>
-          <Description className='text-lg'>
-            Para continuar, faça login na plataforma.
-          </Description>
+          <Description className='text-lg'>{description}</Description>
         </Header>
         <Footer>
           <Close asChild>

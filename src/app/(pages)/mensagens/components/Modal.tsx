@@ -31,7 +31,7 @@ import { cn } from '@/lib/utils';
 interface ModalProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  requireAuth?: () => boolean;
+  requireAuth?: (desc?: string) => boolean;
 }
 
 export default function Modal(props: ModalProps) {
@@ -39,6 +39,8 @@ export default function Modal(props: ModalProps) {
   const isMobile = useIsMobile();
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const loginMessage =
+    '✨ Quer deixar um carinho para os noivos?\nFaça login rapidinho e escreva a sua mensagem.\nAssim ela ficará guardada para sempre no mural do casamento!';
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -79,7 +81,7 @@ export default function Modal(props: ModalProps) {
       open={open}
       onOpenChange={(o) => {
         if (o) {
-          if (!requireAuth || requireAuth()) {
+          if (!requireAuth || requireAuth(loginMessage)) {
             setOpen(true);
           }
         } else {
@@ -91,7 +93,7 @@ export default function Modal(props: ModalProps) {
         <Button
           className='h-16! not-italic text-xl mt-4 md:m-auto'
           onClick={(e) => {
-            if (requireAuth && !requireAuth()) {
+            if (requireAuth && !requireAuth(loginMessage)) {
               e.preventDefault();
               e.stopPropagation();
             }
