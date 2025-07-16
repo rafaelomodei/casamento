@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import { GetAllMessagesUseCase } from '@/domain/messages/useCases/getAllMessages/GetAllMessagesUseCase';
 import { CreateMessageUseCase } from '@/domain/messages/useCases/createMessage/CreateMessageUseCase';
+import { GetUserByIdUseCase } from '@/domain/users/useCases/getUserById/GetUserByIdUseCase';
 import { messageRepository } from '@/infra/repositories/firebase/MessageServerFirebaseRepositories';
+import { userRepository } from '@/infra/repositories/firebase/UserServerFirebaseRepositories';
 import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 import { adminAuth } from '@/infra/repositories/firebase/admin';
 
@@ -11,8 +13,16 @@ export async function GET(req: Request) {
   const limit = limitParam ? Number(limitParam) : undefined;
   const getAllMessages = new GetAllMessagesUseCase(messageRepository);
   const messages = await getAllMessages.execute(limit);
+  const getUser = new GetUserByIdUseCase(userRepository);
 
-  return NextResponse.json(messages, { status: 200 });
+  const messagesWithUser = await Promise.all(
+    messages.map(async (m) => {
+      const user = await getUser.execute(m.userId);
+      return { ...m, user };
+    })
+  );
+
+  return NextResponse.json(messagesWithUser, { status: 200 });
 }
 
 export async function POST(req: Request) {
@@ -23,16 +33,16 @@ export async function POST(req: Request) {
     }
 
     const token = authHeader.split(' ')[1];
+    let decoded;
     try {
-      await adminAuth.verifyIdToken(token);
+      decoded = await adminAuth.verifyIdToken(token);
     } catch {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const data = (await req.json()) as MessageDTO;
-
+    const data = (await req.json()) as Omit<MessageDTO, 'userId'>;
     const createMessage = new CreateMessageUseCase(messageRepository);
-    await createMessage.execute(data);
+    await createMessage.execute({ ...data, userId: decoded.uid });
 
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (error) {

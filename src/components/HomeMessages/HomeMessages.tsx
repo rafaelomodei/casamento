@@ -5,7 +5,6 @@ import CommentCard from '../CommentCard/CommentCard';
 import CommentCardSkeleton from '../CommentCard/CommentCardSkeleton';
 import Link from 'next/link';
 import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
-import { getRandomAvatar } from '@/lib/utlils/randomAvatar';
 
 interface Message extends MessageDTO {
   avatarUrl: string;
@@ -21,11 +20,13 @@ export default function HomeMessages() {
       try {
         const res = await fetch('/api/messages?limit=4');
         const data = await res.json();
-        const messagesData: Message[] = data.map((m: MessageDTO) => ({
-          ...m,
-          avatarUrl: getRandomAvatar('female'),
-          name: 'Convidado',
-        }));
+        const messagesData: Message[] = data.map(
+          (m: MessageDTO & { user: { name: string; avatar: string } | null }) => ({
+            ...m,
+            avatarUrl: m.user?.avatar ?? '',
+            name: m.user?.name ?? 'Convidado',
+          })
+        );
         setMessages(messagesData);
       } catch (err) {
         console.error('Erro ao carregar as mensagens:', err);

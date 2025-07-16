@@ -9,7 +9,6 @@ import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import Modal from './components/Modal';
-import { getRandomAvatar } from '@/lib/utlils/randomAvatar';
 
 interface Message extends MessageDTO {
   avatarUrl: string;
@@ -29,11 +28,13 @@ function MensagensContent() {
     try {
       const res = await fetch('/api/messages');
       const data = await res.json();
-      const messagesData: Message[] = data.map((m: MessageDTO) => ({
-        ...m,
-        avatarUrl: getRandomAvatar('female'),
-        name: 'Convidado',
-      }));
+      const messagesData: Message[] = data.map(
+        (m: MessageDTO & { user: { name: string; avatar: string } | null }) => ({
+          ...m,
+          avatarUrl: m.user?.avatar ?? '',
+          name: m.user?.name ?? 'Convidado',
+        })
+      );
 
       setMessages(messagesData);
     } catch (err) {

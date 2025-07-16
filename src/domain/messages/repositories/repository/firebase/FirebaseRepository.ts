@@ -14,6 +14,7 @@ export class FirebaseRepository implements IMessageRepository {
     await docRef.set({
       message: message.message,
       createdAt: new Date().toISOString(),
+      userId: message.userId,
     });
   }
 
