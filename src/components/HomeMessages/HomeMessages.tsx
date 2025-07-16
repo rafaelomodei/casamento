@@ -19,7 +19,7 @@ export default function HomeMessages() {
   useEffect(() => {
     async function fetchMessages() {
       try {
-        const res = await fetch('/api/messages?limit=6');
+        const res = await fetch('/api/messages?limit=4');
         const data = await res.json();
         const messagesData: Message[] = data.map((m: MessageDTO) => ({
           ...m,
@@ -40,7 +40,7 @@ export default function HomeMessages() {
     if (loading) {
       return (
         <div className='flex flex-wrap gap-8'>
-          {Array.from({ length: 6 }).map((_, i) => (
+          {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className='flex w-full md:flex-1/3'>
               <CommentCardSkeleton />
             </div>
@@ -77,7 +77,7 @@ export default function HomeMessages() {
       {renderContent()}
       <div className='flex flex-col sm:flex-row gap-2 w-full mt-4'>
         <Link
-          href='/deixar-mensagem'
+          href='/mensagens?modal=1'
           className=' text-primary border-primary border text-center rounded-sm text-lg py-2 p-4'
         >
           Deixar uma mensagem

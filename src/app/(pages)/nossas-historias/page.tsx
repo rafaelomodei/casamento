@@ -51,7 +51,7 @@ export default function NossasHistoriasPage() {
           <p>Que venha o grande dia!</p>
           <div className='flex flex-col sm:flex-row gap-2 w-full mt-4'>
             <Link
-              href='deixar-mensagem/'
+              href='/mensagens?modal=1'
               className='text-primary border-primary border text-center rounded-sm text-lg py-2 px-4'
             >
               Deixar uma mensagem
