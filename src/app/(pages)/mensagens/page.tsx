@@ -6,7 +6,7 @@ import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { useEffect, useState } from 'react';
-import { useAuthRequired } from '@/hooks/use-auth-required';
+import { useAuthRequired } from '@/hooks/useAuthRequired';
 import Modal from './components/Modal';
 import { getRandomAvatar } from '@/lib/utlils/randomAvatar';
 

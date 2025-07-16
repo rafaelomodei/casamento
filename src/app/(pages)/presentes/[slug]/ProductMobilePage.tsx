@@ -8,7 +8,7 @@ import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import Gift, { GiftHandle } from '@/components/IconsAnimated/Gift/Gift'
 import { useRef } from 'react'
-import { useAuthRequired } from '@/hooks/use-auth-required'
+import { useAuthRequired } from '@/hooks/useAuthRequired'
 
 interface Props {
   product: ProductDTO
