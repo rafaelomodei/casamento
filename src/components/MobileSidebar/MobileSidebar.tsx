@@ -9,6 +9,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarTrigger,
+  useSidebar,
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/Providers/auth-provider';
@@ -28,6 +29,7 @@ interface MobileSidebarProps {
 export default function MobileSidebar({ items }: MobileSidebarProps) {
   const isMobile = useIsMobile();
   const { user, signOut } = useAuth();
+  const { setOpenMobile } = useSidebar();
   const pathname = usePathname();
   const isAuthPage = pathname.startsWith('/entrar') || pathname.startsWith('/codigo');
 
@@ -53,7 +55,7 @@ export default function MobileSidebar({ items }: MobileSidebarProps) {
             <SidebarMenu>
               {items.map(({ href, label }) => (
                 <SidebarMenuItem key={href}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild onClick={() => setOpenMobile(false)}>
                     <Link href={href} className='text-primary'>
                       {label}
                     </Link>
