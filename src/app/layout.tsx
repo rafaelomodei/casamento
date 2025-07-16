@@ -4,14 +4,14 @@ import { Arbutus_Slab, Poppins } from 'next/font/google';
 import Analytics from '@/components/Analytics';
 import './globals.css';
 
-export const arbutus = Arbutus_Slab({
+const arbutus = Arbutus_Slab({
   subsets: ['latin'],
   weight: ['400'],
   display: 'swap',
   variable: '--font-body',
 });
 
-export const poppins = Poppins({
+const poppins = Poppins({
   subsets: ['latin'],
   weight: ['600', '700', '800'],
   display: 'swap',
