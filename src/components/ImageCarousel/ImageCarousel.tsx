@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -13,6 +13,8 @@ interface ImageCarouselProps {
   showControls?: boolean;
   showIndicators?: boolean;
   rounded?: boolean;
+  autoPlayInterval?: number;
+  pauseOnHover?: boolean;
 }
 
 export function ImageCarousel({
@@ -23,6 +25,8 @@ export function ImageCarousel({
   showControls = true,
   showIndicators = false,
   rounded = true,
+  autoPlayInterval,
+  pauseOnHover = true,
 }: ImageCarouselProps) {
   const [currentImage, setCurrentImage] = useState(0);
   const [hovered, setHovered] = useState(false);
@@ -54,6 +58,13 @@ export function ImageCarousel({
     if (distance > 50) handleNext();
     else if (distance < -50) handlePrev();
   };
+
+  useEffect(() => {
+    if (!autoPlayInterval) return;
+    if (pauseOnHover && hovered) return;
+    const id = setInterval(handleNext, autoPlayInterval);
+    return () => clearInterval(id);
+  }, [autoPlayInterval, hovered, pauseOnHover]);
 
   return (
     <div

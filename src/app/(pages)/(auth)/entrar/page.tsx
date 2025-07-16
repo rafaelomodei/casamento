@@ -7,6 +7,10 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 import { auth } from '@/infra/repositories/firebase/config'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { Loader2 } from 'lucide-react'
+import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel'
+import { useIsMobile } from '@/hooks/use-mobile'
 import PageBreadcrumb from '@/components/PageBreadcrumb'
 import { formatPhone, isValidPhone } from '@/lib/utlils/phone'
 
@@ -16,6 +20,8 @@ function EntrarForm() {
   const [phoneDigits, setPhoneDigits] = useState('');
   const phone = formatPhone(phoneDigits);
   const isValid = isValidPhone(phoneDigits);
+  const [isLoading, setIsLoading] = useState(false);
+  const isMobile = useIsMobile();
 
   const callback = searchParams.get('callback') || '/'
 
@@ -35,7 +41,8 @@ function EntrarForm() {
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!isValid || !auth || !verifierRef.current) return
+    if (!isValid || !auth || !verifierRef.current || isLoading) return
+    setIsLoading(true)
     signInWithPhoneNumber(auth, `+55${phoneDigits}`, verifierRef.current)
       .then((result) => {
         sessionStorage.setItem('verificationId', result.verificationId)
@@ -46,31 +53,88 @@ function EntrarForm() {
       .catch(() => {
         // handle error silently
       })
+      .finally(() => {
+        setIsLoading(false)
+      })
+  }
+
+  function handlePhoneKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key !== 'Backspace') return
+    const start = e.currentTarget.selectionStart ?? 0
+    const end = e.currentTarget.selectionEnd ?? start
+    const formatted = formatPhone(phoneDigits)
+    const digitsBeforeStart = formatted.slice(0, start).replace(/\D/g, '').length
+    const digitsBeforeEnd = formatted.slice(0, end).replace(/\D/g, '').length
+    if (start === end) {
+      if (digitsBeforeStart === 0) return
+      const idx = digitsBeforeStart - 1
+      setPhoneDigits(
+        phoneDigits.slice(0, idx) + phoneDigits.slice(idx + 1)
+      )
+    } else {
+      setPhoneDigits(
+        phoneDigits.slice(0, digitsBeforeStart) + phoneDigits.slice(digitsBeforeEnd)
+      )
+    }
+    e.preventDefault()
   }
 
   return (
-    <main className='flex flex-col gap-4 p-4 w-full max-w-6xl '>
-      <PageBreadcrumb />
-      <h1 className='text-2xl'>Entrar</h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4 max-w-sm'>
-        <Input
-          type='tel'
-          placeholder='Número de telefone'
-          pattern='\(\d{2}\) \d \d{4} - \d{4}'
-          inputMode='numeric'
-          value={phone}
-          onChange={(e) =>
-            setPhoneDigits(
-              e.currentTarget.value.replace(/\D/g, '').slice(0, 11)
-            )
-          }
-          required
-        />
-        <Button type='submit' disabled={!isValid}>
-          Entrar
-        </Button>
-        <div id='recaptcha-container' />
-      </form>
+    <main className='flex flex-col md:flex-row gap-4 p-4 w-full max-w-6xl'>
+      {!isMobile && (
+        <div className='hidden md:block md:w-1/2'>
+          <ImageCarousel
+            images={[
+              '/png/preWedding/DSC03183.jpg',
+              '/png/preWedding/DSC03184.jpg',
+              '/png/preWedding/DSC03190.jpg',
+              '/png/preWedding/DSC03198.jpg',
+              '/png/preWedding/DSC03208.jpg',
+            ]}
+            alt='Fotos do casal'
+            className='h-80 w-full'
+            showControls={false}
+            hoverControls={false}
+            autoPlayInterval={2000}
+            showIndicators
+          />
+        </div>
+      )}
+      <div className='flex flex-col gap-4 md:w-1/2'>
+        <PageBreadcrumb />
+        <h1 className='text-2xl'>Entrar</h1>
+        <form onSubmit={handleSubmit} className='flex flex-col gap-4 max-w-sm'>
+          <div className='flex flex-col gap-2'>
+            <Label htmlFor='phone'>Número de telefone</Label>
+            <Input
+              id='phone'
+              type='tel'
+              placeholder='Ex: (45) 9 9876 - 5432'
+              pattern='\(\d{2}\) \d \d{4} - \d{4}'
+              inputMode='numeric'
+              value={phone}
+              onChange={(e) =>
+                setPhoneDigits(
+                  e.currentTarget.value.replace(/\D/g, '').slice(0, 11)
+                )
+              }
+              onKeyDown={handlePhoneKeyDown}
+              required
+            />
+          </div>
+          <Button type='submit' disabled={!isValid || isLoading}>
+            {isLoading ? (
+              <div className='flex items-center gap-2'>
+                <Loader2 className='h-4 w-4 animate-spin' />
+                Entrando...
+              </div>
+            ) : (
+              'Entrar'
+            )}
+          </Button>
+          <div id='recaptcha-container' />
+        </form>
+      </div>
     </main>
   );
 }
