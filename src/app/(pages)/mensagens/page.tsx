@@ -9,11 +9,9 @@ import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import Modal from './components/Modal';
-import { getRandomAvatar } from '@/lib/utlils/randomAvatar';
 
 interface Message extends MessageDTO {
   avatarUrl: string;
-  name: string;
 }
 
 function MensagensContent() {
@@ -31,8 +29,7 @@ function MensagensContent() {
       const data = await res.json();
       const messagesData: Message[] = data.map((m: MessageDTO) => ({
         ...m,
-        avatarUrl: getRandomAvatar('female'),
-        name: 'Convidado',
+        avatarUrl: m.avatar,
       }));
 
       setMessages(messagesData);
@@ -64,7 +61,7 @@ function MensagensContent() {
               onClick={() => {
                 if (
                   requireAuth(
-                    'Para deixar seu recado, você precisa estar logado.\nClique em Entrar ou crie sua conta em poucos segundos e volte aqui para compartilhar sua mensagem com Maria Eduarda & Rafael.'
+                    'Para deixar seu recado, você precisa estar logado.\nClique em Entrar ou crie sua conta em poucos segundos e volte aqui para compartilhar sua mensagem com Maria Eduarda & Rafael.',
                   )
                 )
                   setOpen(true);

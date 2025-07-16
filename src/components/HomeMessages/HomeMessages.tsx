@@ -5,11 +5,9 @@ import CommentCard from '../CommentCard/CommentCard';
 import CommentCardSkeleton from '../CommentCard/CommentCardSkeleton';
 import Link from 'next/link';
 import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
-import { getRandomAvatar } from '@/lib/utlils/randomAvatar';
 
 interface Message extends MessageDTO {
   avatarUrl: string;
-  name: string;
 }
 
 export default function HomeMessages() {
@@ -23,8 +21,7 @@ export default function HomeMessages() {
         const data = await res.json();
         const messagesData: Message[] = data.map((m: MessageDTO) => ({
           ...m,
-          avatarUrl: getRandomAvatar('female'),
-          name: 'Convidado',
+          avatarUrl: m.avatar,
         }));
         setMessages(messagesData);
       } catch (err) {
@@ -51,7 +48,9 @@ export default function HomeMessages() {
 
     if (messages.length === 0) {
       return (
-        <p className='text-lg py-4'>Seja o primeiro a deixar uma mensagem para o casal.</p>
+        <p className='text-lg py-4'>
+          Seja o primeiro a deixar uma mensagem para o casal.
+        </p>
       );
     }
 
