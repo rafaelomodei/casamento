@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Arapey, Arbutus_Slab, Poppins } from 'next/font/google';
+import Analytics from '@/components/Analytics';
 import './globals.css';
 
 export const arbutus = Arbutus_Slab({
@@ -83,6 +84,7 @@ export default function RootLayout({
           antialiased text-primary
         `}
       >
+        <Analytics />
         <main className='text-primary'>{children}</main>
       </body>
     </html>
