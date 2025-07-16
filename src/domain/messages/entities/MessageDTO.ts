@@ -3,4 +3,6 @@ export interface MessageDTO {
   createdAt: string;
   message: string;
   userId: string;
+  name: string;
+  avatar: string;
 }

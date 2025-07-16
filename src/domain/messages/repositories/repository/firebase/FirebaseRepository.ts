@@ -1,12 +1,12 @@
-import { adminDb } from '@/infra/repositories/firebase/admin';
-import { IMessageRepository } from '@/domain/messages/repositories/IMessageRepository';
-import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
+import { adminDb } from "@/infra/repositories/firebase/admin";
+import { IMessageRepository } from "@/domain/messages/repositories/IMessageRepository";
+import { MessageDTO } from "@/domain/messages/entities/MessageDTO";
 
 export class FirebaseRepository implements IMessageRepository {
   private readonly collection;
 
   constructor() {
-    this.collection = adminDb.collection('messages');
+    this.collection = adminDb.collection("messages");
   }
 
   async create(message: MessageDTO): Promise<void> {
@@ -15,11 +15,13 @@ export class FirebaseRepository implements IMessageRepository {
       message: message.message,
       createdAt: new Date().toISOString(),
       userId: message.userId,
+      name: message.name,
+      avatar: message.avatar,
     });
   }
 
   async findAll(limit?: number): Promise<MessageDTO[]> {
-    let q = this.collection.orderBy('createdAt', 'desc');
+    let q = this.collection.orderBy("createdAt", "desc");
     if (limit) {
       q = q.limit(limit);
     }
