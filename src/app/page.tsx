@@ -1,4 +1,3 @@
-import CommentCard from '@/components/CommentCard/CommentCard';
 import Countdown from '@/components/Countdown/Countdown';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
 import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
@@ -203,7 +202,9 @@ export default function Home() {
               <p className='font-semibold mt-2'>Cores proibidas</p>
               <ul className='list-disc list-inside'>
                 <li>✕ Branco puro ou off-white</li>
-                <li>✕ Tons de bege, creme ou nude (reservados aos convidados)</li>
+                <li>
+                  ✕ Tons de bege, creme ou nude (reservados aos convidados)
+                </li>
               </ul>
 
               <p className='font-semibold mt-4'>Dicas de Comportamento</p>
@@ -281,13 +282,17 @@ export default function Home() {
         <div className='flex flex-col md:flex-row gap-6'>
           <div className='flex flex-col gap-4 md:w-1/2'>
             <h2 className='text-xl font-semibold'>Convidados</h2>
-            <h3 className='italic'>Seja parte dessa festa com elegância e bom senso</h3>
+            <h3 className='italic'>
+              Seja parte dessa festa com elegância e bom senso
+            </h3>
 
             <div className='flex flex-col gap-2'>
               <p className='font-semibold'>Guia de Vestimenta</p>
               <ul className='list-disc list-inside'>
                 <li>Homens: terno escuro ou social; camisa clara</li>
-                <li>Mulheres: vestidos ou terninhos em tons pastel ou escuros</li>
+                <li>
+                  Mulheres: vestidos ou terninhos em tons pastel ou escuros
+                </li>
               </ul>
 
               <p className='font-semibold mt-2'>Cores proibidas</p>

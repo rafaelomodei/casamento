@@ -4,38 +4,40 @@ import {
   initializeApp,
   cert,
   applicationDefault,
+  ServiceAccount,
 } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 import { readFileSync } from 'fs';
 
-function loadServiceAccount(): Record<string, unknown> | undefined {
+function loadServiceAccount(): ServiceAccount | undefined {
   const path = process.env.FIREBASE_SERVICE_ACCOUNT_PATH;
   if (path) {
     try {
-      return JSON.parse(readFileSync(path, 'utf-8'));
+      return JSON.parse(readFileSync(path, 'utf-8')) as ServiceAccount;
     } catch {
-      // ignore invalid path or json
+      // ignora erro de leitura/JSON
     }
   }
   if (process.env.FIREBASE_SERVICE_ACCOUNT) {
     try {
-      return JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+      return JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT) as ServiceAccount;
     } catch {
-      // ignore invalid json
+      // ignora JSON inválido
     }
   }
   return undefined;
 }
 
-const firebaseAdminApp = getApps().length
-  ? getApp()
-  : initializeApp({
-      credential: ((): any => {
-        const serviceAccount = loadServiceAccount();
-        return serviceAccount ? cert(serviceAccount as any) : applicationDefault();
-      })(),
-    });
+const firebaseAdminApp =
+  getApps().length > 0
+    ? getApp()
+    : initializeApp({
+        credential: (() => {
+          const serviceAccount = loadServiceAccount();
+          return serviceAccount ? cert(serviceAccount) : applicationDefault();
+        })(),
+      });
 
 export const adminAuth = getAuth(firebaseAdminApp);
 export const adminDb = getFirestore(firebaseAdminApp);
