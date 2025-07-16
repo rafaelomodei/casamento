@@ -40,7 +40,7 @@ export default function Modal(props: ModalProps) {
   const [message, setMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
   const loginMessage =
-    '✨ Quer deixar um carinho para os noivos?\nFaça login rapidinho e escreva a sua mensagem.\nAssim ela ficará guardada para sempre no mural do casamento!';
+    'Para deixar seu recado, você precisa estar logado.\nClique em Entrar ou crie sua conta em poucos segundos e volte aqui para compartilhar sua mensagem com Maria Eduarda & Rafael.';
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

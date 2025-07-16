@@ -22,7 +22,7 @@ export function ProductMobilePage({ product }: Props) {
   const giftRef = useRef<GiftHandle>(null)
   const { requireAuth, dialog } = useAuthRequired()
   const loginMessage =
-    '✨ Quer garantir este presente para os noivos?\nFaça login rapidinho e conclua sua compra.\nAssim registramos sua contribuição com carinho!'
+    'Para dar este presente, você precisa estar logado.\nClique em Entrar ou crie sua conta em poucos segundos e volte aqui para concluir sua contribuição para Maria Eduarda & Rafael.'
 
   return (
     <div className='flex flex-col w-full max-w-6xl gap-4 py-8 px-4'>
