@@ -4,9 +4,12 @@ import { CreateMessageUseCase } from '@/domain/messages/useCases/createMessage/C
 import { messageRepository } from '@/infra/repositories/firebase/MessageServerFirebaseRepositories';
 import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 
-export async function GET() {
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const limitParam = searchParams.get('limit');
+  const limit = limitParam ? Number(limitParam) : undefined;
   const getAllMessages = new GetAllMessagesUseCase(messageRepository);
-  const messages = await getAllMessages.execute();
+  const messages = await getAllMessages.execute(limit);
 
   return NextResponse.json(messages, { status: 200 });
 }

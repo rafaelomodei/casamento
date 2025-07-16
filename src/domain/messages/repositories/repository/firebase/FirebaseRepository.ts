@@ -6,6 +6,8 @@ import {
   getDocs,
   addDoc,
   serverTimestamp,
+  orderBy,
+  limit as limitFn,
 } from 'firebase/firestore';
 import { appFirebase } from '../../../../../infra/repositories/firebase/config';
 import { IMessageRepository } from '@/domain/messages/repositories/IMessageRepository';
@@ -34,8 +36,12 @@ export class FirebaseRepository implements IMessageRepository {
       date: serverTimestamp(),
     });
   }
-  async findAll(): Promise<MessageDTO[]> {
-    const q = query(this.collection);
+  async findAll(limit?: number): Promise<MessageDTO[]> {
+    const constraints = [orderBy('date', 'desc')];
+    if (limit) {
+      constraints.push(limitFn(limit));
+    }
+    const q = query(this.collection, ...constraints);
 
     const snapshot = await getDocs(q);
     return snapshot.docs.map((doc) => {

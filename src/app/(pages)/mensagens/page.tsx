@@ -6,6 +6,7 @@ import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import Modal from './components/Modal';
 import { getRandomAvatar } from '@/lib/utlils/randomAvatar';
@@ -19,6 +20,7 @@ export default function MensagensPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
+  const searchParams = useSearchParams();
   const { requireAuth, dialog } = useAuthRequired();
 
   const getMessages = async () => {
@@ -41,7 +43,10 @@ export default function MensagensPage() {
 
   useEffect(() => {
     getMessages();
-  }, []);
+    if (searchParams.get('modal')) {
+      setOpen(true);
+    }
+  }, [searchParams]);
 
   const blockquoteRender = () => {
     return (
