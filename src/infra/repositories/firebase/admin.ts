@@ -6,6 +6,7 @@ import {
   applicationDefault,
 } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
+import { getFirestore } from 'firebase-admin/firestore';
 import { readFileSync } from 'fs';
 
 function loadServiceAccount(): Record<string, unknown> | undefined {
@@ -37,3 +38,4 @@ const firebaseAdminApp = getApps().length
     });
 
 export const adminAuth = getAuth(firebaseAdminApp);
+export const adminDb = getFirestore(firebaseAdminApp);

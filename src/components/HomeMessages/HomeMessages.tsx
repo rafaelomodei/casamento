@@ -62,7 +62,7 @@ export default function HomeMessages() {
             <CommentCard
               avatarUrl={msg.avatarUrl}
               name={msg.name}
-              date={new Date(msg.date).toLocaleDateString('pt-BR')}
+              date={new Date(msg.createdAt).toLocaleDateString('pt-BR')}
               message={msg.message}
             />
           </div>
