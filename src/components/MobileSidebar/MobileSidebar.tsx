@@ -16,6 +16,7 @@ import { useAuth } from '@/Providers/auth-provider';
 import { usePathname } from 'next/navigation';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { formatUserName } from '@/lib/utlils/text';
 
 interface NavItem {
   href: string;
@@ -32,6 +33,7 @@ export default function MobileSidebar({ items }: MobileSidebarProps) {
   const { setOpenMobile } = useSidebar();
   const pathname = usePathname();
   const isAuthPage = pathname.startsWith('/entrar') || pathname.startsWith('/codigo');
+  const displayName = user ? formatUserName(user.name) : '';
 
   return (
     <>
@@ -64,7 +66,7 @@ export default function MobileSidebar({ items }: MobileSidebarProps) {
               ))}
             </SidebarMenu>
             {!isAuthPage && (
-              <div className='mt-auto flex flex-col gap-2 p-4'>
+              <div className='mt-auto flex flex-col gap-2 p-4 pb-8'>
                 {user ? (
                   <>
                     <Button variant='outline' onClick={signOut}>Sair</Button>
@@ -76,7 +78,7 @@ export default function MobileSidebar({ items }: MobileSidebarProps) {
                         height={32}
                         className='size-8 rounded-full object-cover'
                       />
-                      <span className='font-medium'>{user.name}</span>
+                      <span className='font-medium'>{displayName}</span>
                     </div>
                   </>
                 ) : (
