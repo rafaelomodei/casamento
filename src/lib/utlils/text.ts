@@ -22,7 +22,10 @@ export function formatUserName(value: string): string {
     return value;
   }
 
-  const parts = value.trim().split(/\s+/);
+  const parts = value
+    .trim()
+    .split(/\s+/)
+    .map((p) => capitalizeFirst(p));
   if (parts.length === 0) {
     return value;
   }
