@@ -14,6 +14,8 @@ const NavBar = () => {
   const pathname = usePathname();
   const isAuthPage = pathname.startsWith('/entrar') || pathname.startsWith('/codigo');
 
+  if (isAuthPage) return null;
+
   const items = [
     { href: '/nossas-historias', label: 'Nossas Histórias' },
     { href: '/mensagens', label: 'Mensagens' },
