@@ -3,7 +3,7 @@ import { CreateUserUseCase } from '@/domain/users/useCases/createUser/CreateUser
 import { GetUserByIdUseCase } from '@/domain/users/useCases/getUserById/GetUserByIdUseCase';
 import { userRepository } from '@/infra/repositories/firebase/UserServerFirebaseRepositories';
 import { UserDTO } from '@/domain/users/entities/UserDTO';
-import { adminAuth } from '@/infra/repositories/firebase/admin';
+import { verifyIdToken } from '@/infra/repositories/firebase/admin';
 
 export async function GET(req: Request) {
   const authHeader = req.headers.get('authorization');
@@ -13,7 +13,7 @@ export async function GET(req: Request) {
 
   const token = authHeader.split(' ')[1];
   try {
-    await adminAuth.verifyIdToken(token);
+    await verifyIdToken(token);
   } catch {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     const token = authHeader.split(' ')[1];
     let decoded;
     try {
-      decoded = await adminAuth.verifyIdToken(token);
+      decoded = await verifyIdToken(token);
     } catch {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
