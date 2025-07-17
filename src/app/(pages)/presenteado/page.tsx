@@ -10,6 +10,7 @@ export default function PresenteadoPage() {
   const id = searchParams.get('id')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const receiptUrl = searchParams.get('receipt_url')
 
   useEffect(() => {
     async function updateStatus() {
@@ -43,7 +44,21 @@ export default function PresenteadoPage() {
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <p>Obrigado pelo presente! Seu pagamento foi concluído com sucesso.</p>
+        <>
+          <p>Obrigado pelo presente! Seu pagamento foi concluído com sucesso.</p>
+          {receiptUrl && (
+            <p>
+              <a
+                className='text-primary underline'
+                href={receiptUrl}
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                Ver comprovante
+              </a>
+            </p>
+          )}
+        </>
       )}
     </div>
   )

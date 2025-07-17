@@ -68,13 +68,18 @@ export function ProductMobilePage({ product }: Props) {
         onMouseLeave={() => giftRef.current?.hoverEnd()}
         disabled={product.status === 'gifted'}
         onClick={() => {
-          if (requireAuth(loginMessage) && product.checkoutUrl) {
+          if (requireAuth(loginMessage) && product.checkoutUrl && product.id) {
             giftRef.current?.click()
             const url = new URL(product.checkoutUrl)
             if (user) {
-              url.searchParams.set('name', user.name)
-              url.searchParams.set('phone', user.phone)
+              url.searchParams.set('customer_name', user.name)
+              url.searchParams.set('customer_cellphone', user.phone)
             }
+            url.searchParams.set(
+              'redirect_url',
+              `${window.location.origin}/presenteado?id=${product.id}`
+            )
+            url.searchParams.set('order_nsu', product.id)
             window.location.href = url.toString()
           }
         }}
