@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
@@ -9,6 +9,8 @@ import { ProductCard } from '@/components/ProductCard/ProductCard';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { formatCurrencyInput } from '@/lib/utlils/currency';
 import { isValidImage } from '@/lib/utlils/image';
+import { auth } from '@/infra/repositories/firebase/config';
+import { useAuthRequired } from '@/hooks/useAuthRequired';
 
 export default function AdicionarNovoPresentePage() {
   const [title, setTitle] = useState('');
@@ -23,6 +25,11 @@ export default function AdicionarNovoPresentePage() {
   const [checkingSlug, setCheckingSlug] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { requireAuth, dialog } = useAuthRequired();
+
+  useEffect(() => {
+    requireAuth('Para adicionar presentes, você precisa estar logado.');
+  }, []);
 
   const isFormValid =
     slug.trim() &&
@@ -96,9 +103,13 @@ export default function AdicionarNovoPresentePage() {
     e.preventDefault();
     setLoading(true);
     try {
+      const token = await auth?.currentUser?.getIdToken();
       await fetch('/api/products', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? `Bearer ${token}` : '',
+        },
         body: JSON.stringify({
           slug,
           title,
@@ -225,6 +236,7 @@ export default function AdicionarNovoPresentePage() {
           classNameCard='max-w-sm'
         />
       </div>
+      {dialog}
     </div>
   );
 }
