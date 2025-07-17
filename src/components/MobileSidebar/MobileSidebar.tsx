@@ -16,7 +16,7 @@ import { useAuth } from '@/Providers/auth-provider';
 import { usePathname } from 'next/navigation';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { formatUserName } from '@/lib/utlils/text';
+import { capitalizeWords } from '@/lib/utlils/text';
 
 interface NavItem {
   href: string;
@@ -33,7 +33,7 @@ export default function MobileSidebar({ items }: MobileSidebarProps) {
   const { setOpenMobile } = useSidebar();
   const pathname = usePathname();
   const isAuthPage = pathname.startsWith('/entrar') || pathname.startsWith('/codigo');
-  const displayName = user ? formatUserName(user.name) : '';
+  const displayName = user ? capitalizeWords(user.name) : '';
 
   return (
     <>

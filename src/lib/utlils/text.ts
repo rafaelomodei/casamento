@@ -5,6 +5,18 @@ export function capitalizeFirst(value: string): string {
   return value[0].toUpperCase() + value.slice(1);
 }
 
+export function capitalizeWords(value: string): string {
+  if (typeof value !== 'string') {
+    return value;
+  }
+
+  return value
+    .trim()
+    .split(/\s+/)
+    .map((p) => capitalizeFirst(p))
+    .join(' ');
+}
+
 export function truncateWithEllipsis(value: string, maxLength: number): string {
   if (typeof value !== 'string') {
     return value;
