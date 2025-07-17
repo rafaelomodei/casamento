@@ -1,7 +1,15 @@
+'use client';
+
 import Link from 'next/link';
 import { Instagram } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const Footer = () => {
+  const pathname = usePathname();
+  const isAuthPage = pathname.startsWith('/entrar') || pathname.startsWith('/codigo');
+
+  if (isAuthPage) return null;
+
   return (
     <footer className='flex flex-col items-center w-full gap-4 py-8 border-t'>
       <nav className='flex gap-4'>
