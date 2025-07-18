@@ -1,82 +1,52 @@
-import {
-  getFirestore,
-  collection,
-  query,
-  getDocs,
-  addDoc,
-  doc,
-  getDoc,
-  where,
-  orderBy,
-  limit as limitFn,
-  updateDoc,
-  deleteDoc,
-} from 'firebase/firestore';
-import { appFirebase } from '../../../../../infra/repositories/firebase/config';
-import { IProductRepository } from '@/domain/products/repositories/IProductRepository';
-import { ProductDTO } from '@/domain/products/entities/ProductDTO';
+import { adminDb } from '@/infra/repositories/firebase/admin'
+import { IProductRepository } from '@/domain/products/repositories/IProductRepository'
+import { ProductDTO } from '@/domain/products/entities/ProductDTO'
 
 export class FirebaseRepository implements IProductRepository {
-  private readonly db;
-  private readonly collectionPath: string;
-  private readonly collection;
+  private readonly collection
 
   constructor() {
-    if (!appFirebase) {
-      throw new Error('Firebase not initialized');
-    }
-
-    this.collectionPath = 'products';
-    this.db = getFirestore(appFirebase);
-    this.collection = collection(this.db, this.collectionPath);
+    this.collection = adminDb.collection('products')
   }
 
   async create(product: ProductDTO): Promise<void> {
-    const { ...data } = product;
-    await addDoc(this.collection, { ...data, views: data.views ?? 0 });
+    const { id, ...data } = product
+    const docRef = id ? this.collection.doc(id) : this.collection.doc()
+    await docRef.set({ ...data, views: data.views ?? 0 })
   }
 
   async findAll(): Promise<ProductDTO[]> {
-    const q = query(this.collection);
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map((docSnap) => ({
-      ...(docSnap.data() as ProductDTO),
-      id: docSnap.id,
-    }));
+    const snap = await this.collection.get()
+    return snap.docs.map(d => ({ id: d.id, ...(d.data() as ProductDTO) }))
   }
 
   async findById(id: string): Promise<ProductDTO | null> {
-    const docRef = doc(this.db, this.collectionPath, id);
-    const docSnap = await getDoc(docRef);
-    if (!docSnap.exists()) return null;
-    return { ...(docSnap.data() as ProductDTO), id: docSnap.id };
+    const doc = await this.collection.doc(id).get()
+    if (!doc.exists) return null
+    return { id: doc.id, ...(doc.data() as ProductDTO) }
   }
 
   async findBySlug(slug: string): Promise<ProductDTO | null> {
-    const q = query(this.collection, where('slug', '==', slug));
-    const snapshot = await getDocs(q);
-    const docSnap = snapshot.docs[0];
-    if (!docSnap) return null;
-    return { ...(docSnap.data() as ProductDTO), id: docSnap.id };
+    const snap = await this.collection.where('slug', '==', slug).limit(1).get()
+    const doc = snap.docs[0]
+    if (!doc) return null
+    return { id: doc.id, ...(doc.data() as ProductDTO) }
   }
 
   async findMostViewed(limit: number): Promise<ProductDTO[]> {
-    const q = query(this.collection, orderBy('views', 'desc'), limitFn(limit));
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map((docSnap) => ({
-      ...(docSnap.data() as ProductDTO),
-      id: docSnap.id,
-    }));
+    const snap = await this.collection
+      .orderBy('views', 'desc')
+      .limit(limit)
+      .get()
+    return snap.docs.map(d => ({ id: d.id, ...(d.data() as ProductDTO) }))
   }
 
   async update(id: string, product: ProductDTO): Promise<void> {
-    const docRef = doc(this.db, this.collectionPath, id);
-    const { ...data } = product;
-    await updateDoc(docRef, { ...data });
+    const { id: _id, ...data } = product
+    await this.collection.doc(id).update({ ...data })
   }
 
   async delete(id: string): Promise<void> {
-    const docRef = doc(this.db, this.collectionPath, id);
-    await deleteDoc(docRef);
+    await this.collection.doc(id).delete()
   }
 }
