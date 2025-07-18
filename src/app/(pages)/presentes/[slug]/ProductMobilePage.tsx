@@ -68,18 +68,24 @@ export function ProductMobilePage({ product }: Props) {
         onMouseLeave={() => giftRef.current?.hoverEnd()}
         disabled={product.status === 'gifted'}
         onClick={() => {
-          if (requireAuth(loginMessage) && product.checkoutUrl && product.id) {
+          if (requireAuth(loginMessage) && product.id) {
+            const base = process.env.NEXT_PUBLIC_INFINITYPAY_CHECKOUT_BASE_URL
+            if (!base) return
             giftRef.current?.click()
-            const url = new URL(product.checkoutUrl)
-            if (user) {
-              url.searchParams.set('customer_name', user.name)
-              url.searchParams.set('customer_cellphone', user.phone)
-            }
+            const url = new URL(base)
+            const items = [
+              { name: product.title, price: Math.round(product.price * 100), quantity: 1 },
+            ]
+            url.searchParams.set('items', JSON.stringify(items))
+            url.searchParams.set('order_nsu', product.id)
             url.searchParams.set(
               'redirect_url',
               `${window.location.origin}/presenteado?id=${product.id}`
             )
-            url.searchParams.set('order_nsu', product.id)
+            if (user) {
+              url.searchParams.set('customer_name', user.name)
+              url.searchParams.set('customer_cellphone', user.phone)
+            }
             window.location.href = url.toString()
           }
         }}

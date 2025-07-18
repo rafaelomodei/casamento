@@ -19,8 +19,6 @@ export default function AdicionarNovoPresentePage() {
   const [priceInput, setPriceInput] = useState('');
   const [imageUrls, setImageUrls] = useState<string[]>(['']);
   const [description, setDescription] = useState('');
-  const [infinityProductId, setInfinityProductId] = useState('');
-  const [checkoutUrl, setCheckoutUrl] = useState('');
   const [slugError, setSlugError] = useState('');
   const [checkingSlug, setCheckingSlug] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -36,8 +34,6 @@ export default function AdicionarNovoPresentePage() {
     title.trim() &&
     priceInput.trim() &&
     imageUrls.some((url) => url.trim() && isValidImage(url)) &&
-    checkoutUrl.trim() &&
-    infinityProductId.trim() &&
     !slugError;
 
   async function handleSlugBlur() {
@@ -117,8 +113,6 @@ export default function AdicionarNovoPresentePage() {
           images: imageUrls.filter((url) => url.trim()).filter(isValidImage),
           description,
           views: 0,
-          infinityPayProductId: infinityProductId,
-          checkoutUrl,
           status: 'available',
         }),
       });
@@ -203,20 +197,6 @@ export default function AdicionarNovoPresentePage() {
             placeholder='Descrição'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-          />
-          <Input
-            type='text'
-            placeholder='InfinityPay Product ID'
-            value={infinityProductId}
-            onChange={(e) => setInfinityProductId(e.target.value)}
-            required
-          />
-          <Input
-            type='url'
-            placeholder='Checkout URL'
-            value={checkoutUrl}
-            onChange={(e) => setCheckoutUrl(e.target.value)}
-            required
           />
           <Button
             type='submit'
