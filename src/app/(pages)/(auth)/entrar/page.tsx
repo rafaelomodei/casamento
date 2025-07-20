@@ -1,20 +1,18 @@
 'use client';
 
-
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useState, useEffect, useRef, Suspense } from 'react'
-import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
-import { auth } from '@/infra/repositories/firebase/config'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Loader2 } from 'lucide-react'
-import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel'
-import { useIsMobile } from '@/hooks/use-mobile'
-import Image from 'next/image'
-import Link from 'next/link'
-import { formatPhone, isValidPhone } from '@/lib/utlils/phone'
-import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useEffect, useRef, Suspense } from 'react';
+import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
+import { auth } from '@/infra/repositories/firebase/config';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Loader2 } from 'lucide-react';
+import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
+import { useIsMobile } from '@/hooks/use-mobile';
+import Image from 'next/image';
+import Link from 'next/link';
+import { formatPhone, isValidPhone } from '@/lib/utlils/phone';
 
 function EntrarForm() {
   const router = useRouter();
@@ -25,61 +23,58 @@ function EntrarForm() {
   const [isLoading, setIsLoading] = useState(false);
   const isMobile = useIsMobile();
 
-  const callback = searchParams.get('callback') || '/'
-  useRedirectIfLoggedIn(callback);
-
-  const verifierRef = useRef<RecaptchaVerifier | null>(null)
+  const callback = searchParams.get('callback') || '/';
+  const verifierRef = useRef<RecaptchaVerifier | null>(null);
 
   useEffect(() => {
-    if (!auth || verifierRef.current) return
-    verifierRef.current = new RecaptchaVerifier(
-      auth,
-      'recaptcha-container',
-      {
-        size: 'invisible',
-      },
-    )
-    verifierRef.current.render().catch(() => {})
-  }, [])
+    if (!auth || verifierRef.current) return;
+    verifierRef.current = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      size: 'invisible',
+    });
+    verifierRef.current.render().catch(() => {});
+  }, []);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    if (!isValid || !auth || !verifierRef.current || isLoading) return
-    setIsLoading(true)
+    e.preventDefault();
+    if (!isValid || !auth || !verifierRef.current || isLoading) return;
+    setIsLoading(true);
     signInWithPhoneNumber(auth, `+55${phoneDigits}`, verifierRef.current)
       .then((result) => {
-        sessionStorage.setItem('verificationId', result.verificationId)
+        sessionStorage.setItem('verificationId', result.verificationId);
         router.push(
-          `/codigo?callback=${encodeURIComponent(callback)}&phone=${encodeURIComponent(phoneDigits)}`,
-        )
+          `/codigo?callback=${encodeURIComponent(
+            callback
+          )}&phone=${encodeURIComponent(phoneDigits)}`
+        );
       })
       .catch(() => {
-        // handle error silently
+        console.error('Deu erro ao validar recaptcha');
       })
       .finally(() => {
-        setIsLoading(false)
-      })
+        setIsLoading(false);
+      });
   }
 
   function handlePhoneKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key !== 'Backspace') return
-    const start = e.currentTarget.selectionStart ?? 0
-    const end = e.currentTarget.selectionEnd ?? start
-    const formatted = formatPhone(phoneDigits)
-    const digitsBeforeStart = formatted.slice(0, start).replace(/\D/g, '').length
-    const digitsBeforeEnd = formatted.slice(0, end).replace(/\D/g, '').length
+    if (e.key !== 'Backspace') return;
+    const start = e.currentTarget.selectionStart ?? 0;
+    const end = e.currentTarget.selectionEnd ?? start;
+    const formatted = formatPhone(phoneDigits);
+    const digitsBeforeStart = formatted
+      .slice(0, start)
+      .replace(/\D/g, '').length;
+    const digitsBeforeEnd = formatted.slice(0, end).replace(/\D/g, '').length;
     if (start === end) {
-      if (digitsBeforeStart === 0) return
-      const idx = digitsBeforeStart - 1
-      setPhoneDigits(
-        phoneDigits.slice(0, idx) + phoneDigits.slice(idx + 1)
-      )
+      if (digitsBeforeStart === 0) return;
+      const idx = digitsBeforeStart - 1;
+      setPhoneDigits(phoneDigits.slice(0, idx) + phoneDigits.slice(idx + 1));
     } else {
       setPhoneDigits(
-        phoneDigits.slice(0, digitsBeforeStart) + phoneDigits.slice(digitsBeforeEnd)
-      )
+        phoneDigits.slice(0, digitsBeforeStart) +
+          phoneDigits.slice(digitsBeforeEnd)
+      );
     }
-    e.preventDefault()
+    e.preventDefault();
   }
 
   return (
@@ -133,7 +128,11 @@ function EntrarForm() {
                 required
               />
             </div>
-            <Button className='w-full' type='submit' disabled={!isValid || isLoading}>
+            <Button
+              className='w-full'
+              type='submit'
+              disabled={!isValid || isLoading}
+            >
               {isLoading ? (
                 <div className='flex items-center gap-2'>
                   <Loader2 className='h-4 w-4 animate-spin' />
