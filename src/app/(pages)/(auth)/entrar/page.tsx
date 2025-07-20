@@ -31,6 +31,7 @@ function EntrarForm() {
     verifierRef.current = new RecaptchaVerifier(auth, 'recaptcha-container', {
       size: 'invisible',
     });
+    verifierRef.current.render().catch(() => {});
   }, []);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
