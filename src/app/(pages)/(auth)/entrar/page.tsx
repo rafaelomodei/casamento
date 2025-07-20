@@ -11,7 +11,6 @@ import { Label } from '@/components/ui/label'
 import { Loader2 } from 'lucide-react'
 import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel'
 import { useIsMobile } from '@/hooks/use-mobile'
-import RandomMessage from '@/components/RandomMessage/RandomMessage'
 import Image from 'next/image'
 import Link from 'next/link'
 import { formatPhone, isValidPhone } from '@/lib/utlils/phone'
@@ -97,53 +96,54 @@ function EntrarForm() {
             className='h-full w-full'
             showControls={false}
             hoverControls={false}
-            autoPlayInterval={2000}
+            autoPlayInterval={4000}
             showIndicators
           />
-          <RandomMessage />
         </div>
       )}
-      <div className='flex flex-col gap-4 flex-1 items-center justify-center p-4'>
-        <Link href='/'>
-          <Image
-            src={'/svg/logoNavBar.svg'}
-            alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
-            height={42}
-            width={42}
-          />
-        </Link>
-        <h1 className='text-2xl'>Entrar</h1>
-        <form onSubmit={handleSubmit} className='flex flex-col gap-4 max-w-sm'>
-          <div className='flex flex-col gap-2'>
-            <Label htmlFor='phone'>Número de telefone</Label>
-            <Input
-              id='phone'
-              type='tel'
-              placeholder='Ex: (45) 9 9876 - 5432'
-              pattern='\(\d{2}\) \d \d{4} - \d{4}'
-              inputMode='numeric'
-              value={phone}
-              onChange={(e) =>
-                setPhoneDigits(
-                  e.currentTarget.value.replace(/\D/g, '').slice(0, 11)
-                )
-              }
-              onKeyDown={handlePhoneKeyDown}
-              required
+      <div className='flex flex-col flex-1 items-center justify-center p-4'>
+        <div className='flex flex-col gap-4 w-full max-w-[256px] items-start'>
+          <Link href='/'>
+            <Image
+              src={'/svg/logoNavBar.svg'}
+              alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
+              height={42}
+              width={42}
             />
-          </div>
-          <Button type='submit' disabled={!isValid || isLoading}>
-            {isLoading ? (
-              <div className='flex items-center gap-2'>
-                <Loader2 className='h-4 w-4 animate-spin' />
-                Entrando...
-              </div>
-            ) : (
-              'Entrar'
-            )}
-          </Button>
-          <div id='recaptcha-container' />
-        </form>
+          </Link>
+          <h1 className='text-2xl'>Entrar</h1>
+          <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full'>
+            <div className='flex flex-col gap-2'>
+              <Label htmlFor='phone'>Número de telefone</Label>
+              <Input
+                id='phone'
+                type='tel'
+                placeholder='Ex: (45) 9 9876 - 5432'
+                pattern='\(\d{2}\) \d \d{4} - \d{4}'
+                inputMode='numeric'
+                value={phone}
+                onChange={(e) =>
+                  setPhoneDigits(
+                    e.currentTarget.value.replace(/\D/g, '').slice(0, 11)
+                  )
+                }
+                onKeyDown={handlePhoneKeyDown}
+                required
+              />
+            </div>
+            <Button className='w-full' type='submit' disabled={!isValid || isLoading}>
+              {isLoading ? (
+                <div className='flex items-center gap-2'>
+                  <Loader2 className='h-4 w-4 animate-spin' />
+                  Entrando...
+                </div>
+              ) : (
+                'Entrar'
+              )}
+            </Button>
+            <div id='recaptcha-container' />
+          </form>
+        </div>
       </div>
     </main>
   );
