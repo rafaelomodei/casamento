@@ -14,6 +14,7 @@ import { useIsMobile } from '@/hooks/use-mobile'
 import Image from 'next/image'
 import Link from 'next/link'
 import { formatPhone, isValidPhone } from '@/lib/utlils/phone'
+import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn';
 
 function EntrarForm() {
   const router = useRouter();
@@ -25,6 +26,7 @@ function EntrarForm() {
   const isMobile = useIsMobile();
 
   const callback = searchParams.get('callback') || '/'
+  useRedirectIfLoggedIn(callback);
 
   const verifierRef = useRef<RecaptchaVerifier | null>(null)
 
