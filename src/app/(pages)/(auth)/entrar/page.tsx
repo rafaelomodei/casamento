@@ -24,7 +24,6 @@ function EntrarForm() {
   const isMobile = useIsMobile();
 
   const callback = searchParams.get('callback') || '/';
-  handleSubmit;
   const verifierRef = useRef<RecaptchaVerifier | null>(null);
 
   useEffect(() => {
@@ -48,7 +47,7 @@ function EntrarForm() {
         );
       })
       .catch(() => {
-        // handle error silently
+        console.error('Deu erro ao validar recaptcha');
       })
       .finally(() => {
         setIsLoading(false);
