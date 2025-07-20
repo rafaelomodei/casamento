@@ -1,9 +1,10 @@
 'use client';
 
+import Script from 'next/script';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useRef, Suspense } from 'react';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
-import { auth } from '@/infra/repositories/firebase/config';
+import { auth as importedAuth } from '@/infra/repositories/firebase/config';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -14,6 +15,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { formatPhone, isValidPhone } from '@/lib/utlils/phone';
 
+export default function EntrarPage() {
+  return (
+    <>
+      <Script
+        src='https://www.google.com/recaptcha/api.js?render=explicit'
+        strategy='afterInteractive'
+      />
+      <Suspense fallback={null}>
+        <EntrarForm />
+      </Suspense>
+    </>
+  );
+}
+
 function EntrarForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -22,21 +37,39 @@ function EntrarForm() {
   const isValid = isValidPhone(phoneDigits);
   const [isLoading, setIsLoading] = useState(false);
   const isMobile = useIsMobile();
-
   const callback = searchParams.get('callback') || '/';
   const verifierRef = useRef<RecaptchaVerifier | null>(null);
 
+  const auth = importedAuth;
+
   useEffect(() => {
     if (!auth || verifierRef.current) return;
-    verifierRef.current = new RecaptchaVerifier(auth, 'recaptcha-container', {
+
+    verifierRef.current = new RecaptchaVerifier(auth, 'sign-in-button', {
       size: 'invisible',
+      callback: (token: string) => {
+        console.log('✅ reCAPTCHA resolvido, token:', token);
+      },
+      'expired-callback': () => {
+        console.warn('⚠️ reCAPTCHA expirou');
+      },
     });
-    verifierRef.current.render().catch(() => {});
-  }, []);
+
+    verifierRef.current
+      .render()
+      .then((widgetId) => {
+        (window as any).recaptchaWidgetId = widgetId;
+        console.log('🔧 reCAPTCHA renderizado, widgetId=', widgetId);
+      })
+      .catch((err) => {
+        console.error('❌ Erro ao renderizar reCAPTCHA:', err);
+      });
+  }, [auth]);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!isValid || !auth || !verifierRef.current || isLoading) return;
+
     setIsLoading(true);
     signInWithPhoneNumber(auth, `+55${phoneDigits}`, verifierRef.current)
       .then((result) => {
@@ -47,8 +80,13 @@ function EntrarForm() {
           )}&phone=${encodeURIComponent(phoneDigits)}`
         );
       })
-      .catch(() => {
-        console.error('Deu erro ao validar recaptcha');
+      .catch((error) => {
+        console.error('❌ Erro signInWithPhoneNumber:', error);
+        const grecaptcha = (window as any).grecaptcha;
+        const widgetId = (window as any).recaptchaWidgetId;
+        if (grecaptcha && widgetId != null) {
+          grecaptcha.reset(widgetId);
+        }
       })
       .finally(() => {
         setIsLoading(false);
@@ -64,6 +102,7 @@ function EntrarForm() {
       .slice(0, start)
       .replace(/\D/g, '').length;
     const digitsBeforeEnd = formatted.slice(0, end).replace(/\D/g, '').length;
+
     if (start === end) {
       if (digitsBeforeStart === 0) return;
       const idx = digitsBeforeStart - 1;
@@ -98,17 +137,19 @@ function EntrarForm() {
           />
         </div>
       )}
+
       <div className='flex flex-col flex-1 items-center justify-center p-4'>
         <div className='flex flex-col gap-4 w-full max-w-[256px] items-start'>
           <Link href='/'>
             <Image
-              src={'/svg/logoNavBar.svg'}
+              src='/svg/logoNavBar.svg'
               alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
               height={42}
               width={42}
             />
           </Link>
           <h1 className='text-2xl'>Entrar</h1>
+
           <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full'>
             <div className='flex flex-col gap-2'>
               <Label htmlFor='phone'>Número de telefone</Label>
@@ -128,7 +169,9 @@ function EntrarForm() {
                 required
               />
             </div>
+
             <Button
+              id='sign-in-button'
               className='w-full'
               type='submit'
               disabled={!isValid || isLoading}
@@ -142,18 +185,11 @@ function EntrarForm() {
                 'Entrar'
               )}
             </Button>
+
             <div id='recaptcha-container' />
           </form>
         </div>
       </div>
     </main>
-  );
-}
-
-export default function EntrarPage() {
-  return (
-    <Suspense fallback={null}>
-      <EntrarForm />
-    </Suspense>
   );
 }
