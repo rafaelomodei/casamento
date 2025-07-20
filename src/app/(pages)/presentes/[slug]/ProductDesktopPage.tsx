@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import Gift, { GiftHandle } from '@/components/IconsAnimated/Gift/Gift';
 import { useRef } from 'react';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
+import { useAuth } from '@/Providers/auth-provider';
 
 interface Props {
   product: ProductDTO;
@@ -25,6 +26,7 @@ export function ProductDesktopPage({
     product.images && product.images.length > 0 ? product.images : [fallback];
   const giftRef = useRef<GiftHandle>(null);
   const { requireAuth, dialog } = useAuthRequired();
+  const { user } = useAuth();
   const loginMessage =
     'Para dar este presente, você precisa estar logado.\nClique em Entrar ou crie sua conta em poucos segundos e volte aqui para concluir sua contribuição para Maria Eduarda & Rafael.';
 
@@ -128,17 +130,38 @@ export function ProductDesktopPage({
             variant='secondary'
             onMouseEnter={() => giftRef.current?.hoverStart()}
             onMouseLeave={() => giftRef.current?.hoverEnd()}
+            disabled={product.status === 'gifted'}
             onClick={() => {
-              if (requireAuth(loginMessage)) {
+              if (requireAuth(loginMessage) && product.id) {
+                const base = process.env.NEXT_PUBLIC_INFINITYPAY_CHECKOUT_BASE_URL;
+                if (!base) return;
                 giftRef.current?.click();
+                const url = new URL(base);
+                const items = [
+                  { name: product.title, price: Math.round(product.price * 100), quantity: 1 },
+                ];
+                url.searchParams.set('items', JSON.stringify(items));
+                url.searchParams.set('order_nsu', product.id);
+                url.searchParams.set(
+                  'redirect_url',
+                  `${window.location.origin}/presenteado?id=${product.id}`
+                );
+                if (user) {
+                  url.searchParams.set('customer_name', user.name);
+                  url.searchParams.set('customer_cellphone', user.phone);
+                }
+                window.location.href = url.toString();
               }
             }}
           >
             <div className='mb-6'>
               <Gift ref={giftRef} />
             </div>
-            Dar este presente
+            {product.status === 'gifted' ? 'Presente já adquirido' : 'Dar este presente'}
           </Button>
+          {product.status === 'gifted' && (
+            <p className='text-destructive'>Este presente já foi comprado.</p>
+          )}
         </div>
       </div>
       {dialog}
