@@ -19,11 +19,13 @@ import {
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { Button } from '@/components/ui/button';
 import { formatPhone } from '@/lib/utlils/phone';
+import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn';
 
 function CodigoForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callback = searchParams.get('callback') || '/';
+  useRedirectIfLoggedIn(callback);
   const phone = searchParams.get('phone') || '';
 
   const length = 6;

@@ -8,12 +8,14 @@ import { Button } from '@/components/ui/button'
 import PageBreadcrumb from '@/components/PageBreadcrumb'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/Providers/auth-provider'
+import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn'
 import { auth } from '@/infra/repositories/firebase/config'
 
 function CadastroForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callback = searchParams.get('callback') || '/'
+  useRedirectIfLoggedIn(callback);
   const { signIn } = useAuth()
 
   const [name, setName] = useState('')
