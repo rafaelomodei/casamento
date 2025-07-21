@@ -58,7 +58,7 @@ function EntrarForm() {
     verifierRef.current
       .render()
       .then((widgetId) => {
-        (window as any).recaptchaWidgetId = widgetId;
+        window.recaptchaWidgetId = widgetId;
         console.log('🔧 reCAPTCHA renderizado, widgetId=', widgetId);
       })
       .catch((err) => {
@@ -82,8 +82,8 @@ function EntrarForm() {
       })
       .catch((error) => {
         console.error('❌ Erro signInWithPhoneNumber:', error);
-        const grecaptcha = (window as any).grecaptcha;
-        const widgetId = (window as any).recaptchaWidgetId;
+        const grecaptcha = window.grecaptcha;
+        const widgetId = window.recaptchaWidgetId;
         if (grecaptcha && widgetId != null) {
           grecaptcha.reset(widgetId);
         }
