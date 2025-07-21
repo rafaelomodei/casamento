@@ -10,17 +10,21 @@ import { cn } from '@/lib/utils'
 import { useAuth } from '@/Providers/auth-provider'
 import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn'
 import { auth } from '@/infra/repositories/firebase/config'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 
 function CadastroForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callback = searchParams.get('callback') || '/'
-  useRedirectIfLoggedIn(callback);
+  const email = searchParams.get('email') || ''
+  useRedirectIfLoggedIn(callback)
   const { signIn } = useAuth()
 
   const [name, setName] = useState('')
   const [sex, setSex] = useState<'male' | 'female'>('male')
   const [avatar, setAvatar] = useState('')
+  const [phone, setPhone] = useState('')
+  const [password, setPassword] = useState('')
 
   const avatars = {
     male: ['/png/avatars/male/01.png', '/png/avatars/male/02.png', '/png/avatars/male/03.png'],
@@ -34,30 +38,37 @@ function CadastroForm() {
   }, [sex])
 
   const isNameValid = name.trim().length >= 3
-  const isFormValid = isNameValid && avatar
+  const isPasswordValid = password.length >= 6
+  const isFormValid = isNameValid && isPasswordValid && avatar
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!isFormValid) return
-    const phone = auth?.currentUser?.phoneNumber || ''
-    signIn({ name, avatar, phone, sex })
-    const token = await auth?.currentUser?.getIdToken()
-    fetch('/api/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token ? `Bearer ${token}` : '',
-      },
-      body: JSON.stringify({
-        name,
-        avatar,
-        sex,
-        phone,
-        downloads: 0,
-      }),
-    }).finally(() => {
-      router.push(callback)
-    })
+    if (!isFormValid || !auth) return
+
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, password)
+      signIn({ name, avatar, phone, sex, email })
+      const token = await cred.user.getIdToken()
+      fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? `Bearer ${token}` : '',
+        },
+        body: JSON.stringify({
+          name,
+          avatar,
+          sex,
+          phone,
+          email,
+          downloads: 0,
+        }),
+      }).finally(() => {
+        router.push(callback)
+      })
+    } catch {
+      // ignore errors
+    }
   }
 
   return (
@@ -106,12 +117,31 @@ function CadastroForm() {
               onClick={() => setAvatar(img)}
               className={cn(
                 'rounded-full ring-2 p-0 overflow-hidden',
-                avatar === img ? 'ring-primary' : 'ring-transparent',
+                avatar === img ? 'ring-primary' : 'ring-transparent'
               )}
             >
               <Image src={img} alt='' width={64} height={64} />
             </button>
           ))}
+        </div>
+        <div className='flex flex-col gap-2'>
+          <Label htmlFor='phone'>Celular</Label>
+          <Input
+            id='phone'
+            type='tel'
+            value={phone}
+            onChange={(e) => setPhone(e.currentTarget.value)}
+          />
+        </div>
+        <div className='flex flex-col gap-2'>
+          <Label htmlFor='password'>Senha</Label>
+          <Input
+            id='password'
+            type='password'
+            value={password}
+            onChange={(e) => setPassword(e.currentTarget.value)}
+            required
+          />
         </div>
         <input type='hidden' name='avatar' value={avatar} />
         <Button type='submit' disabled={!isFormValid}>

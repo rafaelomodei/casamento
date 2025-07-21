@@ -1,120 +1,80 @@
-'use client';
+'use client'
 
-import Script from 'next/script';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useEffect, useRef, Suspense } from 'react';
-import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
-import { auth as importedAuth } from '@/infra/repositories/firebase/config';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Loader2 } from 'lucide-react';
-import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
-import { useIsMobile } from '@/hooks/use-mobile';
-import Image from 'next/image';
-import Link from 'next/link';
-import { formatPhone, isValidPhone } from '@/lib/utlils/phone';
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useState, Suspense } from 'react'
+import {
+  signInWithEmailAndPassword,
+} from 'firebase/auth'
+import { auth } from '@/infra/repositories/firebase/config'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label'
+import { Loader2 } from 'lucide-react'
+import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel'
+import { useIsMobile } from '@/hooks/use-mobile'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useAuth } from '@/Providers/auth-provider'
 
 export default function EntrarPage() {
   return (
-    <>
-      <Script
-        src='https://www.google.com/recaptcha/api.js?render=explicit'
-        strategy='afterInteractive'
-      />
-      <Suspense fallback={null}>
-        <EntrarForm />
-      </Suspense>
-    </>
-  );
+    <Suspense fallback={null}>
+      <EntrarForm />
+    </Suspense>
+  )
 }
 
 function EntrarForm() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [phoneDigits, setPhoneDigits] = useState('');
-  const phone = formatPhone(phoneDigits);
-  const isValid = isValidPhone(phoneDigits);
-  const [isLoading, setIsLoading] = useState(false);
-  const isMobile = useIsMobile();
-  const callback = searchParams.get('callback') || '/';
-  const verifierRef = useRef<RecaptchaVerifier | null>(null);
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const isMobile = useIsMobile()
+  const callback = searchParams.get('callback') || '/'
+  const { signIn } = useAuth()
 
-  const auth = importedAuth;
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    if (!auth || isLoading) return
 
-  useEffect(() => {
-    if (!auth || verifierRef.current) return;
-
-    verifierRef.current = new RecaptchaVerifier(auth, 'sign-in-button', {
-      size: 'invisible',
-      siteKey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!,
-      callback: (token: string) => {
-        console.log('✅ reCAPTCHA resolvido, token:', token);
-      },
-      'expired-callback': () => {
-        console.warn('⚠️ reCAPTCHA expirou');
-      },
-    });
-
-    verifierRef.current
-      .render()
-      .then((widgetId) => {
-        window.recaptchaWidgetId = widgetId;
-        console.log('🔧 reCAPTCHA renderizado, widgetId=', widgetId);
+    setIsLoading(true)
+    setError('')
+    try {
+      const cred = await signInWithEmailAndPassword(auth, email, password)
+      const token = await cred.user.getIdToken()
+      const res = await fetch(`/api/users?id=${cred.user.uid}`, {
+        headers: { Authorization: `Bearer ${token}` },
       })
-      .catch((err) => {
-        console.error('❌ Erro ao renderizar reCAPTCHA:', err);
-      });
-  }, [auth]);
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!isValid || !auth || !verifierRef.current || isLoading) return;
-
-    setIsLoading(true);
-    signInWithPhoneNumber(auth, `+55${phoneDigits}`, verifierRef.current)
-      .then((result) => {
-        sessionStorage.setItem('verificationId', result.verificationId);
+      if (res.ok) {
+        const data = await res.json()
+        signIn({
+          name: data.name as string,
+          avatar: data.avatar as string,
+          phone: data.phone as string,
+          sex: data.sex as 'male' | 'female',
+          email: data.email as string,
+        })
+        router.push(callback)
+      } else {
         router.push(
-          `/codigo?callback=${encodeURIComponent(
-            callback
-          )}&phone=${encodeURIComponent(phoneDigits)}`
-        );
-      })
-      .catch((error) => {
-        console.error('❌ Erro signInWithPhoneNumber:', error);
-        const grecaptcha = window.grecaptcha;
-        const widgetId = window.recaptchaWidgetId;
-        if (grecaptcha && widgetId != null) {
-          grecaptcha.reset(widgetId);
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }
-
-  function handlePhoneKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key !== 'Backspace') return;
-    const start = e.currentTarget.selectionStart ?? 0;
-    const end = e.currentTarget.selectionEnd ?? start;
-    const formatted = formatPhone(phoneDigits);
-    const digitsBeforeStart = formatted
-      .slice(0, start)
-      .replace(/\D/g, '').length;
-    const digitsBeforeEnd = formatted.slice(0, end).replace(/\D/g, '').length;
-
-    if (start === end) {
-      if (digitsBeforeStart === 0) return;
-      const idx = digitsBeforeStart - 1;
-      setPhoneDigits(phoneDigits.slice(0, idx) + phoneDigits.slice(idx + 1));
-    } else {
-      setPhoneDigits(
-        phoneDigits.slice(0, digitsBeforeStart) +
-          phoneDigits.slice(digitsBeforeEnd)
-      );
+          `/entrar/concluir?callback=${encodeURIComponent(callback)}&email=${encodeURIComponent(email)}`
+        )
+      }
+    } catch (err: any) {
+      if (err.code === 'auth/user-not-found') {
+        router.push(
+          `/entrar/concluir?callback=${encodeURIComponent(callback)}&email=${encodeURIComponent(email)}`
+        )
+      } else if (err.code === 'auth/wrong-password') {
+        setError('Senha incorreta.')
+      } else {
+        setError('Não foi possível entrar.')
+      }
+    } finally {
+      setIsLoading(false)
     }
-    e.preventDefault();
   }
 
   return (
@@ -150,33 +110,33 @@ function EntrarForm() {
             />
           </Link>
           <h1 className='text-2xl'>Entrar</h1>
-
+          <p className='text-sm text-muted-foreground'>
+            Informe seu e-mail e senha. Se ainda não tiver conta, você será encaminhado ao cadastro automaticamente.
+          </p>
           <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full'>
             <div className='flex flex-col gap-2'>
-              <Label htmlFor='phone'>Número de telefone</Label>
+              <Label htmlFor='email'>E-mail</Label>
               <Input
-                id='phone'
-                type='tel'
-                placeholder='Ex: (45) 9 9876 - 5432'
-                pattern='\(\d{2}\) \d \d{4} - \d{4}'
-                inputMode='numeric'
-                value={phone}
-                onChange={(e) =>
-                  setPhoneDigits(
-                    e.currentTarget.value.replace(/\D/g, '').slice(0, 11)
-                  )
-                }
-                onKeyDown={handlePhoneKeyDown}
+                id='email'
+                type='email'
+                placeholder='seu@email.com'
+                value={email}
+                onChange={(e) => setEmail(e.currentTarget.value)}
                 required
               />
             </div>
-
-            <Button
-              id='sign-in-button'
-              className='w-full'
-              type='submit'
-              disabled={!isValid || isLoading}
-            >
+            <div className='flex flex-col gap-2'>
+              <Label htmlFor='password'>Senha</Label>
+              <Input
+                id='password'
+                type='password'
+                value={password}
+                onChange={(e) => setPassword(e.currentTarget.value)}
+                required
+              />
+            </div>
+            {error && <p className='text-destructive text-sm'>{error}</p>}
+            <Button className='w-full' type='submit' disabled={isLoading}>
               {isLoading ? (
                 <div className='flex items-center gap-2'>
                   <Loader2 className='h-4 w-4 animate-spin' />
@@ -186,11 +146,9 @@ function EntrarForm() {
                 'Entrar'
               )}
             </Button>
-
-            <div id='recaptcha-container' />
           </form>
         </div>
       </div>
     </main>
-  );
+  )
 }
