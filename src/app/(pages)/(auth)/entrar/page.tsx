@@ -46,7 +46,7 @@ function EntrarForm() {
     const cleanEmail = email.trim().toLowerCase()
     try {
       const methods = await fetchSignInMethodsForEmail(auth, cleanEmail)
-      if (methods.includes('password')) {
+      if (methods.length > 0) {
         setStep('password')
       } else {
         router.push(
