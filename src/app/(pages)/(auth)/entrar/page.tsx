@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, Suspense } from 'react'
 import {
   signInWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
 } from 'firebase/auth'
 import { auth } from '@/infra/repositories/firebase/config'
 import { Input } from '@/components/ui/input'
@@ -31,11 +32,34 @@ function EntrarForm() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [step, setStep] = useState<'email' | 'password'>('email')
   const isMobile = useIsMobile()
   const callback = searchParams.get('callback') || '/'
   const { signIn } = useAuth()
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleEmailSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    if (!auth || isLoading) return
+
+    setIsLoading(true)
+    setError('')
+    try {
+      const methods = await fetchSignInMethodsForEmail(auth, email)
+      if (methods.length === 0) {
+        router.push(
+          `/entrar/concluir?callback=${encodeURIComponent(callback)}&email=${encodeURIComponent(email)}`
+        )
+      } else {
+        setStep('password')
+      }
+    } catch {
+      setError('Não foi possível verificar o e-mail.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  async function handlePasswordSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!auth || isLoading) return
 
@@ -63,12 +87,12 @@ function EntrarForm() {
         )
       }
     } catch (err: any) {
-      if (err.code === 'auth/user-not-found') {
+      if (err.code === 'auth/wrong-password') {
+        setError('Senha incorreta.')
+      } else if (err.code === 'auth/user-not-found') {
         router.push(
           `/entrar/concluir?callback=${encodeURIComponent(callback)}&email=${encodeURIComponent(email)}`
         )
-      } else if (err.code === 'auth/wrong-password') {
-        setError('Senha incorreta.')
       } else {
         setError('Não foi possível entrar.')
       }
@@ -111,42 +135,58 @@ function EntrarForm() {
           </Link>
           <h1 className='text-2xl'>Entrar</h1>
           <p className='text-sm text-muted-foreground'>
-            Informe seu e-mail e senha. Se ainda não tiver conta, você será encaminhado ao cadastro automaticamente.
+            Digite seu e-mail abaixo. Se ainda não tiver cadastro, vamos criar um para você automaticamente.
           </p>
-          <form onSubmit={handleSubmit} className='flex flex-col gap-4 w-full'>
-            <div className='flex flex-col gap-2'>
-              <Label htmlFor='email'>E-mail</Label>
-              <Input
-                id='email'
-                type='email'
-                placeholder='seu@email.com'
-                value={email}
-                onChange={(e) => setEmail(e.currentTarget.value)}
-                required
-              />
-            </div>
-            <div className='flex flex-col gap-2'>
-              <Label htmlFor='password'>Senha</Label>
-              <Input
-                id='password'
-                type='password'
-                value={password}
-                onChange={(e) => setPassword(e.currentTarget.value)}
-                required
-              />
-            </div>
-            {error && <p className='text-destructive text-sm'>{error}</p>}
-            <Button className='w-full' type='submit' disabled={isLoading}>
-              {isLoading ? (
-                <div className='flex items-center gap-2'>
-                  <Loader2 className='h-4 w-4 animate-spin' />
-                  Entrando...
-                </div>
-              ) : (
-                'Entrar'
-              )}
-            </Button>
-          </form>
+          {step === 'email' ? (
+            <form onSubmit={handleEmailSubmit} className='flex flex-col gap-4 w-full'>
+              <div className='flex flex-col gap-2'>
+                <Label htmlFor='email'>E-mail</Label>
+                <Input
+                  id='email'
+                  type='email'
+                  placeholder='seu@email.com'
+                  value={email}
+                  onChange={(e) => setEmail(e.currentTarget.value)}
+                  required
+                />
+              </div>
+              {error && <p className='text-destructive text-sm'>{error}</p>}
+              <Button className='w-full' type='submit' disabled={isLoading}>
+                {isLoading ? (
+                  <div className='flex items-center gap-2'>
+                    <Loader2 className='h-4 w-4 animate-spin' />
+                    Continuando...
+                  </div>
+                ) : (
+                  'Continuar'
+                )}
+              </Button>
+            </form>
+          ) : (
+            <form onSubmit={handlePasswordSubmit} className='flex flex-col gap-4 w-full'>
+              <div className='flex flex-col gap-2'>
+                <Label htmlFor='password'>Senha</Label>
+                <Input
+                  id='password'
+                  type='password'
+                  value={password}
+                  onChange={(e) => setPassword(e.currentTarget.value)}
+                  required
+                />
+              </div>
+              {error && <p className='text-destructive text-sm'>{error}</p>}
+              <Button className='w-full' type='submit' disabled={isLoading}>
+                {isLoading ? (
+                  <div className='flex items-center gap-2'>
+                    <Loader2 className='h-4 w-4 animate-spin' />
+                    Entrando...
+                  </div>
+                ) : (
+                  'Entrar'
+                )}
+              </Button>
+            </form>
+          )}
         </div>
       </div>
     </main>
