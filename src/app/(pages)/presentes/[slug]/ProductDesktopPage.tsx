@@ -149,6 +149,7 @@ export function ProductDesktopPage({
                 if (user) {
                   url.searchParams.set('customer_name', user.name);
                   url.searchParams.set('customer_cellphone', user.phone);
+                  url.searchParams.set('customer_email', user.email);
                 }
                 window.location.href = url.toString();
               }

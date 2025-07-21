@@ -7,6 +7,7 @@ import { auth } from '@/infra/repositories/firebase/config'
 export interface User {
   name: string;
   avatar: string;
+  email: string;
   phone: string;
   sex: 'male' | 'female';
 }
