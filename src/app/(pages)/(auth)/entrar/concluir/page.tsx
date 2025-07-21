@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils'
 import { useAuth } from '@/Providers/auth-provider'
 import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn'
 import { auth } from '@/infra/repositories/firebase/config'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { registerIfNotExists } from '@/lib/auth'
 import { formatPhone, isValidPhone } from '@/lib/utlils/phone'
 
 function CadastroForm() {
@@ -56,9 +56,10 @@ function CadastroForm() {
     if (!isFormValid || !auth) return
 
     try {
-      const cred = await createUserWithEmailAndPassword(auth, email, password)
+      const result = await registerIfNotExists(email, password)
+      if (!result.ok || !result.user) return
       signIn({ name, avatar, phone, sex, email })
-      const token = await cred.user.getIdToken()
+      const token = await result.user.getIdToken()
       fetch('/api/users', {
         method: 'POST',
         headers: {

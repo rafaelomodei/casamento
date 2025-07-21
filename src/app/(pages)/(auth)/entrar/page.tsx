@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useState, Suspense } from 'react'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '@/infra/repositories/firebase/config'
+import { isEmailRegistered } from '@/lib/auth'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -42,21 +43,8 @@ function EntrarForm() {
     setError('')
     const cleanEmail = email.trim().toLowerCase()
     try {
-      const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY
-      if (!apiKey) throw new Error('API key missing')
-      const res = await fetch(
-        `https://identitytoolkit.googleapis.com/v1/accounts:createAuthUri?key=${apiKey}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            identifier: cleanEmail,
-            continueUri: window.location.origin,
-          }),
-        }
-      )
-      const data = await res.json()
-      if (data.registered && data.allProviders?.includes('password')) {
+      const exists = await isEmailRegistered(cleanEmail)
+      if (exists) {
         setStep('password')
       } else {
         router.push(
