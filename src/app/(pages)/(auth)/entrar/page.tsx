@@ -47,6 +47,7 @@ function EntrarForm() {
 
     verifierRef.current = new RecaptchaVerifier(auth, 'sign-in-button', {
       size: 'invisible',
+      siteKey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!,
       callback: (token: string) => {
         console.log('✅ reCAPTCHA resolvido, token:', token);
       },
