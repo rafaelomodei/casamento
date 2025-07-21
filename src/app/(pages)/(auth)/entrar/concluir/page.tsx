@@ -18,7 +18,7 @@ function CadastroForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callback = searchParams.get('callback') || '/'
-  const email = searchParams.get('email') || ''
+  const email = (searchParams.get('email') || '').trim().toLowerCase()
   useRedirectIfLoggedIn(callback)
   const { signIn } = useAuth()
 

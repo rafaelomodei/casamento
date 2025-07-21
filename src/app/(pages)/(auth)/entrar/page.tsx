@@ -43,14 +43,15 @@ function EntrarForm() {
 
     setIsLoading(true)
     setError('')
+    const cleanEmail = email.trim().toLowerCase()
     try {
-      const methods = await fetchSignInMethodsForEmail(auth, email)
-      if (methods.length === 0) {
-        router.push(
-          `/entrar/concluir?callback=${encodeURIComponent(callback)}&email=${encodeURIComponent(email)}`
-        )
-      } else {
+      const methods = await fetchSignInMethodsForEmail(auth, cleanEmail)
+      if (methods.includes('password')) {
         setStep('password')
+      } else {
+        router.push(
+          `/entrar/concluir?callback=${encodeURIComponent(callback)}&email=${encodeURIComponent(cleanEmail)}`
+        )
       }
     } catch {
       setError('Não foi possível verificar o e-mail.')
@@ -65,8 +66,9 @@ function EntrarForm() {
 
     setIsLoading(true)
     setError('')
+    const cleanEmail = email.trim().toLowerCase()
     try {
-      const cred = await signInWithEmailAndPassword(auth, email, password)
+      const cred = await signInWithEmailAndPassword(auth, cleanEmail, password)
       const token = await cred.user.getIdToken()
       const res = await fetch(`/api/users?id=${cred.user.uid}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -83,7 +85,7 @@ function EntrarForm() {
         router.push(callback)
       } else {
         router.push(
-          `/entrar/concluir?callback=${encodeURIComponent(callback)}&email=${encodeURIComponent(email)}`
+          `/entrar/concluir?callback=${encodeURIComponent(callback)}&email=${encodeURIComponent(cleanEmail)}`
         )
       }
     } catch (err: any) {
@@ -91,7 +93,7 @@ function EntrarForm() {
         setError('Senha incorreta.')
       } else if (err.code === 'auth/user-not-found') {
         router.push(
-          `/entrar/concluir?callback=${encodeURIComponent(callback)}&email=${encodeURIComponent(email)}`
+          `/entrar/concluir?callback=${encodeURIComponent(callback)}&email=${encodeURIComponent(cleanEmail)}`
         )
       } else {
         setError('Não foi possível entrar.')
@@ -135,7 +137,7 @@ function EntrarForm() {
           </Link>
           <h1 className='text-2xl'>Entrar</h1>
           <p className='text-sm text-muted-foreground'>
-            Digite seu e-mail abaixo. Se ainda não tiver cadastro, vamos criar um para você automaticamente.
+            Informe seu e-mail abaixo. Se for sua primeira vez, criaremos sua conta após você definir uma senha.
           </p>
           {step === 'email' ? (
             <form onSubmit={handleEmailSubmit} className='flex flex-col gap-4 w-full'>
