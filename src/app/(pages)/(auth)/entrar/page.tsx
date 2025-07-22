@@ -1,6 +1,5 @@
 'use client';
 
-import Script from 'next/script';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useEffect, useRef, Suspense } from 'react';
 import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
@@ -14,12 +13,13 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatPhone, isValidPhone } from '@/lib/utlils/phone';
+import Script from 'next/script';
 
 export default function EntrarPage() {
   return (
     <>
-      <script src='https://www.google.com/recaptcha/enterprise.js?render=6LcJ1YorAAAAAMGkM1N7dW440u2VdYbiWen4XCpR'></script>
       <Suspense fallback={null}>
+        <Script src='https://www.google.com/recaptcha/enterprise.js?render=6LcJ1YorAAAAAMGkM1N7dW440u2VdYbiWen4XCpR'></Script>
         <EntrarForm />
       </Suspense>
     </>
