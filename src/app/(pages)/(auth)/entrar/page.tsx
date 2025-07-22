@@ -18,10 +18,7 @@ import { formatPhone, isValidPhone } from '@/lib/utlils/phone';
 export default function EntrarPage() {
   return (
     <>
-      <Script
-        src='https://www.google.com/recaptcha/api.js?render=explicit'
-        strategy='afterInteractive'
-      />
+      <script src='https://www.google.com/recaptcha/enterprise.js?render=6LcJ1YorAAAAAMGkM1N7dW440u2VdYbiWen4XCpR'></script>
       <Suspense fallback={null}>
         <EntrarForm />
       </Suspense>
