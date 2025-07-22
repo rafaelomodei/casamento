@@ -52,6 +52,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // ignore
     }
     try {
+      sessionStorage.removeItem('verificationId')
+    } catch {
+      // ignore
+    }
+    try {
       if (auth) firebaseSignOut(auth)
     } catch {
       // ignore
