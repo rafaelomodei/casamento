@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState, useEffect, useRef } from 'react';
+import { Suspense, useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   PhoneAuthProvider,
@@ -58,15 +58,7 @@ function CodigoForm() {
     return () => clearInterval(id);
   }, [secondsLeft]);
 
-  useEffect(() => {
-    if (code.length === length) {
-      verify();
-    } else {
-      setError(false);
-    }
-  }, [code, verify]);
-
-  function verify() {
+  const verify = useCallback(() => {
     if (isLoading || code.length !== length || !auth || !appFirebase) return;
     setIsLoading(true);
     setError(false);
@@ -102,7 +94,15 @@ function CodigoForm() {
       .finally(() => {
         setIsLoading(false);
       });
-  }
+  }, [isLoading, code, auth, appFirebase, verificationId, router, callback, signIn]);
+
+  useEffect(() => {
+    if (code.length === length) {
+      verify();
+    } else {
+      setError(false);
+    }
+  }, [code, verify]);
 
   function handleResend() {
     if (!auth || !verifierRef.current) return;
