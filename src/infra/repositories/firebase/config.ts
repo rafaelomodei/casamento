@@ -33,6 +33,13 @@ export const auth: Auth | undefined = (() => {
 
   const instance = getAuth(appFirebase);
   setPersistence(instance, browserLocalPersistence).catch(() => {});
+  if (process.env.NODE_ENV !== 'production') {
+    try {
+      instance.settings.appVerificationDisabledForTesting = true;
+    } catch {
+      /* noop */
+    }
+  }
   return instance;
 })();
 
