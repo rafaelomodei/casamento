@@ -9,6 +9,7 @@ import Gift, { GiftHandle } from '@/components/IconsAnimated/Gift/Gift';
 import { useRef } from 'react';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import { buildInfinityPayUrl } from '@/lib/utlils/infinityPay';
+import { useAuth } from '@/Providers/auth-provider';
 
 interface Props {
   product: ProductDTO;
@@ -25,6 +26,9 @@ export function ProductDesktopPage({
   const images =
     product.images && product.images.length > 0 ? product.images : [fallback];
   const giftRef = useRef<GiftHandle>(null);
+
+  const { user } = useAuth();
+
   const { requireAuth, dialog } = useAuthRequired();
   const loginMessage =
     'Para dar este presente, você precisa estar logado.\nClique em Entrar ou crie sua conta em poucos segundos e volte aqui para concluir sua contribuição para Maria Eduarda & Rafael.';
@@ -132,7 +136,8 @@ export function ProductDesktopPage({
             disabled={product.status === 'gifted'}
             onClick={() => {
               if (requireAuth(loginMessage)) {
-                const base = process.env.NEXT_PUBLIC_INFINITYPAY_CHECKOUT_BASE_URL;
+                const base =
+                  process.env.NEXT_PUBLIC_INFINITYPAY_CHECKOUT_BASE_URL;
                 if (!base) return;
                 giftRef.current?.click();
                 const redirectUrl = `${window.location.origin}/presenteado?id=${product.id}`;
@@ -140,6 +145,8 @@ export function ProductDesktopPage({
                   baseUrl: base,
                   name: product.title,
                   price: product.price,
+                  userName: user?.name ?? '',
+                  userPhone: user?.phone ?? '',
                   redirectUrl,
                 });
                 window.location.href = url;
@@ -149,7 +156,9 @@ export function ProductDesktopPage({
             <div className='mb-6'>
               <Gift ref={giftRef} />
             </div>
-            {product.status === 'gifted' ? 'Presente já adquirido' : 'Dar este presente'}
+            {product.status === 'gifted'
+              ? 'Presente já adquirido'
+              : 'Dar este presente'}
           </Button>
           {product.status === 'gifted' && (
             <p className='text-destructive'>Este presente já foi comprado.</p>
