@@ -145,8 +145,8 @@ export function ProductDesktopPage({
                   baseUrl: base,
                   name: product.title,
                   price: product.price,
-                  userName: user?.name ?? '',
-                  userPhone: user?.phone ?? '',
+                  userName: user?.name || '',
+                  userPhone: user?.phone || '',
                   redirectUrl,
                 });
                 window.location.href = url;
