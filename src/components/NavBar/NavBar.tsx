@@ -12,7 +12,7 @@ import { usePathname } from 'next/navigation';
 const NavBar = () => {
   const { user } = useAuth();
   const pathname = usePathname();
-  const isAuthPage = pathname.startsWith('/entrar') || pathname.startsWith('/codigo');
+  const isAuthPage = pathname.startsWith('/entrar');
 
   if (isAuthPage) return null;
 

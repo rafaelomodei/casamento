@@ -7,7 +7,6 @@ import { GetProductBySlugUseCase } from '@/domain/products/useCases/getProductBy
 import { UpdateProductUseCase } from '@/domain/products/useCases/updateProduct/UpdateProductUseCase';
 import { DeleteProductUseCase } from '@/domain/products/useCases/deleteProduct/DeleteProductUseCase';
 import { productRepository } from '@/infra/repositories/firebase/ProductServerFirebaseRepositories';
-import { verifyIdToken } from '@/infra/repositories/firebase/admin';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -44,18 +43,6 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const token = authHeader.split(' ')[1];
-    try {
-      await verifyIdToken(token);
-    } catch {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const data = (await req.json()) as ProductDTO;
     const createProduct = new CreateProductUseCase(productRepository);
     await createProduct.execute(data);

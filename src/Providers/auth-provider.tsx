@@ -1,10 +1,9 @@
 'use client'
 
 import React from 'react'
-import { signOut as firebaseSignOut } from 'firebase/auth'
-import { auth } from '@/infra/repositories/firebase/config'
 
 export interface User {
+  id: string;
   name: string;
   avatar: string;
   phone: string;
@@ -26,7 +25,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY)
+      const stored = sessionStorage.getItem(STORAGE_KEY)
       if (stored) {
         setUser(JSON.parse(stored) as User)
       }
@@ -38,7 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signIn = React.useCallback((u: User) => {
     setUser(u)
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(u))
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(u))
     } catch {
       // ignore
     }
@@ -47,17 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = React.useCallback(() => {
     setUser(null)
     try {
-      localStorage.removeItem(STORAGE_KEY)
-    } catch {
-      // ignore
-    }
-    try {
-      sessionStorage.removeItem('verificationId')
-    } catch {
-      // ignore
-    }
-    try {
-      if (auth) firebaseSignOut(auth)
+      sessionStorage.removeItem(STORAGE_KEY)
     } catch {
       // ignore
     }
