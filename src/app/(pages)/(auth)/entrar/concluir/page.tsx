@@ -7,14 +7,14 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import PageBreadcrumb from '@/components/PageBreadcrumb'
 import { cn } from '@/lib/utils'
-import { useAuth } from '@/Providers/auth-provider'
+import { useAuth, User } from '@/Providers/auth-provider'
 import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn'
-import { auth } from '@/infra/repositories/firebase/config'
 
 function CadastroForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callback = searchParams.get('callback') || '/'
+  const phone = searchParams.get('phone') || ''
   useRedirectIfLoggedIn(callback);
   const { signIn } = useAuth()
 
@@ -39,25 +39,26 @@ function CadastroForm() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     if (!isFormValid) return
-    const phone = auth?.currentUser?.phoneNumber || ''
-    signIn({ name, avatar, phone, sex })
-    const token = await auth?.currentUser?.getIdToken()
-    fetch('/api/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token ? `Bearer ${token}` : '',
-      },
-      body: JSON.stringify({
-        name,
-        avatar,
-        sex,
-        phone,
-        downloads: 0,
-      }),
-    }).finally(() => {
+    try {
+      const res = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          avatar,
+          sex,
+          phone,
+          downloads: 0,
+        }),
+      })
+      const user = (await res.json()) as User
+      signIn(user)
       router.push(callback)
-    })
+    } catch (err) {
+      console.error('Erro ao criar usuário:', err)
+    }
   }
 
   return (

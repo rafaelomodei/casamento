@@ -32,7 +32,7 @@ export default function MobileSidebar({ items }: MobileSidebarProps) {
   const { user, signOut } = useAuth();
   const { setOpenMobile } = useSidebar();
   const pathname = usePathname();
-  const isAuthPage = pathname.startsWith('/entrar') || pathname.startsWith('/codigo');
+  const isAuthPage = pathname.startsWith('/entrar');
   const displayName = user ? capitalizeWords(user.name) : '';
 
   return (

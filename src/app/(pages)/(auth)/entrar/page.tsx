@@ -1,9 +1,7 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useEffect, useRef, Suspense } from 'react';
-import { RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
-import { auth as importedAuth } from '@/infra/repositories/firebase/config';
+import { useState, Suspense } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -13,82 +11,51 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatPhone, isValidPhone } from '@/lib/utlils/phone';
-import Script from 'next/script';
+import { useAuth, User } from '@/Providers/auth-provider';
 
 export default function EntrarPage() {
   return (
-    <>
-      <Suspense fallback={null}>
-        <Script src='https://www.google.com/recaptcha/enterprise.js?render=6LcJ1YorAAAAAMGkM1N7dW440u2VdYbiWen4XCpR'></Script>
-        <EntrarForm />
-      </Suspense>
-    </>
+    <Suspense fallback={null}>
+      <EntrarForm />
+    </Suspense>
   );
 }
 
 function EntrarForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { signIn } = useAuth();
   const [phoneDigits, setPhoneDigits] = useState('');
   const phone = formatPhone(phoneDigits);
   const isValid = isValidPhone(phoneDigits);
   const [isLoading, setIsLoading] = useState(false);
   const isMobile = useIsMobile();
   const callback = searchParams.get('callback') || '/';
-  const verifierRef = useRef<RecaptchaVerifier | null>(null);
 
-  const auth = importedAuth;
-
-  useEffect(() => {
-    if (!auth || verifierRef.current) return;
-
-    verifierRef.current = new RecaptchaVerifier(auth, 'sign-in-button', {
-      size: 'invisible',
-      siteKey: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!,
-      callback: (token: string) => {
-        console.log('✅ reCAPTCHA resolvido, token:', token);
-      },
-      'expired-callback': () => {
-        console.warn('⚠️ reCAPTCHA expirou');
-      },
-    });
-
-    verifierRef.current
-      .render()
-      .then((widgetId) => {
-        window.recaptchaWidgetId = widgetId;
-        console.log('🔧 reCAPTCHA renderizado, widgetId=', widgetId);
-      })
-      .catch((err) => {
-        console.error('❌ Erro ao renderizar reCAPTCHA:', err);
-      });
-  }, [auth]);
-
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!isValid || !auth || !verifierRef.current || isLoading) return;
-
+    if (!isValid || isLoading) return;
     setIsLoading(true);
-    signInWithPhoneNumber(auth, `+55${phoneDigits}`, verifierRef.current)
-      .then((result) => {
-        sessionStorage.setItem('verificationId', result.verificationId);
+    try {
+      const res = await fetch(
+        `/api/users?phone=${encodeURIComponent(phoneDigits)}`
+      );
+      if (res.ok) {
+        const user = (await res.json()) as User;
+        signIn(user);
+        router.push(callback);
+      } else if (res.status === 404) {
         router.push(
-          `/codigo?callback=${encodeURIComponent(
+          `/entrar/concluir?callback=${encodeURIComponent(
             callback
           )}&phone=${encodeURIComponent(phoneDigits)}`
         );
-      })
-      .catch((error) => {
-        console.error('❌ Erro signInWithPhoneNumber:', error);
-        const grecaptcha = window.grecaptcha;
-        const widgetId = window.recaptchaWidgetId;
-        if (grecaptcha && widgetId != null) {
-          grecaptcha.reset(widgetId);
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      } else {
+        console.error('Erro ao verificar telefone');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   function handlePhoneKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -169,7 +136,6 @@ function EntrarForm() {
             </div>
 
             <Button
-              id='sign-in-button'
               className='w-full'
               type='submit'
               disabled={!isValid || isLoading}
@@ -184,7 +150,6 @@ function EntrarForm() {
               )}
             </Button>
 
-            <div id='recaptcha-container' />
           </form>
         </div>
       </div>

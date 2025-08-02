@@ -9,7 +9,6 @@ import { ProductCard } from '@/components/ProductCard/ProductCard';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { formatCurrencyInput } from '@/lib/utlils/currency';
 import { isValidImage } from '@/lib/utlils/image';
-import { auth } from '@/infra/repositories/firebase/config';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 
 export default function AdicionarNovoPresentePage() {
@@ -99,12 +98,10 @@ export default function AdicionarNovoPresentePage() {
     e.preventDefault();
     setLoading(true);
     try {
-      const token = await auth?.currentUser?.getIdToken();
       await fetch('/api/products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: token ? `Bearer ${token}` : '',
         },
         body: JSON.stringify({
           slug,
