@@ -16,9 +16,20 @@ export function buildInfinityPayUrl({
   redirectUrl,
 }: InfinityPayOptions): string {
   if (!baseUrl) return '';
-  const formattedName = name.trim().replace(/\s+/g, '+');
-  const items = `[{"name":"${formattedName}","price":${Math.round(
-    price * 100
-  )},"quantity":1}]`;
-  return `${baseUrl}?items=${items}&customer_name=${userName}&customer_cellphone=${userPhone}&redirect_url=${redirectUrl}`;
+
+  const cents = Math.max(1, Math.round(Number(price) * 100));
+
+  const itemsJson = JSON.stringify([
+    { name: name.trim(), price: cents, quantity: 1 },
+  ]);
+
+  const phone = (userPhone || '').replace(/\D/g, '');
+
+  const qs = new URLSearchParams();
+  qs.set('items', itemsJson);
+  qs.set('customer_name', userName || '');
+  if (phone) qs.set('customer_cellphone', phone);
+  qs.set('redirect_url', redirectUrl);
+
+  return `${baseUrl}?${qs.toString()}#payment`;
 }
