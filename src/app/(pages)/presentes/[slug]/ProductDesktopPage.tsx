@@ -148,6 +148,7 @@ export function ProductDesktopPage({
                   userName: user?.name || '',
                   userPhone: user?.phone || '',
                   redirectUrl,
+                  orderNsu: crypto.randomUUID?.() ?? String(Date.now()),
                 });
                 window.location.href = url;
               }

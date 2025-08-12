@@ -101,6 +101,7 @@ export function ProductMobilePage({ product }: Props) {
               userName: user?.name || '',
               userPhone: user?.phone || '',
               redirectUrl: `${window.location.origin}/presenteado?id=${product.id}`,
+              orderNsu: crypto.randomUUID?.() ?? String(Date.now()),
             });
             window.location.href = url;
           }

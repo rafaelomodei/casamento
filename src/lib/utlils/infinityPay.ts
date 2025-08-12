@@ -5,8 +5,8 @@ export interface InfinityPayOptions {
   userName: string;
   userPhone: string;
   redirectUrl: string;
-  customerEmail?: string;
   orderNsu?: string;
+  customerEmail?: string;
 }
 
 export function buildInfinityPayUrl({
@@ -16,21 +16,26 @@ export function buildInfinityPayUrl({
   userName,
   userPhone,
   redirectUrl,
-  customerEmail,
   orderNsu,
+  customerEmail,
 }: InfinityPayOptions): string {
   if (!baseUrl) return '';
 
-  const amount = Math.max(1, Math.round(Number(price) * 100));
-  const items = JSON.stringify([{ name: name.trim(), amount, quantity: 1 }]);
+  const base = baseUrl.replace(/\/+$/, '');
+  const cents = Math.max(1, Math.round(Number(price) * 100));
+
+  const items = JSON.stringify([
+    { name: name.trim(), price: cents, quantity: 1 },
+  ]);
 
   const qs = new URLSearchParams();
   qs.set('items', items);
-  if (orderNsu) qs.set('order_nsu', orderNsu);
   qs.set('redirect_url', redirectUrl);
   qs.set('customer_name', userName || '');
-  qs.set('customer_cellphone', (userPhone || '').replace(/\D/g, ''));
+  const phone = (userPhone || '').replace(/\D/g, '');
+  if (phone) qs.set('customer_cellphone', phone);
   if (customerEmail) qs.set('customer_email', customerEmail);
+  if (orderNsu) qs.set('order_nsu', orderNsu);
 
-  return `${baseUrl}?${qs.toString()}#payment`;
+  return `${base}?${qs.toString()}#payment`;
 }
