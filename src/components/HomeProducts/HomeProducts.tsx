@@ -31,7 +31,7 @@ export default function HomeProducts() {
       return (
         <div className='flex flex-wrap gap-8'>
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className='flex w-full md:flex-1/3'>
+            <div key={i} className='flex w-full md:flex-1/2'>
               <ProductCardSkeleton classNameCard='w-full' />
             </div>
           ))}
@@ -46,7 +46,7 @@ export default function HomeProducts() {
     return (
       <div className='flex flex-wrap gap-8'>
         {products.map((product) => (
-          <div key={product.id} className='flex w-full md:flex-1/3'>
+          <div key={product.id} className='flex-wrap gap-2'>
             <ProductCard
               slug={product.slug}
               images={product.images}
