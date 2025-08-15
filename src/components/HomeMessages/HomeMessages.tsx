@@ -72,22 +72,38 @@ export default function HomeMessages() {
 
   return (
     <section className='flex flex-col w-full py-8'>
-      <p className='text-2xl'>Mensagens</p>
-      {renderContent()}
-      <div className='flex flex-col sm:flex-row gap-2 w-full mt-4'>
-        <Link
-          href='/mensagens?modal=1'
-          className=' text-primary border-primary border text-center rounded-sm text-lg py-2 p-4'
-        >
-          Deixar uma mensagem
-        </Link>
-        <Link
-          href='/mensagens'
-          className='bg-primary text-white text-center rounded-sm text-lg py-2 px-4'
-        >
-          Ver todas as mensagens
-        </Link>
+      <div className='text-center mb-16'>
+        <div className='flex items-center justify-center gap-3 mb-6'>
+          <h2 className='text-4xl md:text-5xl text-primary'>Mensagens</h2>
+        </div>
+
+        <div className='max-w-2xl mx-auto'>
+          <p
+            className='text-xl text-primary/70 mb-6'
+            style={{ fontFamily: 'var(--font-arapey)', fontStyle: 'italic' }}
+          >
+            Nossa felicidade é ainda maior quando compatilhada! te esperamos
+            para celebrar com a gente!
+          </p>
+
+          <div className='flex items-center justify-center gap-8'>
+            <Link
+              href='/mensagens?modal=1'
+              className=' text-primary border-primary border text-center rounded-sm text-lg py-2 p-4'
+            >
+              Deixar uma mensagem
+            </Link>
+            <Link
+              href='/mensagens'
+              className='bg-primary text-white text-center rounded-sm text-lg py-2 px-4'
+            >
+              Ver todas as mensagens
+            </Link>
+          </div>
+        </div>
       </div>
+
+      {renderContent()}
     </section>
   );
 }

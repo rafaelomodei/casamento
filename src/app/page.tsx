@@ -1,6 +1,5 @@
 import Countdown from '@/components/Countdown/Countdown';
 import HomeProducts from '@/components/HomeProducts/HomeProducts';
-import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
 import HomeMessages from '@/components/HomeMessages/HomeMessages';
 
 import { BRIDE_AND_GROOM } from '@/lib/constants';
@@ -14,6 +13,8 @@ import {
   Navigation,
   Sparkles,
   Users,
+  Mars,
+  Venus,
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent } from '@/components/ui/card';
@@ -90,18 +91,15 @@ export default function Home() {
           />
         </div>
       </section>
+      <Separator orientation='horizontal' className='h-4' />
 
       <HomeMessages />
+      <Separator orientation='horizontal' className='h-4' />
 
       <section id='cerimonia' className='flex flex-col w-full py-8'>
         <div className='text-center mb-16'>
           <div className='flex items-center justify-center gap-3 mb-6'>
-            <h2
-              className='text-4xl md:text-5xl text-primary'
-              style={{ fontFamily: 'var(--font-arapey)' }}
-            >
-              Festa
-            </h2>
+            <h2 className='text-4xl md:text-5xl text-primary'>Festa</h2>
           </div>
 
           <div className='max-w-2xl mx-auto'>
@@ -363,11 +361,9 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Mapa/Imagem da Igreja */}
                 <div className='w-sm md:w-xl lg:w-5xl'>
                   <div className='relative group cursor-pointer'>
                     <div className='aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
-                      {/* Usando uma imagem placeholder de uma igreja */}
                       <Image
                         src={'/png/mapaIgreja.png'}
                         alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
@@ -375,8 +371,6 @@ export default function Home() {
                         height={360}
                         width={520}
                       />
-
-                      {/* Overlay com ícone de mapa */}
                       <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
                         <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
                           <MapPin className='w-8 h-8 text-primary' />
@@ -398,6 +392,9 @@ export default function Home() {
       </section>
 
       <HomeProducts />
+
+      <Separator className='my-8' />
+
       <section className='flex flex-col w-full py-8 gap-8'>
         <div className='text-center mb-16'>
           <div className='flex items-center justify-center gap-3 mb-6'>
@@ -457,148 +454,342 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Madrinhas */}
-        <div className='flex flex-col md:flex-row gap-6'>
-          <div className='flex flex-col gap-4 md:w-1/2'>
-            <h2 className='text-xl font-semibold'>Madrinhas</h2>
-            <h3 className='italic'>Sintam-se lindas e cheias de charme</h3>
+        <div className='flex w-full'>
+          <Card className='overflow-hidden shadow-none watercolor-texture border-none pt-8 w-full'>
+            <CardContent className='space-y-8'>
+              <div className='flex flex-col w-full items-center lg:flex-row gap-8'>
+                <div className='flex flex-col gap-8 w-full'>
+                  <div className='space-y-4 text-primary'>
+                    <div>
+                      <div className='flex gap-2'>
+                        <Venus className='w-8 h-8' />
+                        <p className='text-3xl md:text-4xl text-primary font-normal'>
+                          Madrinhas
+                        </p>
+                      </div>
 
-            <div className='flex flex-col gap-2'>
-              <p className='font-semibold'>Guia de Estilo</p>
-              <ul className='list-disc list-inside'>
-                <li>Comprimento: longo (até o calcanhar)</li>
-                <li>Tecidos: fluidos, sem pedrarias nem brilhos</li>
-              </ul>
+                      <p className='text-lg text-primary/70 italic'>
+                        Sintam-se lindas e cheias de charme
+                      </p>
+                    </div>
 
-              <p className='font-semibold mt-2'>Paleta de cores</p>
-              <ul className='flex flex-col sm:flex-row gap-2'>
-                <li>💗 Fúcsia vibrante</li>
-                <li>💗 Rosa médio</li>
-                <li>💗 Rosa claro</li>
-              </ul>
+                    <div>
+                      <div className='flex items-center gap-2'>
+                        <div className='w-1 h-6 bg-secondary rounded-full'></div>
+                        <h4 className='text-2xl text-primary'>
+                          Guia de Estilo
+                        </h4>
+                      </div>
 
-              <p className='font-semibold mt-2'>Cores proibidas</p>
-              <ul className='list-disc list-inside'>
-                <li>✕ Branco puro ou off-white</li>
-                <li>
-                  ✕ Tons de bege, creme ou nude (reservados aos convidados)
-                </li>
-              </ul>
+                      <div className='flex flex-col text-lg'>
+                        <p>👗 Comprimento: longo (até o calcanhar)</p>
+                        <p>✨ Tecidos: fluidos, sem pedrarias nem brilhos</p>
+                        <p>💫 Corte: elegante e clássico</p>
+                        <p>💍 Acessórios: delicados e discretos</p>
+                      </div>
+                    </div>
 
-              <p className='font-semibold mt-4'>Dicas de Comportamento</p>
-              <ul className='list-disc list-inside'>
-                <li>⏰ Chegue com antecedência</li>
-                <li>📷 Evite ficar no corredor durante a cerimônia</li>
-                <li>🎉 Aproveite cada momento (sem atrapalhar fotógrafos)</li>
-              </ul>
-            </div>
-          </div>
+                    <div>
+                      <div className='flex items-center gap-2'>
+                        <div className='w-1 h-6 bg-secondary rounded-full'></div>
+                        <h4 className='text-2xl text-primary'>
+                          Paleta de Cores
+                        </h4>
+                      </div>
 
-          <div className='flex flex-col gap-2 md:w-1/2'>
-            <p className='font-semibold'>Inspire-se</p>
-            <ImageCarousel
-              images={[
-                '/png/preWedding/DSC03183.jpg',
-                '/png/preWedding/DSC03184.jpg',
-                '/png/preWedding/DSC03190.jpg',
-                '/png/preWedding/DSC03198.jpg',
-              ]}
-              alt='Referências para madrinhas'
-              className='h-64 w-full'
-              showIndicators
-            />
-          </div>
+                      <div className='flex flex-col pl-4 text-lg'>
+                        <p>Rosa</p>
+                      </div>
+                    </div>
+                    <div>
+                      <div className='flex items-center gap-2'>
+                        <div className='w-1 h-6 bg-red-700 rounded-full'></div>
+                        <h4 className='text-2xl text-primary'>
+                          Cores que devem ser evitadas
+                        </h4>
+                      </div>
+
+                      <div className='flex flex-col pl-4 text-lg'>
+                        <p>❌ Branco puro ou off-white</p>
+                        <p>❌ Off-white</p>
+                        <p>❌ Tons de bege</p>
+                        <p>❌ Creme</p>
+                        <p>❌ Nude</p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className='flex items-center gap-2'>
+                        <div className='w-1 h-6 bg-secondary rounded-full'></div>
+                        <h4 className='text-2xl text-primary'>
+                          Dicas de Comportamento
+                        </h4>
+                      </div>
+
+                      <div className='flex flex-col pl-4 text-lg'>
+                        <p>⏰ Chegue com antecedência para fotos especiais</p>
+                        <p>📷 Evite ficar no corredor durante a cerimônia</p>
+                        <p>
+                          🎉 Aproveite cada momento (sem atrapalhar fotógrafos)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='w-sm md:w-xl lg:w-5xl'>
+                  <div className='relative group cursor-pointer'>
+                    <div className='flex flex-col w-full items-center justify-center mb-4'>
+                      <div className='flex gap-2'>
+                        <Sparkles className='w-5 h-5 text-secondary' />
+                        <h4
+                          className='text-lg text-secondary'
+                          style={{ fontFamily: 'var(--font-title)' }}
+                        >
+                          Inspire-se
+                        </h4>
+                        <Sparkles className='w-5 h-5 text-secondary' />
+                      </div>
+                      <p className='text-primary'>
+                        Looks inspiradores para o grande dia
+                      </p>
+                    </div>
+
+                    <div className='aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
+                      <Image
+                        src={'/png/mapaIgreja.png'}
+                        alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
+                        className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'
+                        height={360}
+                        width={520}
+                      />
+                      <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
+                        <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
+                          <MapPin className='w-8 h-8 text-primary' />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Separator className='my-8' />
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Padrinhos */}
-        <div className='flex flex-col md:flex-row gap-6'>
-          <div className='flex flex-col gap-4 md:w-1/2'>
-            <div className='flex flex-col gap-2'>
-              <p className='font-semibold'>Guia de Traje</p>
-              <ul className='list-disc list-inside'>
-                <li>Terno: cinza chumbo (corte slim ou reto)</li>
-                <li>Camisa: branca, sem estampas</li>
-                <li>Gravata: prata suave</li>
-                <li>Sapato: social preto, bem lustrado</li>
-              </ul>
+        <div className='flex w-full'>
+          <Card className='overflow-hidden shadow-none watercolor-texture border-none pt-8 w-full'>
+            <CardContent className='space-y-8'>
+              <div className='flex flex-col w-full items-center lg:flex-row gap-8'>
+                <div className='flex flex-col gap-8 w-full'>
+                  <div className='space-y-4 text-primary'>
+                    <div>
+                      <div className='flex gap-2'>
+                        <Mars className='w-8 h-8' />
+                        <p className='text-3xl md:text-4xl text-primary font-normal'>
+                          Padrinhos
+                        </p>
+                      </div>
 
-              <p className='font-semibold mt-2'>Paleta de Cores</p>
-              <ul className='flex flex-col sm:flex-row gap-2'>
-                <li>🔷 Cinza chumbo</li>
-                <li>🔷 Branco</li>
-                <li>🔷 Prata</li>
-              </ul>
+                      <p className='text-lg text-primary/70 italic'>
+                        Elegância é a palavra-chave
+                      </p>
+                    </div>
 
-              <p className='font-semibold mt-4'>Dicas de Comportamento</p>
-              <ul className='list-disc list-inside'>
-                <li>⏰ Esteja pronto 15 min antes</li>
-                <li>📷 Dê espaço ao fotógrafo</li>
-                <li>🎉 Curta o momento junto aos noivos</li>
-              </ul>
-            </div>
-          </div>
+                    <div>
+                      <div className='flex items-center gap-2'>
+                        <div className='w-1 h-6 bg-secondary rounded-full'></div>
+                        <h4 className='text-2xl text-primary'>Guia de Traje</h4>
+                      </div>
 
-          <div className='flex flex-col gap-2 md:w-1/2'>
-            <p className='font-semibold'>Inspire-se</p>
-            <ImageCarousel
-              images={[
-                '/png/preWedding/DSC03208.jpg',
-                '/png/preWedding/DSC03211.jpg',
-                '/png/preWedding/DSC03225.jpg',
-              ]}
-              alt='Referências para padrinhos'
-              className='h-64 w-full'
-              showIndicators
-            />
-          </div>
+                      <div className='flex flex-col text-lg'>
+                        <p>🤵 Terno: cinza chumbo (corte slim ou reto)</p>
+                        <p>👔 Camisa: branca, sem estampas</p>
+                        <p>👔 Gravata: prata suave ou tom sobre tom</p>
+                        <p>👞 Sapato: social preto, bem lustrado</p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className='flex items-center gap-2'>
+                        <div className='w-1 h-6 bg-secondary rounded-full'></div>
+                        <h4 className='text-2xl text-primary'>
+                          Paleta de Cores
+                        </h4>
+                      </div>
+
+                      <div className='flex flex-col pl-4 text-lg'>
+                        <p> Cinza chumbo</p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className='flex items-center gap-2'>
+                        <div className='w-1 h-6 bg-secondary rounded-full'></div>
+                        <h4 className='text-2xl text-primary'>
+                          Dicas de Comportamento
+                        </h4>
+                      </div>
+
+                      <div className='flex flex-col pl-4 text-lg'>
+                        <p>⏰ Chegue com antecedência </p>
+                        <p>📷 Dê espaço aos fotógrafos durante as fotos</p>
+                        <p>🎉 Curta o momento junto aos noivos</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='w-sm md:w-xl lg:w-5xl'>
+                  <div className='relative group cursor-pointer'>
+                    <div className='flex flex-col w-full items-center justify-center mb-4'>
+                      <div className='flex gap-2'>
+                        <Sparkles className='w-5 h-5 text-secondary' />
+                        <h4
+                          className='text-lg text-secondary'
+                          style={{ fontFamily: 'var(--font-title)' }}
+                        >
+                          Inspire-se
+                        </h4>
+                        <Sparkles className='w-5 h-5 text-secondary' />
+                      </div>
+                      <p className='text-primary'>
+                        Looks inspiradores para o grande dia
+                      </p>
+                    </div>
+
+                    <div className='aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
+                      <Image
+                        src={'/png/mapaIgreja.png'}
+                        alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
+                        className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'
+                        height={360}
+                        width={520}
+                      />
+                      <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
+                        <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
+                          <MapPin className='w-8 h-8 text-primary' />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Separator className='my-8' />
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Convidados */}
-        <div className='flex flex-col md:flex-row gap-6'>
-          <div className='flex flex-col gap-4 md:w-1/2'>
-            <h2 className='text-xl font-semibold'>Convidados</h2>
-            <h3 className='italic'>
-              Seja parte dessa festa com elegância e bom senso
-            </h3>
+        <div className='flex w-full'>
+          <Card className='overflow-hidden shadow-none watercolor-texture border-none pt-8 w-full'>
+            <CardContent className='space-y-8'>
+              <div className='flex flex-col w-full items-center lg:flex-row gap-8'>
+                <div className='flex flex-col gap-8 w-full'>
+                  <div className='space-y-4 text-primary'>
+                    <div>
+                      <div className='flex gap-2'>
+                        <Users className='w-8 h-8' />
+                        <p className='text-3xl md:text-4xl text-primary font-normal'>
+                          Convidados
+                        </p>
+                      </div>
 
-            <div className='flex flex-col gap-2'>
-              <p className='font-semibold'>Guia de Vestimenta</p>
-              <ul className='list-disc list-inside'>
-                <li>Homens: terno escuro ou social; camisa clara</li>
-                <li>
-                  Mulheres: vestidos ou terninhos em tons pastel ou escuros
-                </li>
-              </ul>
+                      <p className='text-lg text-primary/70 italic'>
+                        Sejam parte desta festa com elegância e bom senso
+                      </p>
+                    </div>
 
-              <p className='font-semibold mt-2'>Cores proibidas</p>
-              <ul className='list-disc list-inside'>
-                <li>⚪ Branco puro / off-white / bege / nude</li>
-              </ul>
+                    <div>
+                      <div className='flex items-center gap-2'>
+                        <div className='w-1 h-6 bg-secondary rounded-full'></div>
+                        <h4 className='text-2xl text-primary'>Guia de Traje</h4>
+                      </div>
 
-              <p className='font-semibold mt-4'>Dicas de Comportamento</p>
-              <ul className='list-disc list-inside'>
-                <li>⏰ Respeite os horários de chegada</li>
-                <li>📷 Não use flash nem fique no corredor</li>
-                <li>🤫 Mantenha o celular no silencioso</li>
-                <li>🥂 Brinde e divirta-se com educação</li>
-              </ul>
-            </div>
-          </div>
+                      <div className='flex flex-col text-lg'>
+                        <p>🤵 Traje social</p>
+                        <p>
+                          👗 Mulheres: vestidos ou terninhos em tons pastel ou
+                          escuros
+                        </p>
+                        <p>👠 Sapatos: confortáveis para dançar</p>
+                      </div>
+                    </div>
 
-          <div className='flex flex-col gap-2 md:w-1/2'>
-            <p className='font-semibold'>Inspire-se</p>
-            <ImageCarousel
-              images={[
-                '/png/preWedding/DSC03232.jpg',
-                '/png/preWedding/DSC03238.jpg',
-                '/png/preWedding/DSC03250.jpg',
-                '/png/preWedding/DSC03264.jpg',
-              ]}
-              alt='Referências para convidados'
-              className='h-64 w-full'
-              showIndicators
-            />
-          </div>
+                    <div>
+                      <div className='flex items-center gap-2'>
+                        <div className='w-1 h-6 bg-secondary rounded-full'></div>
+                        <h4 className='text-2xl text-primary'>
+                          Paleta de Cores
+                        </h4>
+                      </div>
+
+                      <div className='flex flex-col pl-4 text-lg'>
+                        <p> Cinza chumbo</p>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className='flex items-center gap-2'>
+                        <div className='w-1 h-6 bg-secondary rounded-full'></div>
+                        <h4 className='text-2xl text-primary'>
+                          Dicas de Comportamento
+                        </h4>
+                      </div>
+
+                      <div className='flex flex-col pl-4 text-lg'>
+                        <p>⏰ Respeitem os horários de chegada</p>
+                        <p>
+                          📷 Não usem flash nem fiquem no corredor durante a
+                          cerimônia
+                        </p>
+                        <p>🤫 Mantenham o celular no silencioso</p>
+                        <p>🥂 Brindem e divirtam-se com educação</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className='w-sm md:w-xl lg:w-5xl'>
+                  <div className='relative group cursor-pointer'>
+                    <div className='flex flex-col w-full items-center justify-center mb-4'>
+                      <div className='flex gap-2'>
+                        <Sparkles className='w-5 h-5 text-secondary' />
+                        <h4
+                          className='text-lg text-secondary'
+                          style={{ fontFamily: 'var(--font-title)' }}
+                        >
+                          Inspire-se
+                        </h4>
+                        <Sparkles className='w-5 h-5 text-secondary' />
+                      </div>
+                      <p className='text-primary'>
+                        Looks inspiradores para o grande dia
+                      </p>
+                    </div>
+
+                    <div className='aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
+                      <Image
+                        src={'/png/mapaIgreja.png'}
+                        alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
+                        className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'
+                        height={360}
+                        width={520}
+                      />
+                      <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
+                        <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
+                          <MapPin className='w-8 h-8 text-primary' />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <Separator className='my-8' />
+            </CardContent>
+          </Card>
         </div>
       </section>
     </main>
