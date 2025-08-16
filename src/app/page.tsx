@@ -24,7 +24,7 @@ export default function Home() {
   const weddingDate = new Date('September 27, 2025 16:00:00');
 
   return (
-    <main className='min-h-screen flex flex-col py-8  px-4  text-primary max-w-7xl'>
+    <main className='min-h-screen w-full max-w-7xl mx-auto flex flex-col py-8 px-6 text-primary'>
       <header className='flex h-screen'>
         <div className='flex flex-col w-full items-center justify-center'>
           <Image
@@ -32,6 +32,8 @@ export default function Home() {
             alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
             height={540}
             width={320}
+            className='w-full h-auto'
+            priority
           />
           <div className='flex flex-col items-center gap-4'>
             <div className='flex flex-col items-center'>
@@ -46,21 +48,22 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <section className='flex items-center justify-center'>
+      <section className='flex items-center justify-center w-full'>
         <p className='text-center text-xl md:text-3xl'>
           Sejam bem-vindos ao nosso site!
         </p>
       </section>
-      <section className='flex py-8 gap-12'>
+      <section className='flex w-full flex-col md:flex-row py-8 gap-12'>
         <div className='flex flex-col gap-4'>
           <p className='text-2xl'> Nossas história</p>
           <div className='md:hidden w-full max-w-container mx-auto mt-[1px]'>
             <Image
               src={'/png/preWedding/DSC03547.jpg'}
               alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
-              className='rounded-md'
+              className='rounded-md w-full h-auto'
               height={540}
               width={320}
+              sizes='100vw'
             />
           </div>
           <p>
@@ -81,13 +84,14 @@ export default function Home() {
             Continuar lendo
           </Link>
         </div>
-        <div className=' hidden md:flex  w-full max-w-container mx-auto mt-[1px]'>
+        <div className='hidden md:flex w-full max-w-container mx-auto mt-[1px]'>
           <Image
             src={'/png/preWedding/DSC03547.jpg'}
             alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
-            className='rounded-md'
+            className='rounded-md w-full h-auto'
             height={360}
             width={320}
+            sizes='320px'
           />
         </div>
       </section>
