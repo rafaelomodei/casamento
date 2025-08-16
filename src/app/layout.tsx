@@ -60,18 +60,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang='pt-br'
-      suppressHydrationWarning
-      className='flex flex-col items-center'
-    >
-      <body
-        className={`${arapey.className}
-          ${arbutus.variable}
-          ${poppins.variable}
-          ${arapey.className}
-      antialiased text-primary flex flex-col w-full justify-center items-center`}
-      >
+    <html lang='pt-br' suppressHydrationWarning>
+      <body className={`${arapey.className} ${arbutus.variable} ${poppins.variable} antialiased text-primary flex flex-col w-full overflow-x-hidden`}>
         <AuthProvider>
           <NavBar />
           {children}
