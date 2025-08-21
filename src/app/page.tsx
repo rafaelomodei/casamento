@@ -7,7 +7,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {
   Clock,
-  Beer,
   Heart,
   MapPin,
   Navigation,
@@ -445,7 +444,7 @@ export default function Home() {
                 <div className='flex flex-col gap-8 w-full'>
                   <div className='space-y-4'>
                     <div>
-                      <Venus className='w-8 h-8' />
+                      <Venus className='w-8 h-8 text-secondary' />
                       <p className='text-3xl md:text-4xl text-primary font-normal'>
                         Madrinhas
                       </p>
@@ -566,7 +565,7 @@ export default function Home() {
                 <div className='flex flex-col gap-8 w-full'>
                   <div className='space-y-4'>
                     <div>
-                      <Mars className='w-8 h-8' />
+                      <Mars className='w-8 h-8 text-secondary' />
                       <p className='text-3xl md:text-4xl text-primary font-normal'>
                         Padrinhos
                       </p>
@@ -667,7 +666,7 @@ export default function Home() {
                 <div className='flex flex-col gap-8 w-full'>
                   <div className='space-y-4'>
                     <div>
-                      <Mars className='w-8 h-8' />
+                      <Users className='w-8 h-8 text-secondary' />
                       <p className='text-3xl md:text-4xl text-primary font-normal'>
                         Convidados
                       </p>
