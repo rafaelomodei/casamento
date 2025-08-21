@@ -59,7 +59,7 @@ export default function Home() {
               alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
               className='rounded-md'
               height={540}
-              width={320}
+              width={343}
             />
           </div>
           <p>
@@ -538,16 +538,11 @@ export default function Home() {
 
                     <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
                       <Image
-                        src={'/png/mapaIgreja.png'}
-                        alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
+                        src={'/png/example/madrinhas.png'}
+                        alt='Exemplo de cor e modeo de vestido que as madrinhas devem ir'
                         className='object-cover transition-transform duration-500 group-hover:scale-105'
                         fill
                       />
-                      <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
-                        <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
-                          <MapPin className='w-8 h-8 text-primary' />
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -639,16 +634,11 @@ export default function Home() {
 
                     <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
                       <Image
-                        src={'/png/mapaIgreja.png'}
-                        alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
+                        src={'/png/example/padrinhos.png'}
+                        alt='Exemplo de cor e modeo de terno que os padrinhos devem ir'
                         className='object-cover transition-transform duration-500 group-hover:scale-105'
                         fill
                       />
-                      <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
-                        <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
-                          <MapPin className='w-8 h-8 text-primary' />
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
