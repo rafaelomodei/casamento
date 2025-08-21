@@ -111,7 +111,7 @@ export default function Home() {
               para celebrar com a gente!
             </p>
 
-            <div className='flex items-center justify-center gap-8'>
+            <div className='flex flex-wrap items-center justify-center gap-2'>
               <div className='flex items-center gap-2 text-muted-foreground'>
                 <Clock className='w-4 h-4' />
                 <span
@@ -147,9 +147,8 @@ export default function Home() {
 
         <div className='flex w-full'>
           <Card className='overflow-hidden shadow-none watercolor-texture border-none pt-8 w-full'>
-            <CardContent className='space-y-8'>
+            <CardContent className='flex flex-col w-full gap-8 p-0'>
               <div className='flex flex-col w-full items-center lg:flex-row gap-8'>
-                {/* Informações do Local */}
                 <div className='flex flex-col gap-8 w-full'>
                   <div className='space-y-4'>
                     <div>
@@ -197,21 +196,16 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-
-                {/* Mapa/Imagem da Igreja */}
-                <div className='w-sm md:w-xl lg:w-5xl'>
-                  <div className='relative group cursor-pointer'>
-                    <div className='aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
-                      {/* Usando uma imagem placeholder de uma igreja */}
+                <div className='w-xs md:w-xl lg:w-5xl'>
+                  <div className=' group cursor-pointer'>
+                    <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
                       <Image
                         src={'/png/mapaIgreja.png'}
                         alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
                         className='object-cover transition-transform duration-500 group-hover:scale-105'
-                        height={360}
-                        width={320}
+                        fill
                       />
 
-                      {/* Overlay com ícone de mapa */}
                       <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
                         <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
                           <MapPin className='w-8 h-8 text-primary' />
@@ -227,19 +221,17 @@ export default function Home() {
               </div>
 
               <Separator className='my-8' />
-
-              {/* Informações Adicionais */}
               <div className='rounded-2xl p-6'>
                 <div className='text-center space-y-4 text-primary'>
                   <div className='flex items-center justify-center gap-2 mb-4'>
-                    <Heart className='w-5 h-5 text-secondary' />
+                    <Heart className='w-10 h-10 md:w-5 md:h-5 text-secondary' />
                     <h4 className='text-3xl'>Informações Importantes</h4>
-                    <Heart className='w-5 h-5  text-secondary' />
+                    <Heart className='w-10 h-10 md:w-5 md:h-5  text-secondary' />
                   </div>
 
                   <div className='flex w-full justify-center gap-8'>
                     <div className='flex items-center gap-2 justify-center'>
-                      <Clock className='w-4 h-4  text-secondary' />
+                      <Clock className='w-10 h-10 md:w-4 md:h-4   text-secondary' />
                       <span className='text-xl underline'>
                         Chegada: 30 minutos antes na Cerimônia religiosa
                       </span>
@@ -253,6 +245,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 
       <section id='recepção' className='flex flex-col w-full py-8'>
         <div className='text-center mb-16'>
           <div className='flex items-center justify-center gap-3 mb-6'>
@@ -311,7 +304,6 @@ export default function Home() {
           <Card className='overflow-hidden shadow-none watercolor-texture border-none pt-8 w-full'>
             <CardContent className='space-y-8'>
               <div className='flex flex-col w-full items-center lg:flex-row gap-8'>
-                {/* Informações do Local */}
                 <div className='flex flex-col gap-8 w-full'>
                   <div className='space-y-4'>
                     <div>
@@ -389,12 +381,12 @@ export default function Home() {
             </CardContent>
           </Card>
         </div>
-      </section>
+      </section> */}
 
-      <HomeProducts />
+      {/* <HomeProducts />
 
-      <Separator className='my-8' />
-
+      <Separator className='my-8' /> */}
+      {/* 
       <section className='flex flex-col w-full py-8 gap-8'>
         <div className='text-center mb-16'>
           <div className='flex items-center justify-center gap-3 mb-6'>
@@ -791,7 +783,7 @@ export default function Home() {
             </CardContent>
           </Card>
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }

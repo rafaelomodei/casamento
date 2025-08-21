@@ -32,12 +32,6 @@ export default function PresentesPage() {
       <div className='flex flex-col w-col max-w-6xl gap-4 py-8 px-4'>
         <PageBreadcrumb />
         <h1 className='text-2xl'>Presentes</h1>
-        <Link
-          href='/presentes/adicionar-novo-presente'
-          className='self-start bg-primary text-white rounded-sm text-lg py-2 px-4'
-        >
-          Adicionar novo presente
-        </Link>
         <div className='flex flex-wrap gap-16'>
           {Array.from({ length: 6 }).map((_, i) => (
             <div

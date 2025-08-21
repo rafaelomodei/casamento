@@ -86,16 +86,16 @@ export default function HomeMessages() {
             para celebrar com a gente!
           </p>
 
-          <div className='flex items-center justify-center gap-8'>
+          <div className='flex flex-col md:flex-row items-center justify-center gap-8'>
             <Link
               href='/mensagens?modal=1'
-              className=' text-primary border-primary border text-center rounded-sm text-lg py-2 p-4'
+              className='flex w-full text-primary border-primary border text-center rounded-sm text-lg py-2 p-4'
             >
               Deixar uma mensagem
             </Link>
             <Link
               href='/mensagens'
-              className='bg-primary text-white text-center rounded-sm text-lg py-2 px-4'
+              className='flex w-full bg-primary text-white text-center rounded-sm text-lg py-2 px-4'
             >
               Ver todas as mensagens
             </Link>

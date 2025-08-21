@@ -67,7 +67,6 @@ const NavBar = () => {
           <MobileSidebar items={items} />
         </div>
       </main>
-
     </SidebarProvider>
   );
 };
