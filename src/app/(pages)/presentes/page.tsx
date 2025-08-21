@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
 import ProductCardSkeleton from '@/components/ProductCard/ProductCardSkeleton';
 import { ProductDTO } from '@/domain/products/entities/ProductDTO';
-import Link from 'next/link';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 
 export default function PresentesPage() {
