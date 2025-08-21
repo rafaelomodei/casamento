@@ -26,7 +26,7 @@ export function ProductCard(props: ProductProps) {
     <Link href={`/presentes/${slug}`} className='w-xs'>
       <Card
         className={cn(
-          'min-w-sm text-primary pt-0 relative transition border border-border bg-white shadow-none overflow-hidden rounded-md',
+          'min-w-[343px] text-primary pt-0 relative transition border border-border bg-white shadow-none overflow-hidden rounded-md',
           `hover:border-primary hover:ring-2 hover:ring-primary dark:hover:bg-muted/30 ${classNameCard}`
         )}
       >

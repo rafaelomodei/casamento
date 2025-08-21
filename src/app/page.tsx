@@ -196,6 +196,7 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
+
                 <div className='w-xs md:w-xl lg:w-5xl'>
                   <div className=' group cursor-pointer'>
                     <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
@@ -245,16 +246,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 
       <section id='recepção' className='flex flex-col w-full py-8'>
         <div className='text-center mb-16'>
           <div className='flex items-center justify-center gap-3 mb-6'>
-            <h2
-              className='text-4xl md:text-5xl text-primary'
-              style={{ fontFamily: 'var(--font-arapey)' }}
-            >
-              Recepção
-            </h2>
+            <h2 className='text-4xl md:text-5xl text-primary'>Recepção</h2>
           </div>
 
           <div className='max-w-2xl mx-auto'>
@@ -266,7 +261,7 @@ export default function Home() {
               Contamos com você para ser ainda mais especial.
             </p>
 
-            <div className='flex items-center justify-center gap-8'>
+            <div className='flex flex-wrap items-center justify-center gap-2'>
               <div className='flex items-center gap-2 text-muted-foreground'>
                 <Clock className='w-4 h-4' />
                 <span
@@ -288,7 +283,7 @@ export default function Home() {
               </div>
               <Separator orientation='vertical' className='h-4' />
               <div className='flex items-center gap-2 text-muted-foreground'>
-                <Beer className='w-4 h-4' />
+                <Heart className='w-4 h-4' />
                 <span
                   className='text-sm'
                   style={{ fontFamily: 'var(--font-title)' }}
@@ -302,7 +297,7 @@ export default function Home() {
 
         <div className='flex w-full'>
           <Card className='overflow-hidden shadow-none watercolor-texture border-none pt-8 w-full'>
-            <CardContent className='space-y-8'>
+            <CardContent className='flex flex-col w-full gap-8 p-0'>
               <div className='flex flex-col w-full items-center lg:flex-row gap-8'>
                 <div className='flex flex-col gap-8 w-full'>
                   <div className='space-y-4'>
@@ -353,16 +348,16 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className='w-sm md:w-xl lg:w-5xl'>
-                  <div className='relative group cursor-pointer'>
-                    <div className='aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
+                <div className='w-xs md:w-xl lg:w-5xl'>
+                  <div className=' group cursor-pointer'>
+                    <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
                       <Image
                         src={'/png/mapaIgreja.png'}
                         alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
                         className='object-cover transition-transform duration-500 group-hover:scale-105'
-                        height={360}
-                        width={320}
+                        fill
                       />
+
                       <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
                         <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
                           <MapPin className='w-8 h-8 text-primary' />
@@ -381,12 +376,12 @@ export default function Home() {
             </CardContent>
           </Card>
         </div>
-      </section> */}
+      </section>
 
-      {/* <HomeProducts />
+      <HomeProducts />
 
-      <Separator className='my-8' /> */}
-      {/* 
+      <Separator className='my-8' />
+
       <section className='flex flex-col w-full py-8 gap-8'>
         <div className='text-center mb-16'>
           <div className='flex items-center justify-center gap-3 mb-6'>
@@ -395,7 +390,7 @@ export default function Home() {
               className='text-5xl md:text-6xl text-primary'
               style={{ fontFamily: 'var(--font-arapey)' }}
             >
-              Guia dos Convidados
+              Guia
             </h2>
             <Heart className='w-8 h-8 text-secondary fill-current' />
           </div>
@@ -403,16 +398,13 @@ export default function Home() {
           <div className='max-w-2xl mx-auto'>
             <p
               className='text-xl text-primary/70 mb-6'
-              style={{
-                fontFamily: 'var(--font-arapey)',
-                fontStyle: 'italic',
-              }}
+              style={{ fontFamily: 'var(--font-arapey)', fontStyle: 'italic' }}
             >
               Tudo o que vocês precisam saber para tornar nossa celebração ainda
               mais especial
             </p>
 
-            <div className='flex items-center justify-center gap-8'>
+            <div className='flex flex-wrap items-center justify-center gap-2'>
               <div className='flex items-center gap-2 text-muted-foreground'>
                 <Sparkles className='w-4 h-4' />
                 <span
@@ -448,17 +440,15 @@ export default function Home() {
 
         <div className='flex w-full'>
           <Card className='overflow-hidden shadow-none watercolor-texture border-none pt-8 w-full'>
-            <CardContent className='space-y-8'>
+            <CardContent className='flex flex-col w-full gap-8 p-0'>
               <div className='flex flex-col w-full items-center lg:flex-row gap-8'>
                 <div className='flex flex-col gap-8 w-full'>
-                  <div className='space-y-4 text-primary'>
+                  <div className='space-y-4'>
                     <div>
-                      <div className='flex gap-2'>
-                        <Venus className='w-8 h-8' />
-                        <p className='text-3xl md:text-4xl text-primary font-normal'>
-                          Madrinhas
-                        </p>
-                      </div>
+                      <Venus className='w-8 h-8' />
+                      <p className='text-3xl md:text-4xl text-primary font-normal'>
+                        Madrinhas
+                      </p>
 
                       <p className='text-lg text-primary/70 italic'>
                         Sintam-se lindas e cheias de charme
@@ -529,7 +519,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className='w-sm md:w-xl lg:w-5xl'>
+                <div className='w-xs md:w-xl lg:w-5xl'>
                   <div className='relative group cursor-pointer'>
                     <div className='flex flex-col w-full items-center justify-center mb-4'>
                       <div className='flex gap-2'>
@@ -547,13 +537,12 @@ export default function Home() {
                       </p>
                     </div>
 
-                    <div className='aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
+                    <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
                       <Image
                         src={'/png/mapaIgreja.png'}
                         alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
                         className='object-cover transition-transform duration-500 group-hover:scale-105'
-                        height={360}
-                        width={520}
+                        fill
                       />
                       <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
                         <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
@@ -572,17 +561,15 @@ export default function Home() {
 
         <div className='flex w-full'>
           <Card className='overflow-hidden shadow-none watercolor-texture border-none pt-8 w-full'>
-            <CardContent className='space-y-8'>
+            <CardContent className='flex flex-col w-full gap-8 p-0'>
               <div className='flex flex-col w-full items-center lg:flex-row gap-8'>
                 <div className='flex flex-col gap-8 w-full'>
-                  <div className='space-y-4 text-primary'>
+                  <div className='space-y-4'>
                     <div>
-                      <div className='flex gap-2'>
-                        <Mars className='w-8 h-8' />
-                        <p className='text-3xl md:text-4xl text-primary font-normal'>
-                          Padrinhos
-                        </p>
-                      </div>
+                      <Mars className='w-8 h-8' />
+                      <p className='text-3xl md:text-4xl text-primary font-normal'>
+                        Padrinhos
+                      </p>
 
                       <p className='text-lg text-primary/70 italic'>
                         Elegância é a palavra-chave
@@ -633,7 +620,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className='w-sm md:w-xl lg:w-5xl'>
+                <div className='w-xs md:w-xl lg:w-5xl'>
                   <div className='relative group cursor-pointer'>
                     <div className='flex flex-col w-full items-center justify-center mb-4'>
                       <div className='flex gap-2'>
@@ -651,13 +638,12 @@ export default function Home() {
                       </p>
                     </div>
 
-                    <div className='aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
+                    <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
                       <Image
                         src={'/png/mapaIgreja.png'}
                         alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
                         className='object-cover transition-transform duration-500 group-hover:scale-105'
-                        height={360}
-                        width={520}
+                        fill
                       />
                       <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
                         <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
@@ -676,17 +662,15 @@ export default function Home() {
 
         <div className='flex w-full'>
           <Card className='overflow-hidden shadow-none watercolor-texture border-none pt-8 w-full'>
-            <CardContent className='space-y-8'>
+            <CardContent className='flex flex-col w-full gap-8 p-0'>
               <div className='flex flex-col w-full items-center lg:flex-row gap-8'>
                 <div className='flex flex-col gap-8 w-full'>
-                  <div className='space-y-4 text-primary'>
+                  <div className='space-y-4'>
                     <div>
-                      <div className='flex gap-2'>
-                        <Users className='w-8 h-8' />
-                        <p className='text-3xl md:text-4xl text-primary font-normal'>
-                          Convidados
-                        </p>
-                      </div>
+                      <Mars className='w-8 h-8' />
+                      <p className='text-3xl md:text-4xl text-primary font-normal'>
+                        Convidados
+                      </p>
 
                       <p className='text-lg text-primary/70 italic'>
                         Sejam parte desta festa com elegância e bom senso
@@ -743,7 +727,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className='w-sm md:w-xl lg:w-5xl'>
+                <div className='w-xs md:w-xl lg:w-5xl'>
                   <div className='relative group cursor-pointer'>
                     <div className='flex flex-col w-full items-center justify-center mb-4'>
                       <div className='flex gap-2'>
@@ -761,13 +745,12 @@ export default function Home() {
                       </p>
                     </div>
 
-                    <div className='aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
+                    <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
                       <Image
                         src={'/png/mapaIgreja.png'}
                         alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
-                        className=' object-cover transition-transform duration-500 group-hover:scale-105'
-                        height={360}
-                        width={320}
+                        className='object-cover transition-transform duration-500 group-hover:scale-105'
+                        fill
                       />
                       <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
                         <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
@@ -783,7 +766,7 @@ export default function Home() {
             </CardContent>
           </Card>
         </div>
-      </section> */}
+      </section>
     </main>
   );
 }

@@ -81,7 +81,7 @@ export default function HomeProducts() {
           <div className='flex items-center justify-center gap-8'>
             <Link
               href='/presentes'
-              className='mt-4 bg-primary text-white text-center rounded-sm text-lg py-2 px-4 self-start'
+              className='flex w-full md:max-w-fit mt-4 bg-primary text-white items-center justify-center rounded-sm text-lg py-2 px-4 self-start'
             >
               Ver todos os presentes
             </Link>
