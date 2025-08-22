@@ -6,6 +6,7 @@ import ProductCardSkeleton from '@/components/ProductCard/ProductCardSkeleton';
 import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 import Link from 'next/link';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
+import AllProductsCard from './AllProductsCard';
 
 export default function HomeProducts() {
   const [products, setProducts] = useState<ProductDTO[]>([]);
@@ -56,6 +57,9 @@ export default function HomeProducts() {
             />
           </div>
         ))}
+        <div className='flex-wrap gap-2'>
+          <AllProductsCard />
+        </div>
       </div>
     );
   };
