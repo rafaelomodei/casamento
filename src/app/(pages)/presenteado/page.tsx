@@ -7,12 +7,14 @@ import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 import { Card, CardContent } from '@/components/ui/card';
 import { Gift, Heart, Home, Sparkles } from 'lucide-react';
 import { Separator } from '@radix-ui/react-separator';
+import { useAuth } from '@/Providers/auth-provider';
 
 function PresenteContent() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const { user } = useAuth();
 
   useEffect(() => {
     async function updateStatus() {
@@ -27,7 +29,11 @@ function PresenteContent() {
         await fetch('/api/products', {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...product, status: 'gifted' }),
+          body: JSON.stringify({
+            ...product,
+            status: 'gifted',
+            giftedBy: user?.id,
+          }),
         });
       } catch {
         setError('Não foi possível atualizar o presente.');
@@ -36,7 +42,7 @@ function PresenteContent() {
       }
     }
     updateStatus();
-  }, [id]);
+  }, [id, user]);
 
   return (
     <div className='flex flex-col gap-4 py-8 px-4 max-w-6xl'>

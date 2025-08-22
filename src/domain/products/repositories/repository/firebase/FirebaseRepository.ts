@@ -16,7 +16,9 @@ export class FirebaseRepository implements IProductRepository {
   }
 
   async findAll(): Promise<ProductDTO[]> {
-    const snap = await this.collection.get();
+    const snap = await this.collection
+      .where('status', '==', 'available')
+      .get();
     return snap.docs.map((d) => ({ id: d.id, ...(d.data() as ProductDTO) }));
   }
 
@@ -35,6 +37,7 @@ export class FirebaseRepository implements IProductRepository {
 
   async findMostViewed(limit: number): Promise<ProductDTO[]> {
     const snap = await this.collection
+      .where('status', '==', 'available')
       .orderBy('views', 'desc')
       .limit(limit)
       .get();
