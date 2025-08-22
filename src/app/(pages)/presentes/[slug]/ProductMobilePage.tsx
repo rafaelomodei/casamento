@@ -11,6 +11,7 @@ import { useRef } from 'react';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import { buildInfinityPayUrl } from '@/lib/utlils/infinityPay';
 import { useAuth } from '@/Providers/auth-provider';
+import ReactMarkdown from 'react-markdown';
 
 interface Props {
   product: ProductDTO;
@@ -120,7 +121,7 @@ export function ProductMobilePage({ product }: Props) {
       {product.description && (
         <div className='flex flex-col gap-2'>
           <h2 className='text-xl'>Descrição</h2>
-          <p>{product.description}</p>
+          <ReactMarkdown>{product.description}</ReactMarkdown>
         </div>
       )}
       {dialog}
