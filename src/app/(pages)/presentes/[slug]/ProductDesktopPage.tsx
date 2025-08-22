@@ -53,7 +53,7 @@ export function ProductDesktopPage({
                     const target = e.currentTarget as HTMLImageElement;
                     if (target.src !== fallback) target.src = fallback;
                   }}
-                  className={`h-20 w-20 cursor-pointer rounded-md object-cover border transition ${
+                  className={`h-20 w-20 cursor-pointer rounded-md object-contain border transition ${
                     selectedImage === img
                       ? 'ring-2 ring-primary'
                       : 'hover:ring-2 hover:ring-primary'
@@ -67,7 +67,7 @@ export function ProductDesktopPage({
                 alt={product.title}
                 width={300}
                 height={300}
-                className='h-full w-full object-cover'
+                className='h-full w-full object-contain bg-white'
                 onError={(e) => {
                   const target = e.currentTarget as HTMLImageElement;
                   if (target.src !== fallback) target.src = fallback;

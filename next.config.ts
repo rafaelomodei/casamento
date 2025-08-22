@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
       'instagram.fmgf12-1.fna.fbcdn.net',
       'm.media-amazon.com',
       'imgs.casasbahia.com.br',
+      'http2.mlstatic.com',
     ],
   },
 };
