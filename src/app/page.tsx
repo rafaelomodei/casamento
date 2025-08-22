@@ -9,7 +9,6 @@ import {
   Clock,
   Heart,
   MapPin,
-  Navigation,
   Sparkles,
   Users,
   Mars,
@@ -17,7 +16,8 @@ import {
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import OpenInMapsButton from '@/components/OpenInMapsButton/OpenInMapsButton';
+import OpenInMapsImage from '@/components/OpenInMapsImage/OpenInMapsImage';
 
 export default function Home() {
   const weddingDate = new Date('September 27, 2025 16:00:00');
@@ -193,13 +193,11 @@ export default function Home() {
                       <h4 className='text-xl text-primary'>Como Chegar</h4>
                     </div>
 
-                    <Button
-                      className='w-full bg-secondary hover:bg-secondary/90 text-white  text-lg rounded-xl h-12'
-                      onClick={() => openMaps(churchCoords.lat, churchCoords.lng)}
-                    >
-                      <Navigation className='w-5 h-5 mr-2' />
-                      Abrir no GPS / Google Maps
-                    </Button>
+                    <OpenInMapsButton
+                      className='w-full bg-secondary hover:bg-secondary/90 text-white text-lg rounded-xl h-12'
+                      lat={churchCoords.lat}
+                      lng={churchCoords.lng}
+                    />
 
                     <p className='text-sm text-muted-foreground text-center'>
                       Clique para obter direções e navegação
@@ -208,25 +206,14 @@ export default function Home() {
                 </div>
 
                 <div className='w-xs md:w-xl lg:w-5xl'>
-                  <div
-                    className=' group cursor-pointer'
-                    onClick={() => openMaps(churchCoords.lat, churchCoords.lng)}
-                  >
-                    <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
-                      <Image
-                        src={'/png/mapaIgreja.png'}
-                        alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
-                        className='object-cover transition-transform duration-500 group-hover:scale-105'
-                        fill
-                      />
-
-                      <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
-                        <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
-                          <MapPin className='w-8 h-8 text-primary' />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <OpenInMapsImage
+                    lat={churchCoords.lat}
+                    lng={churchCoords.lng}
+                    src='/png/mapaIgreja.png'
+                    alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
+                    containerClassName='w-xs md:w-xl lg:w-5xl cursor-pointer'
+                    overlay={<MapPin className='w-8 h-8 text-primary' />}
+                  />
 
                   <p className='text-center text-sm text-muted-foreground'>
                     Clique na imagem para abrir o mapa
@@ -350,14 +337,11 @@ export default function Home() {
                       <h4 className='text-xl text-primary'>Como Chegar</h4>
                     </div>
 
-                    <Button
-                      className='w-full bg-secondary hover:bg-secondary/90 text-white  text-lg rounded-xl h-12'
-                      onClick={() => openMaps(receptionCoords.lat, receptionCoords.lng)}
-                    >
-                      <Navigation className='w-5 h-5 mr-2' />
-                      Abrir no GPS / Google Maps
-                    </Button>
-
+                    <OpenInMapsButton
+                      className='w-full bg-secondary hover:bg-secondary/90 text-white text-lg rounded-xl h-12'
+                      lat={receptionCoords.lat}
+                      lng={receptionCoords.lng}
+                    />
                     <p className='text-sm text-muted-foreground text-center'>
                       Clique para obter direções e navegação
                     </p>
@@ -367,22 +351,18 @@ export default function Home() {
                 <div className='w-xs md:w-xl lg:w-5xl'>
                   <div
                     className=' group cursor-pointer'
-                    onClick={() => openMaps(receptionCoords.lat, receptionCoords.lng)}
+                    onClick={() =>
+                      openMaps(receptionCoords.lat, receptionCoords.lng)
+                    }
                   >
-                    <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
-                      <Image
-                        src={'/png/mapaIgreja.png'}
-                        alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
-                        className='object-cover transition-transform duration-500 group-hover:scale-105'
-                        fill
-                      />
-
-                      <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
-                        <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
-                          <MapPin className='w-8 h-8 text-primary' />
-                        </div>
-                      </div>
-                    </div>
+                    <OpenInMapsImage
+                      lat={receptionCoords.lat}
+                      lng={receptionCoords.lng}
+                      src='/png/mapaIgreja.png'
+                      alt='Local da recepção, pesqueiro são luiz - Colorado PR'
+                      containerClassName='w-xs md:w-xl lg:w-5xl cursor-pointer'
+                      overlay={<MapPin className='w-8 h-8 text-primary' />}
+                    />
                   </div>
 
                   <p className='text-center text-sm text-muted-foreground'>
