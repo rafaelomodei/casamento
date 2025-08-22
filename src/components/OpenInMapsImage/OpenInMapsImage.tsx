@@ -10,7 +10,7 @@ type OpenInMapsImageProps = {
   alt: string;
   containerClassName?: string;
   imageClassName?: string;
-  overlay?: React.ReactNode; // ícone/overlay opcional
+  overlay?: React.ReactNode;
 };
 
 export default function OpenInMapsImage({

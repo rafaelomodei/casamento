@@ -22,11 +22,6 @@ import OpenInMapsImage from '@/components/OpenInMapsImage/OpenInMapsImage';
 export default function Home() {
   const weddingDate = new Date('September 27, 2025 16:00:00');
 
-  const openMaps = (lat: number, lng: number) => {
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
-    window.open(url, '_blank');
-  };
-
   const churchCoords = { lat: -22.8382072, lng: -51.9733284 };
   const receptionCoords = { lat: -22.8082686, lng: -51.9427835 };
 
@@ -349,21 +344,14 @@ export default function Home() {
                 </div>
 
                 <div className='w-xs md:w-xl lg:w-5xl'>
-                  <div
-                    className=' group cursor-pointer'
-                    onClick={() =>
-                      openMaps(receptionCoords.lat, receptionCoords.lng)
-                    }
-                  >
-                    <OpenInMapsImage
-                      lat={receptionCoords.lat}
-                      lng={receptionCoords.lng}
-                      src='/png/mapaIgreja.png'
-                      alt='Local da recepção, pesqueiro são luiz - Colorado PR'
-                      containerClassName='w-xs md:w-xl lg:w-5xl cursor-pointer'
-                      overlay={<MapPin className='w-8 h-8 text-primary' />}
-                    />
-                  </div>
+                  <OpenInMapsImage
+                    lat={receptionCoords.lat}
+                    lng={receptionCoords.lng}
+                    src='/png/mapaIgreja.png'
+                    alt='Local da recepção, pesqueiro são luiz - Colorado PR'
+                    containerClassName='w-xs md:w-xl lg:w-5xl cursor-pointer'
+                    overlay={<MapPin className='w-8 h-8 text-primary' />}
+                  />
 
                   <p className='text-center text-sm text-muted-foreground'>
                     Clique na imagem para abrir o mapa
