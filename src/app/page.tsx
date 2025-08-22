@@ -18,22 +18,13 @@ import { Separator } from '@/components/ui/separator';
 import { Card, CardContent } from '@/components/ui/card';
 import OpenInMapsButton from '@/components/OpenInMapsButton/OpenInMapsButton';
 import OpenInMapsImage from '@/components/OpenInMapsImage/OpenInMapsImage';
-import { truncateWithEllipsis } from '@/lib/utlils/text';
+import StoryPreview from '@/components/StoryPreview/StoryPreview';
 
 export default function Home() {
   const weddingDate = new Date('September 27, 2025 16:00:00');
 
   const churchCoords = { lat: -22.8382072, lng: -51.9733284 };
   const receptionCoords = { lat: -22.8082686, lng: -51.9427835 };
-  const history =
-    ' Nos conhecemos ainda jovens, nos corredores do colégio. Éramos' +
-    'apenas conhecidos de vista, com amigos em comum, mas nada que' +
-    'indicasse que, anos depois, estaríamos escrevendo nossa história' +
-    'juntos.>' +
-    'Foi em uma noite comum — mas que se tornaria inesquecível — no dia 9' +
-    'de maio de 2015, durante uma pizza com os amigos, que tudo começou' +
-    'de verdade';
-
   return (
     <main className='min-h-screen flex flex-col py-8  px-4  text-primary max-w-7xl'>
       <header className='flex h-screen'>
@@ -75,9 +66,7 @@ export default function Home() {
             />
           </div>
 
-          <p className='flex w-full lg:w-[668px]'>
-            {truncateWithEllipsis(history, 600)}
-          </p>
+          <StoryPreview />
           <Link
             href='/nossas-historias'
             className='bg-primary text-white text-center rounded-sm text-lg py-2'
