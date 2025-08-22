@@ -6,6 +6,7 @@ import ProductCardSkeleton from '@/components/ProductCard/ProductCardSkeleton';
 import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 import Link from 'next/link';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
+import AllProductsCard from './AllProductsCard';
 
 export default function HomeProducts() {
   const [products, setProducts] = useState<ProductDTO[]>([]);
@@ -14,7 +15,7 @@ export default function HomeProducts() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await fetch('/api/products/most-viewed?limit=4');
+        const res = await fetch('/api/products/most-viewed?limit=3');
         const data = await res.json();
         setProducts(data as ProductDTO[]);
       } catch (err) {
@@ -56,6 +57,9 @@ export default function HomeProducts() {
             />
           </div>
         ))}
+        <div className='flex-wrap gap-2'>
+          <AllProductsCard />
+        </div>
       </div>
     );
   };
