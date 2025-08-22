@@ -15,7 +15,7 @@ export default function HomeProducts() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const res = await fetch('/api/products/most-viewed?limit=4');
+        const res = await fetch('/api/products/most-viewed?limit=3');
         const data = await res.json();
         setProducts(data as ProductDTO[]);
       } catch (err) {
