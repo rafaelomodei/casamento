@@ -18,12 +18,21 @@ import { Separator } from '@/components/ui/separator';
 import { Card, CardContent } from '@/components/ui/card';
 import OpenInMapsButton from '@/components/OpenInMapsButton/OpenInMapsButton';
 import OpenInMapsImage from '@/components/OpenInMapsImage/OpenInMapsImage';
+import { truncateWithEllipsis } from '@/lib/utlils/text';
 
 export default function Home() {
   const weddingDate = new Date('September 27, 2025 16:00:00');
 
   const churchCoords = { lat: -22.8382072, lng: -51.9733284 };
   const receptionCoords = { lat: -22.8082686, lng: -51.9427835 };
+  const history =
+    ' Nos conhecemos ainda jovens, nos corredores do colégio. Éramos' +
+    'apenas conhecidos de vista, com amigos em comum, mas nada que' +
+    'indicasse que, anos depois, estaríamos escrevendo nossa história' +
+    'juntos.>' +
+    'Foi em uma noite comum — mas que se tornaria inesquecível — no dia 9' +
+    'de maio de 2015, durante uma pizza com os amigos, que tudo começou' +
+    'de verdade';
 
   return (
     <main className='min-h-screen flex flex-col py-8  px-4  text-primary max-w-7xl'>
@@ -65,16 +74,9 @@ export default function Home() {
               width={343}
             />
           </div>
-          <p>
-            Nos conhecemos ainda jovens, nos corredores do colégio. Éramos
-            apenas conhecidos de vista, com amigos em comum, mas nada que
-            indicasse que, anos depois, estaríamos escrevendo nossa história
-            juntos.
-          </p>
-          <p>
-            Foi em uma noite comum — mas que se tornaria inesquecível — no dia 9
-            de maio de 2015, durante uma pizza com os amigos, que tudo começou
-            de verdade...
+
+          <p className='flex w-full lg:w-[668px]'>
+            {truncateWithEllipsis(history, 600)}
           </p>
           <Link
             href='/nossas-historias'
@@ -83,13 +85,13 @@ export default function Home() {
             Continuar lendo
           </Link>
         </div>
-        <div className=' hidden md:flex  w-full max-w-container mx-auto mt-[1px]'>
+        <div className=' hidden md:flex max-w-container mx-auto mt-[1px]  '>
           <Image
             src={'/png/preWedding/DSC03547.jpg'}
             alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
-            className='rounded-md'
-            height={360}
-            width={320}
+            className='rounded-2xl w-[768px] h-[380px] object-cover'
+            height={480}
+            width={480}
           />
         </div>
       </section>
@@ -206,7 +208,7 @@ export default function Home() {
                     lng={churchCoords.lng}
                     src='/png/mapaIgreja.png'
                     alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
-                    containerClassName='w-xs md:w-xl lg:w-5xl cursor-pointer'
+                    containerClassName='w-xs md:w-xl lg:w-xl cursor-pointer '
                     overlay={<MapPin className='w-8 h-8 text-primary' />}
                   />
 
@@ -349,7 +351,7 @@ export default function Home() {
                     lng={receptionCoords.lng}
                     src='/png/mapaIgreja.png'
                     alt='Local da recepção, pesqueiro são luiz - Colorado PR'
-                    containerClassName='w-xs md:w-xl lg:w-5xl cursor-pointer'
+                    containerClassName='w-xs md:w-xl lg:w-xl cursor-pointer'
                     overlay={<MapPin className='w-8 h-8 text-primary' />}
                   />
 
