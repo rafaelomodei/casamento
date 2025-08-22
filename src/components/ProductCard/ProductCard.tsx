@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
 import { capitalizeFirst, truncateWithEllipsis } from '@/lib/utlils/text';
 import { formatCurrency } from '@/lib/utlils/currency';
+import removeMd from 'remove-markdown';
 
 interface ProductProps {
   slug: string;
@@ -18,9 +19,9 @@ interface ProductProps {
 
 export function ProductCard(props: ProductProps) {
   const { slug, images, title, price, description, classNameCard } = props;
-  const displayTitle = truncateWithEllipsis(capitalizeFirst(title), 20);
+  const displayTitle = truncateWithEllipsis(capitalizeFirst(title), 40);
   const displayDescription = description
-    ? truncateWithEllipsis(capitalizeFirst(description), 50)
+    ? truncateWithEllipsis(capitalizeFirst(description), 70)
     : undefined;
   return (
     <Link href={`/presentes/${slug}`} className='w-xs'>
@@ -39,7 +40,9 @@ export function ProductCard(props: ProductProps) {
 
         <CardContent className='flex flex-col gap-2 pt-2'>
           <h3 className='text-lg'>{displayTitle}</h3>
-          <p className='text-muted-foreground'>{displayDescription}</p>
+          <p className='text-muted-foreground text-justify'>
+            {removeMd(displayDescription ?? '')}
+          </p>
           <p className='text-xl'>{formatCurrency(price)}</p>
         </CardContent>
       </Card>

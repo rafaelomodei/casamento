@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
       'm.media-amazon.com',
       'imgs.casasbahia.com.br',
       'http2.mlstatic.com',
-      'armarinhosaojose.com.br',
+      'www.armarinhosaojose.com.br',
     ],
   },
 };
