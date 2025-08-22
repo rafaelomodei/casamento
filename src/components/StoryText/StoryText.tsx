@@ -1,5 +1,6 @@
 import { STORY_PARAGRAPHS } from '@/lib/story';
 import { truncateWithEllipsis } from '@/lib/utlils/text';
+import { JSX } from 'react';
 
 interface StoryTextProps {
   maxChars?: number;
