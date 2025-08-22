@@ -22,6 +22,14 @@ import { Button } from '@/components/ui/button';
 export default function Home() {
   const weddingDate = new Date('September 27, 2025 16:00:00');
 
+  const openMaps = (lat: number, lng: number) => {
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
+    window.open(url, '_blank');
+  };
+
+  const churchCoords = { lat: -22.8382072, lng: -51.9733284 };
+  const receptionCoords = { lat: -22.8082686, lng: -51.9427835 };
+
   return (
     <main className='min-h-screen flex flex-col py-8  px-4  text-primary max-w-7xl'>
       <header className='flex h-screen'>
@@ -185,7 +193,10 @@ export default function Home() {
                       <h4 className='text-xl text-primary'>Como Chegar</h4>
                     </div>
 
-                    <Button className='w-full bg-secondary hover:bg-secondary/90 text-white  text-lg rounded-xl h-12'>
+                    <Button
+                      className='w-full bg-secondary hover:bg-secondary/90 text-white  text-lg rounded-xl h-12'
+                      onClick={() => openMaps(churchCoords.lat, churchCoords.lng)}
+                    >
                       <Navigation className='w-5 h-5 mr-2' />
                       Abrir no GPS / Google Maps
                     </Button>
@@ -197,7 +208,10 @@ export default function Home() {
                 </div>
 
                 <div className='w-xs md:w-xl lg:w-5xl'>
-                  <div className=' group cursor-pointer'>
+                  <div
+                    className=' group cursor-pointer'
+                    onClick={() => openMaps(churchCoords.lat, churchCoords.lng)}
+                  >
                     <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
                       <Image
                         src={'/png/mapaIgreja.png'}
@@ -336,7 +350,10 @@ export default function Home() {
                       <h4 className='text-xl text-primary'>Como Chegar</h4>
                     </div>
 
-                    <Button className='w-full bg-secondary hover:bg-secondary/90 text-white  text-lg rounded-xl h-12'>
+                    <Button
+                      className='w-full bg-secondary hover:bg-secondary/90 text-white  text-lg rounded-xl h-12'
+                      onClick={() => openMaps(receptionCoords.lat, receptionCoords.lng)}
+                    >
                       <Navigation className='w-5 h-5 mr-2' />
                       Abrir no GPS / Google Maps
                     </Button>
@@ -348,7 +365,10 @@ export default function Home() {
                 </div>
 
                 <div className='w-xs md:w-xl lg:w-5xl'>
-                  <div className=' group cursor-pointer'>
+                  <div
+                    className=' group cursor-pointer'
+                    onClick={() => openMaps(receptionCoords.lat, receptionCoords.lng)}
+                  >
                     <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
                       <Image
                         src={'/png/mapaIgreja.png'}
