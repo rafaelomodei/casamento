@@ -14,11 +14,12 @@ interface ProductProps {
   title: string;
   description?: string;
   price: number;
+  status?: 'available' | 'gifted';
   classNameCard?: string;
 }
 
 export function ProductCard(props: ProductProps) {
-  const { slug, images, title, price, description, classNameCard } = props;
+  const { slug, images, title, price, description, status, classNameCard } = props;
   const displayTitle = truncateWithEllipsis(capitalizeFirst(title), 40);
   const displayDescription = description
     ? truncateWithEllipsis(capitalizeFirst(description), 70)
@@ -35,7 +36,7 @@ export function ProductCard(props: ProductProps) {
           images={images}
           alt={title}
           hoverControls
-          className='h-64 w-full'
+          className={cn('h-64 w-full', status === 'gifted' && 'grayscale')}
         />
 
         <CardContent className='flex flex-col gap-2 pt-2'>
@@ -43,7 +44,11 @@ export function ProductCard(props: ProductProps) {
           <p className='text-muted-foreground text-justify'>
             {removeMd(displayDescription ?? '')}
           </p>
-          <p className='text-xl'>{formatCurrency(price)}</p>
+          <p className='text-xl'>
+            {status === 'gifted'
+              ? 'Presente já foi dado'
+              : formatCurrency(price)}
+          </p>
         </CardContent>
       </Card>
     </Link>

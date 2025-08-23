@@ -16,10 +16,11 @@ export class FirebaseRepository implements IProductRepository {
   }
 
   async findAll(): Promise<ProductDTO[]> {
-    const snap = await this.collection
-      .where('status', '==', 'available')
-      .get();
-    return snap.docs.map((d) => ({ id: d.id, ...(d.data() as ProductDTO) }));
+    const snap = await this.collection.get();
+    const products = snap.docs.map((d) => ({ id: d.id, ...(d.data() as ProductDTO) }));
+    return products.sort(
+      (a, b) => (a.status === 'gifted' ? 1 : 0) - (b.status === 'gifted' ? 1 : 0)
+    );
   }
 
   async findById(id: string): Promise<ProductDTO | null> {

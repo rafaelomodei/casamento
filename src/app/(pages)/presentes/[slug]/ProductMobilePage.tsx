@@ -7,7 +7,7 @@ import { formatCurrency } from '@/lib/utlils/currency';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Gift, { GiftHandle } from '@/components/IconsAnimated/Gift/Gift';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import { buildInfinityPayUrl } from '@/lib/utlils/infinityPay';
 import { useAuth } from '@/Providers/auth-provider';
@@ -28,6 +28,12 @@ export function ProductMobilePage({ product }: Props) {
 
   const loginMessage =
     'Para dar este presente, você precisa estar logado.\nClique em Entrar ou crie sua conta em poucos segundos e volte aqui para concluir sua contribuição para Maria Eduarda & Rafael.';
+
+  useEffect(() => {
+    if (product.status === 'gifted') {
+      giftRef.current?.click();
+    }
+  }, [product.status]);
 
   return (
     <div className='flex flex-col w-full max-w-6xl gap-4 py-8 px-4'>
@@ -51,39 +57,47 @@ export function ProductMobilePage({ product }: Props) {
         Este é um dos itens escolhidos com carinho para o nosso novo lar. Seu
         gesto de carinho vai fazer parte da nossa história!
       </p>
-      <div>
-        <p className='text-4xl'>{formatCurrency(product.price)}</p>
-        <p className='text-xl text-secondary'>Pague em até 6x!</p>
-      </div>
-      <div className='flex flex-col gap-2'>
-        <h2 className='text-xl'>Meios de pagamento</h2>
-        <div className='flex gap-8'>
-          <Image
-            src='/png/paymentMethod/pix.png'
-            alt='pix'
-            width={71}
-            height={32}
-          />
-          <Image
-            src='/png/paymentMethod/elo.png'
-            alt='elo'
-            width={82}
-            height={32}
-          />
-          <Image
-            src='/png/paymentMethod/visa.png'
-            alt='visa'
-            width={42}
-            height={32}
-          />
-          <Image
-            src='/png/paymentMethod/mastercard.png'
-            alt='mastercard'
-            width={31}
-            height={32}
-          />
-        </div>
-      </div>
+      {product.status === 'gifted' ? (
+        <p className='text-xl text-muted-foreground'>
+          Alguém já presenteou o casal com este item.
+        </p>
+      ) : (
+        <>
+          <div>
+            <p className='text-4xl'>{formatCurrency(product.price)}</p>
+            <p className='text-xl text-secondary'>Pague em até 6x!</p>
+          </div>
+          <div className='flex flex-col gap-2'>
+            <h2 className='text-xl'>Meios de pagamento</h2>
+            <div className='flex gap-8'>
+              <Image
+                src='/png/paymentMethod/pix.png'
+                alt='pix'
+                width={71}
+                height={32}
+              />
+              <Image
+                src='/png/paymentMethod/elo.png'
+                alt='elo'
+                width={82}
+                height={32}
+              />
+              <Image
+                src='/png/paymentMethod/visa.png'
+                alt='visa'
+                width={42}
+                height={32}
+              />
+              <Image
+                src='/png/paymentMethod/mastercard.png'
+                alt='mastercard'
+                width={31}
+                height={32}
+              />
+            </div>
+          </div>
+        </>
+      )}
       <Button
         className='text-2xl py-8 text-white group mt-10'
         variant='secondary'
@@ -112,7 +126,7 @@ export function ProductMobilePage({ product }: Props) {
           <Gift ref={giftRef} />
         </div>
         {product.status === 'gifted'
-          ? 'Presente já adquirido'
+          ? 'Presente já foi dado'
           : 'Dar este presente'}
       </Button>
       {product.status === 'gifted' && (
