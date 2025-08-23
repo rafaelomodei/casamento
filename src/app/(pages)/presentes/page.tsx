@@ -64,6 +64,7 @@ export default function PresentesPage() {
                 title={product.title}
                 description={product.description}
                 price={product.price}
+                status={product.status}
               />
             </div>
           ))}

@@ -17,7 +17,10 @@ export class FirebaseRepository implements IProductRepository {
 
   async findAll(): Promise<ProductDTO[]> {
     const snap = await this.collection.get();
-    return snap.docs.map((d) => ({ id: d.id, ...(d.data() as ProductDTO) }));
+    const products = snap.docs.map((d) => ({ id: d.id, ...(d.data() as ProductDTO) }));
+    return products.sort(
+      (a, b) => (a.status === 'gifted' ? 1 : 0) - (b.status === 'gifted' ? 1 : 0)
+    );
   }
 
   async findById(id: string): Promise<ProductDTO | null> {
@@ -34,11 +37,9 @@ export class FirebaseRepository implements IProductRepository {
   }
 
   async findMostViewed(limit: number): Promise<ProductDTO[]> {
-    const snap = await this.collection
-      .orderBy('views', 'desc')
-      .limit(limit)
-      .get();
-    return snap.docs.map((d) => ({ id: d.id, ...(d.data() as ProductDTO) }));
+    const snap = await this.collection.orderBy('views', 'desc').get();
+    const products = snap.docs.map((d) => ({ id: d.id, ...(d.data() as ProductDTO) }));
+    return products.filter((p) => p.status === 'available').slice(0, limit);
   }
 
   async update(id: string, product: ProductDTO): Promise<void> {

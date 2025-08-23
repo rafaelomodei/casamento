@@ -11,4 +11,8 @@ export interface ProductDTO {
    * Quando um presente é comprado, ele deve receber o status 'gifted'.
    */
   status?: 'available' | 'gifted';
+  /**
+   * ID do usuário que presenteou este produto.
+   */
+  giftedBy?: string;
 }
