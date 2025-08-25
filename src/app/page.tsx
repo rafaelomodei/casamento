@@ -20,6 +20,7 @@ import OpenInMapsButton from '@/components/OpenInMapsButton/OpenInMapsButton';
 import OpenInMapsImage from '@/components/OpenInMapsImage/OpenInMapsImage';
 import StoryPreview from '@/components/StoryPreview/StoryPreview';
 import GuestCarousel from '@/components/GuestCarousel';
+import BackgroundVideo from '@/components/BackgroundVideo/BackgroundVideo';
 
 export default function Home() {
   const weddingDate = new Date('September 27, 2025 16:00:00');
@@ -29,15 +30,7 @@ export default function Home() {
   return (
     <>
       <header className='relative h-screen w-screen overflow-hidden'>
-        <div className='absolute inset-0 pointer-events-none -z-10'>
-          <iframe
-            src='https://www.youtube.com/embed/ltugLz6H7cs?autoplay=1&mute=1&controls=0&loop=1&playlist=ltugLz6H7cs&modestbranding=1&rel=0&showinfo=0&fs=0&disablekb=1'
-            title='Vídeo de fundo'
-            allow='autoplay; encrypted-media'
-            className='w-full h-full object-cover'
-            frameBorder='0'
-          />
-        </div>
+        <BackgroundVideo />
         <div className='relative flex flex-col w-full h-full items-center justify-center'>
           <div className='flex flex-col items-center gap-4'>
             <div className='flex flex-col items-center'>
