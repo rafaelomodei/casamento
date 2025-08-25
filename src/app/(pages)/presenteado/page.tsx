@@ -33,6 +33,7 @@ function PresenteContent() {
             ...product,
             status: 'gifted',
             giftedBy: user?.id,
+            giftedAt: new Date().toISOString(),
           }),
         });
       } catch {

@@ -15,4 +15,8 @@ export interface ProductDTO {
    * ID do usuário que presenteou este produto.
    */
   giftedBy?: string;
+  /**
+   * Data em que o presente foi comprado.
+   */
+  giftedAt?: string;
 }
