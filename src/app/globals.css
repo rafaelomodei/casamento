@@ -5,6 +5,7 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-highlights: var(--background-highlights);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-arapey);
   --font-mono: var(--font-geist-mono);
@@ -46,6 +47,7 @@
 :root {
   --radius: 0.625rem;
   --background: #fcf7eb;
+  --background-highlights: #f6eddf;
   --foreground: #000000;
   --card: #fcf7eb;
   --card-foreground: #000000;
@@ -53,10 +55,10 @@
   --popover-foreground: #000000;
   --primary: #6f4735;
   --primary-foreground: #fcf7eb;
-  --secondary: oklch(0.97 0 0);
+  --secondary: #7e8557;
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted-foreground: oklch(0.456 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
@@ -118,5 +120,14 @@
   }
   body {
     @apply bg-background text-primary;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }

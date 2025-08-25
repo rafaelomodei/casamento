@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
 import { Arbutus_Slab, Poppins } from 'next/font/google';
+import localFont from 'next/font/local';
 import Analytics from '@/components/Analytics';
 import './globals.css';
+import NavBar from '@/components/NavBar/NavBar';
+import Footer from '@/components/Footer/Footer';
+import { AuthProvider } from '@/Providers/auth-provider';
 
 const arbutus = Arbutus_Slab({
   subsets: ['latin'],
@@ -77,24 +80,38 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='pt-br' suppressHydrationWarning>
+    <html
+      lang='pt-br'
+      suppressHydrationWarning
+      className='flex flex-col items-center'
+    >
       <body
-        className={`
-          ${arbutus.className}
+        className={`${arapey.className}
           ${arbutus.variable}
           ${poppins.variable}
           ${arapey.className}
-          antialiased text-primary
-        `}
+      antialiased text-primary flex flex-col w-full justify-center items-center`}
       >
+        <AuthProvider>
+          <NavBar />
+          {children}
+          <Footer />
+        
+
         <Analytics />
-        <main className='text-primary'>{children}</main>
+          </AuthProvider>
+
       </body>
     </html>
   );
