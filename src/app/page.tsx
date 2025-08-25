@@ -19,6 +19,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import OpenInMapsButton from '@/components/OpenInMapsButton/OpenInMapsButton';
 import OpenInMapsImage from '@/components/OpenInMapsImage/OpenInMapsImage';
 import StoryPreview from '@/components/StoryPreview/StoryPreview';
+import GuestCarousel from '@/components/GuestCarousel';
 
 export default function Home() {
   const weddingDate = new Date('September 27, 2025 16:00:00');
@@ -45,14 +46,13 @@ export default function Home() {
               </p>
             </div>
             <Countdown targetDate={weddingDate} />
+            <p className='text-center text-xl md:text-3xl'>
+              Sejam bem-vindos ao nosso site!
+            </p>
           </div>
         </div>
       </header>
-      <section className='flex items-center justify-center'>
-        <p className='text-center text-xl md:text-3xl'>
-          Sejam bem-vindos ao nosso site!
-        </p>
-      </section>
+
       <section className='flex py-8 gap-12'>
         <div className='flex flex-col gap-4'>
           <p className='text-2xl'> Nossas história</p>
@@ -494,12 +494,12 @@ export default function Home() {
                       </div>
 
                       <div className='flex flex-col text-lg  pl-4  gap-2'>
-                        <p>⏰ Chegue com antecedência para fotos especiais.</p>
+                        <p>Chegue com antecedência para fotos especiais ⏰</p>
                         <p>
-                          📷 Durante a cerimônia, pedimos apenas cuidado para
-                          que o corredor até o altar fique sempre livre.
+                          Durante a cerimônia, pedimos apenas cuidado para que o
+                          corredor até o altar fique sempre livre 📷
                         </p>
-                        <p>🎉 Aproveite cada momento.</p>
+                        <p>Aproveite cada momento 🎉 </p>
                       </div>
                     </div>
                   </div>
@@ -596,10 +596,10 @@ export default function Home() {
                       </div>
 
                       <div className='flex flex-col text-lg  pl-4  gap-2'>
-                        <p>⏰ Chegue com antecedência.</p>
+                        <p>Chegue com antecedência ⏰ </p>
                         <p>
-                          🎉 Aproveitem cada instante e celebrem junto conosco
-                          esse momento tão especial.
+                          Aproveitem cada instante e celebrem junto conosco esse
+                          momento tão especial 🎉
                         </p>
                       </div>
                     </div>
@@ -699,8 +699,8 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className='w-xs md:w-xl lg:w-5xl'>
-                  <div className='relative group cursor-pointer'>
+                <div className='flex flex-col w-full md:w-xl lg:w-5xl'>
+                  <div className='cursor-pointer p-0 m-0  '>
                     <div className='flex flex-col w-full items-center justify-center mb-4'>
                       <div className='flex gap-2'>
                         <Sparkles className='w-5 h-5 text-secondary' />
@@ -717,19 +717,7 @@ export default function Home() {
                       </p>
                     </div>
 
-                    <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
-                      <Image
-                        src={'/png/mapaIgreja.png'}
-                        alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
-                        className='object-cover transition-transform duration-500 group-hover:scale-105'
-                        fill
-                      />
-                      <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
-                        <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
-                          <MapPin className='w-8 h-8 text-primary' />
-                        </div>
-                      </div>
-                    </div>
+                    <GuestCarousel />
                   </div>
                 </div>
               </div>
