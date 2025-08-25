@@ -1,8 +1,20 @@
-import Script from 'next/script';
+'use client';
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+import { useEffect } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import Script from 'next/script';
+import { GA_ID, pageview } from '@/lib/analytics';
 
 export default function Analytics() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (!GA_ID) return;
+    const url = pathname + (searchParams.toString() ? `?${searchParams}` : '');
+    pageview(url);
+  }, [pathname, searchParams]);
+
   if (!GA_ID) {
     return null;
   }
@@ -10,9 +22,9 @@ export default function Analytics() {
     <>
       <Script
         src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-        strategy="afterInteractive"
+        strategy='afterInteractive'
       />
-      <Script id="ga-init" strategy="afterInteractive">
+      <Script id='ga-init' strategy='afterInteractive'>
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
