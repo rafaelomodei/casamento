@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
       'www.armarinhosaojose.com.br',
       's.dicio.com.br',
       'images.yampi.me',
+      'product-hub-prd.madeiramadeira.com.br',
     ],
   },
 };
