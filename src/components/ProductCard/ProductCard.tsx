@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
 import { capitalizeFirst, truncateWithEllipsis } from '@/lib/utlils/text';
@@ -19,7 +19,8 @@ interface ProductProps {
 }
 
 export function ProductCard(props: ProductProps) {
-  const { slug, images, title, price, description, status, classNameCard } = props;
+  const { slug, images, title, price, description, status, classNameCard } =
+    props;
   const displayTitle = truncateWithEllipsis(capitalizeFirst(title), 40);
   const displayDescription = description
     ? truncateWithEllipsis(capitalizeFirst(description), 70)
@@ -28,7 +29,7 @@ export function ProductCard(props: ProductProps) {
     <Link href={`/presentes/${slug}`} className='w-xs'>
       <Card
         className={cn(
-          'min-w-[343px] text-primary pt-0 relative transition border border-border bg-white shadow-none overflow-hidden rounded-md',
+          'min-w-[343px] md:min-h-[478px] justify-between text-primary pt-0 relative transition border border-border bg-white shadow-none overflow-hidden rounded-md',
           `hover:border-primary hover:ring-2 hover:ring-primary dark:hover:bg-muted/30 ${classNameCard}`
         )}
       >
@@ -44,12 +45,14 @@ export function ProductCard(props: ProductProps) {
           <p className='text-muted-foreground text-justify'>
             {removeMd(displayDescription ?? '')}
           </p>
+        </CardContent>
+        <CardFooter>
           <p className='text-xl'>
             {status === 'gifted'
               ? 'Presente já foi dado'
               : formatCurrency(price)}
           </p>
-        </CardContent>
+        </CardFooter>
       </Card>
     </Link>
   );
