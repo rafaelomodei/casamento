@@ -27,15 +27,18 @@ export default function Home() {
   const churchCoords = { lat: -22.8382072, lng: -51.9733284 };
   const receptionCoords = { lat: -22.8082686, lng: -51.9427835 };
   return (
-    <main className='min-h-screen flex flex-col py-8  px-4  text-primary max-w-7xl'>
-      <header className='flex h-screen'>
-        <div className='flex flex-col w-full items-center justify-center'>
-          <Image
-            src={'/png/capa.png'}
-            alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
-            height={540}
-            width={320}
+    <>
+      <header className='relative h-screen w-screen overflow-hidden'>
+        <div className='absolute inset-0 pointer-events-none -z-10'>
+          <iframe
+            src='https://www.youtube.com/embed/ltugLz6H7cs?autoplay=1&mute=1&controls=0&loop=1&playlist=ltugLz6H7cs&modestbranding=1&rel=0&showinfo=0&fs=0&disablekb=1'
+            title='Vídeo de fundo'
+            allow='autoplay; encrypted-media'
+            className='w-full h-full object-cover'
+            frameBorder='0'
           />
+        </div>
+        <div className='relative flex flex-col w-full h-full items-center justify-center'>
           <div className='flex flex-col items-center gap-4'>
             <div className='flex flex-col items-center'>
               <p className='font-arapey text-2xl sm:text-5xl lg:text-6xl text-primary'>
@@ -53,7 +56,8 @@ export default function Home() {
         </div>
       </header>
 
-      <section className='flex py-8 gap-12'>
+      <main className='min-h-screen flex flex-col py-8  px-4  text-primary max-w-7xl'>
+        <section className='flex py-8 gap-12'>
         <div className='flex flex-col gap-4'>
           <p className='text-2xl'> Nossas história</p>
           <div className='md:hidden w-full max-w-container mx-auto mt-[1px]'>
@@ -728,5 +732,6 @@ export default function Home() {
         </div>
       </section>
     </main>
+    </>
   );
 }
