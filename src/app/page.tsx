@@ -309,7 +309,7 @@ export default function Home() {
                           <p className='text-primary leading-relaxed'>
                             <strong>Pesqueiro São Luiz</strong>
                             <br />
-                            Saída para Santo Inácio, entrada próximo do post
+                            Saída para Santo Inácio, entrada próximo do posto
                             policial
                           </p>
                         </div>
