@@ -1,25 +1,40 @@
 import { NextResponse } from 'next/server';
 import { CreateUserUseCase } from '@/domain/users/useCases/createUser/CreateUserUseCase';
 import { GetUserByPhoneUseCase } from '@/domain/users/useCases/getUserByPhone/GetUserByPhoneUseCase';
+import { GetUserByIdUseCase } from '@/domain/users/useCases/getUserById/GetUserByIdUseCase';
 import { userRepository } from '@/infra/repositories/firebase/UserServerFirebaseRepositories';
 import { UserDTO } from '@/domain/users/entities/UserDTO';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const phone = searchParams.get('phone');
+  const id = searchParams.get('id');
 
-  if (!phone) {
-    return NextResponse.json({ error: 'Telefone obrigatório' }, { status: 400 });
+  if (phone) {
+    const getUser = new GetUserByPhoneUseCase(userRepository);
+    const user = await getUser.execute(phone);
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Usuário não encontrado' },
+        { status: 404 }
+      );
+    }
+    return NextResponse.json(user, { status: 200 });
   }
 
-  const getUser = new GetUserByPhoneUseCase(userRepository);
-  const user = await getUser.execute(phone);
-
-  if (!user) {
-    return NextResponse.json({ error: 'Usuário não encontrado' }, { status: 404 });
+  if (id) {
+    const getUserById = new GetUserByIdUseCase(userRepository);
+    const user = await getUserById.execute(id);
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Usuário não encontrado' },
+        { status: 404 }
+      );
+    }
+    return NextResponse.json(user, { status: 200 });
   }
 
-  return NextResponse.json(user, { status: 200 });
+  return NextResponse.json({ error: 'Parâmetro obrigatório' }, { status: 400 });
 }
 
 export async function POST(req: Request) {
