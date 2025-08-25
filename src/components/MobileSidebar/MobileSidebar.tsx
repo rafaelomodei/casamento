@@ -17,6 +17,7 @@ import { usePathname } from 'next/navigation';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { capitalizeWords } from '@/lib/utlils/text';
+import { event } from '@/lib/analytics';
 
 interface NavItem {
   href: string;
@@ -57,7 +58,17 @@ export default function MobileSidebar({ items }: MobileSidebarProps) {
             <SidebarMenu>
               {items.map(({ href, label }) => (
                 <SidebarMenuItem key={href}>
-                  <SidebarMenuButton asChild onClick={() => setOpenMobile(false)}>
+                  <SidebarMenuButton
+                    asChild
+                    onClick={() => {
+                      event({
+                        action: 'nav_click',
+                        category: 'mobile_navigation',
+                        label: href,
+                      });
+                      setOpenMobile(false);
+                    }}
+                  >
                     <Link href={href} className='text-primary'>
                       {label}
                     </Link>

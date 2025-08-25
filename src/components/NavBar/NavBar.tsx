@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import UserMenu from './UserMenu';
 import { useAuth } from '@/Providers/auth-provider';
 import { usePathname } from 'next/navigation';
+import { event } from '@/lib/analytics';
 
 const NavBar = () => {
   const { user } = useAuth();
@@ -78,6 +79,13 @@ const NavBar = () => {
                     key={href}
                     href={href}
                     className='border-b border-transparent hover:border-primary'
+                    onClick={() =>
+                      event({
+                        action: 'nav_click',
+                        category: 'navigation',
+                        label: href,
+                      })
+                    }
                   >
                     {label}
                   </Link>
