@@ -26,7 +26,7 @@ export default function AdicionarNovoPresentePage() {
 
   useEffect(() => {
     requireAuth('Para adicionar presentes, você precisa estar logado.');
-  }, []);
+  }, [requireAuth]);
 
   const isFormValid =
     slug.trim() &&
