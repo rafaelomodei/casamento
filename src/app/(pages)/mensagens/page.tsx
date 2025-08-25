@@ -72,7 +72,12 @@ function MensagensContent() {
             e compartilhe um recado para
             {` ${BRIDE_AND_GROOM}`}”
           </p>
-          <Modal open={open} setOpen={setOpen} requireAuth={requireAuth} />
+          <Modal
+            open={open}
+            setOpen={setOpen}
+            requireAuth={requireAuth}
+            onMessageSent={getMessages}
+          />
           {dialog}
         </blockquote>
 

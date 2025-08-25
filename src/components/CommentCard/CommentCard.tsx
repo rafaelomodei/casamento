@@ -25,7 +25,7 @@ export default function CommentCard({
         </div>
       </div>
       <CardContent>
-        <p>{capitalizeFirst(message)}</p>
+        <p className='text-justify'>{capitalizeFirst(message)}</p>
       </CardContent>
     </Card>
   );

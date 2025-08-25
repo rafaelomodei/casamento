@@ -33,10 +33,11 @@ interface ModalProps {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   requireAuth?: (desc?: string) => boolean;
+  onMessageSent?: () => void;
 }
 
 export default function Modal(props: ModalProps) {
-  const { open, setOpen, requireAuth } = props;
+  const { open, setOpen, requireAuth, onMessageSent } = props;
   const { user } = useAuth();
   const isMobile = useIsMobile();
   const [message, setMessage] = useState('');
@@ -69,6 +70,7 @@ export default function Modal(props: ModalProps) {
         }),
       });
       setMessage('');
+      onMessageSent?.();
       setOpen(false);
     } catch (err) {
       console.error('Erro ao enviar mensagem:', err);
