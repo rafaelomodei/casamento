@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       'imgs.casasbahia.com.br',
       'http2.mlstatic.com',
       'www.armarinhosaojose.com.br',
+      's.dicio.com.br',
     ],
   },
 };
