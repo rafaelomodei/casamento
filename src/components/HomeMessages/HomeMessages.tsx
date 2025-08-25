@@ -5,6 +5,7 @@ import CommentCard from '../CommentCard/CommentCard';
 import CommentCardSkeleton from '../CommentCard/CommentCardSkeleton';
 import Link from 'next/link';
 import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
+import { BRIDE_AND_GROOM } from '@/lib/constants';
 
 interface Message extends MessageDTO {
   avatarUrl: string;
@@ -49,7 +50,7 @@ export default function HomeMessages() {
     if (messages.length === 0) {
       return (
         <p className='text-lg py-4'>
-          Seja o primeiro a deixar uma mensagem para o casal.
+          Seja o primeiro a deixar uma mensagem para {BRIDE_AND_GROOM}.
         </p>
       );
     }

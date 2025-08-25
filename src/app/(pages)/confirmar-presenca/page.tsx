@@ -5,7 +5,7 @@ import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { Button } from '@/components/ui/button';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import { useAuth } from '@/Providers/auth-provider';
-import { CalendarCheck2, Check, Heart, X } from 'lucide-react';
+import { CalendarCheck2, Check, X } from 'lucide-react';
 import { formatUserName } from '@/lib/utlils/text';
 
 export default function ConfirmarPresencaPage() {
