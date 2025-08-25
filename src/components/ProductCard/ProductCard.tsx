@@ -9,6 +9,7 @@ import { formatCurrency } from '@/lib/utlils/currency';
 import removeMd from 'remove-markdown';
 
 interface ProductProps {
+  key?: string;
   slug: string;
   images: string[];
   title: string;
@@ -19,14 +20,22 @@ interface ProductProps {
 }
 
 export function ProductCard(props: ProductProps) {
-  const { slug, images, title, price, description, status, classNameCard } =
-    props;
+  const {
+    key,
+    slug,
+    images,
+    title,
+    price,
+    description,
+    status,
+    classNameCard,
+  } = props;
   const displayTitle = truncateWithEllipsis(capitalizeFirst(title), 40);
   const displayDescription = description
     ? truncateWithEllipsis(capitalizeFirst(description), 70)
     : undefined;
   return (
-    <Link href={`/presentes/${slug}`} className='w-xs'>
+    <Link key={key} href={`/presentes/${slug}`} className='w-xs'>
       <Card
         className={cn(
           'min-w-[343px] md:min-h-[478px] justify-between text-primary pt-0 relative transition border border-border bg-white shadow-none overflow-hidden rounded-md',

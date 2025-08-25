@@ -30,7 +30,7 @@ export default function HomeProducts() {
   const renderContent = () => {
     if (loading) {
       return (
-        <div className='flex flex-wrap gap-8'>
+        <div className='flex flex-wrap gap-4'>
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className='flex w-full md:flex-1/2'>
               <ProductCardSkeleton classNameCard='w-full' />
@@ -45,9 +45,9 @@ export default function HomeProducts() {
     }
 
     return (
-      <div className='flex flex-wrap gap-8'>
+      <div className='flex flex-wrap gap-4'>
         {products.map((product) => (
-          <div key={product.id} className='flex-wrap gap-2'>
+          <div key={product.id} className='flex-1 sm:max-w-[calc(50%-0.5rem)]'>
             <ProductCard
               slug={product.slug}
               images={product.images}
@@ -58,9 +58,7 @@ export default function HomeProducts() {
             />
           </div>
         ))}
-        <div className='flex-wrap gap-2'>
-          <AllProductsCard />
-        </div>
+        <AllProductsCard />
       </div>
     );
   };
