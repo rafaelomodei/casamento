@@ -141,7 +141,11 @@ export default function Modal(props: ModalProps) {
                 Cancelar
               </Button>
             </Close>
-            <Button type='submit' disabled={!message.trim() || isSending}>
+            <Button
+              type='submit'
+              disabled={!message.trim() || isSending}
+              className='mb-16'
+            >
               {isSending ? (
                 <div className='flex gap-2'>
                   Enviando
