@@ -12,7 +12,10 @@ export default function GuestCarousel() {
       images={guestImages}
       alt='Looks inspiradores para o grande dia'
       autoPlayInterval={2000}
-      showControls={false}
+      showControls
+      showIndicators
+      hoverControls={false}
+      stopOnInteraction
       className='h-64 rounded-2xl overflow-hidden elegant-shadow'
       rounded={false}
     />
