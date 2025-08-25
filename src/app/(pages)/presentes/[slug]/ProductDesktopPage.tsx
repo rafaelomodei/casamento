@@ -11,6 +11,7 @@ import { useAuthRequired } from '@/hooks/useAuthRequired';
 import { buildInfinityPayUrl } from '@/lib/utlils/infinityPay';
 import { useAuth } from '@/Providers/auth-provider';
 import ReactMarkdown from 'react-markdown';
+import { event } from '@/lib/analytics';
 
 interface Props {
   product: ProductDTO;
@@ -150,6 +151,7 @@ export function ProductDesktopPage({
             onMouseLeave={() => giftRef.current?.hoverEnd()}
             disabled={product.status === 'gifted'}
             onClick={() => {
+              event({ action: 'gift_click', category: 'gift', label: product.slug });
               if (requireAuth(loginMessage)) {
                 const base =
                   process.env.NEXT_PUBLIC_INFINITYPAY_CHECKOUT_BASE_URL;

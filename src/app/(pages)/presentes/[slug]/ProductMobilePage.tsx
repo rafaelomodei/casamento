@@ -12,6 +12,7 @@ import { useAuthRequired } from '@/hooks/useAuthRequired';
 import { buildInfinityPayUrl } from '@/lib/utlils/infinityPay';
 import { useAuth } from '@/Providers/auth-provider';
 import ReactMarkdown from 'react-markdown';
+import { event } from '@/lib/analytics';
 
 interface Props {
   product: ProductDTO;
@@ -98,30 +99,31 @@ export function ProductMobilePage({ product }: Props) {
           </div>
         </>
       )}
-      <Button
-        className='text-2xl py-8 text-white group mt-10'
-        variant='secondary'
-        onMouseEnter={() => giftRef.current?.hoverStart()}
-        onMouseLeave={() => giftRef.current?.hoverEnd()}
-        disabled={product.status === 'gifted'}
-        onClick={() => {
-          if (requireAuth(loginMessage)) {
-            const base = process.env.NEXT_PUBLIC_INFINITYPAY_CHECKOUT_BASE_URL;
-            if (!base) return;
-            giftRef.current?.click();
-            const url = buildInfinityPayUrl({
-              baseUrl: base,
-              name: product.title,
-              price: product.price,
-              userName: user?.name || '',
-              userPhone: user?.phone || '',
-              redirectUrl: `${window.location.origin}/presenteado?id=${product.id}`,
-              orderNsu: crypto.randomUUID?.() ?? String(Date.now()),
-            });
-            window.location.href = url;
-          }
-        }}
-      >
+        <Button
+          className='text-2xl py-8 text-white group mt-10'
+          variant='secondary'
+          onMouseEnter={() => giftRef.current?.hoverStart()}
+          onMouseLeave={() => giftRef.current?.hoverEnd()}
+          disabled={product.status === 'gifted'}
+          onClick={() => {
+            event({ action: 'gift_click', category: 'gift', label: product.slug });
+            if (requireAuth(loginMessage)) {
+              const base = process.env.NEXT_PUBLIC_INFINITYPAY_CHECKOUT_BASE_URL;
+              if (!base) return;
+              giftRef.current?.click();
+              const url = buildInfinityPayUrl({
+                baseUrl: base,
+                name: product.title,
+                price: product.price,
+                userName: user?.name || '',
+                userPhone: user?.phone || '',
+                redirectUrl: `${window.location.origin}/presenteado?id=${product.id}`,
+                orderNsu: crypto.randomUUID?.() ?? String(Date.now()),
+              });
+              window.location.href = url;
+            }
+          }}
+        >
         <div className='mb-6'>
           <Gift ref={giftRef} />
         </div>
