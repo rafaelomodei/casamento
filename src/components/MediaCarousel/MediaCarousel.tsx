@@ -1,20 +1,20 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import Image from 'next/image'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { useState } from 'react';
+import Image from 'next/image';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-export type MediaItem = { type: 'image' | 'video'; src: string }
+export type MediaItem = { type: 'image' | 'video'; src: string };
 
 interface MediaCarouselProps {
-  items: MediaItem[]
-  alt: string
-  className?: string
-  hoverControls?: boolean
-  showControls?: boolean
-  showIndicators?: boolean
-  rounded?: boolean
+  items: MediaItem[];
+  alt: string;
+  className?: string;
+  hoverControls?: boolean;
+  showControls?: boolean;
+  showIndicators?: boolean;
+  rounded?: boolean;
 }
 
 export function MediaCarousel({
@@ -26,31 +26,31 @@ export function MediaCarousel({
   showIndicators = false,
   rounded = true,
 }: MediaCarouselProps) {
-  const [current, setCurrent] = useState(0)
-  const [hovered, setHovered] = useState(false)
-  const [touchStartX, setTouchStartX] = useState(0)
-  const [touchEndX, setTouchEndX] = useState(0)
+  const [current, setCurrent] = useState(0);
+  const [hovered, setHovered] = useState(false);
+  const [touchStartX, setTouchStartX] = useState(0);
+  const [touchEndX, setTouchEndX] = useState(0);
 
-  const total = items.length
+  const total = items.length;
 
-  const handleNext = () => setCurrent((prev) => (prev + 1) % total)
-  const handlePrev = () => setCurrent((prev) => (prev - 1 + total) % total)
+  const handleNext = () => setCurrent((prev) => (prev + 1) % total);
+  const handlePrev = () => setCurrent((prev) => (prev - 1 + total) % total);
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.touches[0].clientX)
-  }
+    setTouchStartX(e.touches[0].clientX);
+  };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEndX(e.touches[0].clientX)
-  }
+    setTouchEndX(e.touches[0].clientX);
+  };
 
   const handleTouchEnd = () => {
-    const distance = touchStartX - touchEndX
-    if (distance > 50) handleNext()
-    else if (distance < -50) handlePrev()
-  }
+    const distance = touchStartX - touchEndX;
+    if (distance > 50) handleNext();
+    else if (distance < -50) handlePrev();
+  };
 
-  const currentItem = items[current]
+  const currentItem = items[current];
 
   return (
     <div
@@ -67,7 +67,10 @@ export function MediaCarousel({
           alt={alt}
           fill
           sizes='100vw'
-          className={cn('object-cover transition duration-300', rounded && 'rounded-md')}
+          className={cn(
+            'object-cover transition duration-300',
+            rounded && 'rounded-md'
+          )}
           priority={current === 0}
         />
       ) : (
@@ -85,9 +88,9 @@ export function MediaCarousel({
         <>
           <button
             onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              handlePrev()
+              e.preventDefault();
+              e.stopPropagation();
+              handlePrev();
             }}
             className='absolute top-1/2 left-2 -translate-y-1/2 bg-background/70 p-1 rounded-full hover:bg-background transition z-10'
           >
@@ -96,9 +99,9 @@ export function MediaCarousel({
 
           <button
             onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              handleNext()
+              e.preventDefault();
+              e.stopPropagation();
+              handleNext();
             }}
             className='absolute top-1/2 right-2 -translate-y-1/2 bg-background/70 p-1 rounded-full hover:bg-background transition z-10'
           >
@@ -121,6 +124,5 @@ export function MediaCarousel({
         </div>
       )}
     </div>
-  )
+  );
 }
-
