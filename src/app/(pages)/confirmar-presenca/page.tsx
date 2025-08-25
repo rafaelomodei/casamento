@@ -16,9 +16,7 @@ export default function ConfirmarPresencaPage() {
     'Sua resposta foi registrada. Agradecemos por nos avisar.';
   const loginMessage = 'Para confirmar presença, faça login ou cadastre-se.';
 
-  if (!user) return null;
-
-  const displayName = formatUserName(user.name);
+  const displayName = formatUserName(user?.name ?? '');
 
   async function sendAttendance(attending: boolean) {
     if (!requireAuth(loginMessage)) return;
@@ -49,9 +47,14 @@ export default function ConfirmarPresencaPage() {
         </div>
         <h1 className='text-3xl'>Confirmação de presença</h1>
         <div>
-          <p className='text-lg'>
-            Olá, <strong>{displayName}</strong>!
-          </p>
+          {displayName ? (
+            <p className='text-lg'>
+              Olá,
+              <strong>{` ${displayName}`}</strong>!
+            </p>
+          ) : (
+            ''
+          )}
           <p className='text-lg'>
             Você confirma sua presença na celebração do casamento de Maria e
             Rafael?
