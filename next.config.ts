@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       'http2.mlstatic.com',
       'www.armarinhosaojose.com.br',
       's.dicio.com.br',
+      'images.yampi.me',
     ],
   },
 };
