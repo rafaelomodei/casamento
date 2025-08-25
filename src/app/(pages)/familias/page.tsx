@@ -9,7 +9,7 @@ import { User } from '@/Providers/auth-provider';
 export default function FamiliasPage() {
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<User[]>([]);
-  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [selected, setSelected] = useState<User[]>([]);
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
 
@@ -21,16 +21,21 @@ export default function FamiliasPage() {
     }
   }
 
-  function toggle(id: string) {
-    const next = new Set(selected);
-    if (next.has(id)) next.delete(id);
-    else next.add(id);
-    setSelected(next);
+  function addMember(user: User) {
+    if (selected.some((s) => s.id === user.id)) return;
+    setSelected([...selected, user]);
+  }
+
+  function removeMember(id: string) {
+    setSelected(selected.filter((s) => s.id !== id));
   }
 
   async function handleCreate() {
-    const memberIds = Array.from(selected);
-    if (!name || memberIds.length === 0) return;
+    const memberIds = selected.map((s) => s.id);
+    if (!name || memberIds.length < 2) {
+      setMessage('Selecione pelo menos dois membros');
+      return;
+    }
     const res = await fetch('/api/families', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -39,13 +44,13 @@ export default function FamiliasPage() {
     if (res.ok) {
       setMessage('Família criada com sucesso');
       setName('');
-      setSelected(new Set());
+      setSelected([]);
       setResults([]);
     }
   }
 
   return (
-    <main className='flex flex-col gap-4 p-4 max-w-6xl'>
+    <main className='mx-auto flex w-full max-w-7xl flex-col gap-4 p-4'>
       <PageBreadcrumb />
       <h1 className='text-2xl'>Cadastro de famílias</h1>
       <div className='flex gap-2'>
@@ -56,17 +61,41 @@ export default function FamiliasPage() {
         />
         <Button onClick={handleSearch}>Buscar</Button>
       </div>
-      <div className='flex flex-col gap-2'>
-        {results.map((u) => (
-          <label key={u.id} className='flex items-center gap-2'>
-            <input
-              type='checkbox'
-              checked={selected.has(u.id)}
-              onChange={() => toggle(u.id)}
-            />
-            {u.name} - {u.phone}
-          </label>
-        ))}
+      <div className='flex flex-col gap-4 md:flex-row'>
+        <div className='flex flex-1 flex-col gap-2'>
+          {results.map((u) => (
+            <div key={u.id} className='flex items-center justify-between gap-2'>
+              <span>
+                {u.name} - {u.phone}
+              </span>
+              <Button
+                variant='outline'
+                size='sm'
+                onClick={() => addMember(u)}
+                disabled={selected.some((s) => s.id === u.id)}
+              >
+                Adicionar
+              </Button>
+            </div>
+          ))}
+        </div>
+        <div className='flex flex-1 flex-col gap-2'>
+          <h2 className='text-lg font-semibold'>Membros da família</h2>
+          {selected.map((u) => (
+            <div key={u.id} className='flex items-center justify-between gap-2'>
+              <span>
+                {u.name} - {u.phone}
+              </span>
+              <Button
+                variant='destructive'
+                size='sm'
+                onClick={() => removeMember(u.id)}
+              >
+                Remover
+              </Button>
+            </div>
+          ))}
+        </div>
       </div>
       <Input
         value={name}

@@ -6,6 +6,8 @@ import { GetUsersByFamilyIdUseCase } from '@/domain/users/useCases/getUsersByFam
 import { SearchUsersUseCase } from '@/domain/users/useCases/searchUsers/SearchUsersUseCase';
 import { userRepository } from '@/infra/repositories/firebase/UserServerFirebaseRepositories';
 import { UserDTO } from '@/domain/users/entities/UserDTO';
+import { SearchFamiliesUseCase } from '@/domain/families/useCases/searchFamilies/SearchFamiliesUseCase';
+import { familyRepository } from '@/infra/repositories/firebase/FamilyServerFirebaseRepositories';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -23,6 +25,19 @@ export async function GET(req: Request) {
   if (search) {
     const searchUsers = new SearchUsersUseCase(userRepository);
     const users = await searchUsers.execute(search);
+
+    const searchFamilies = new SearchFamiliesUseCase(familyRepository);
+    const families = await searchFamilies.execute(search);
+    if (families.length > 0) {
+      const getUsersByFamilyId = new GetUsersByFamilyIdUseCase(userRepository);
+      for (const family of families) {
+        const members = await getUsersByFamilyId.execute(family.id!);
+        members.forEach((m) => {
+          if (!users.some((u) => u.id === m.id)) users.push(m);
+        });
+      }
+    }
+
     return NextResponse.json(users, { status: 200 });
   }
 

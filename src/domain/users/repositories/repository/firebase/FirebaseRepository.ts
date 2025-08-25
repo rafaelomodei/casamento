@@ -43,16 +43,16 @@ export class FirebaseRepository implements IUserRepository {
   }
 
   async search(term: string): Promise<UserDTO[]> {
-    const isPhone = /^\d+$/.test(term);
-    const field = isPhone ? 'phone' : 'name';
-    const snap = await this.collection
-      .where(field, '>=', term)
-      .where(field, '<=', term + '\uf8ff')
-      .get();
-    return snap.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as Omit<UserDTO, 'id'>),
-    }));
+    const snap = await this.collection.get();
+    const lower = term.toLowerCase();
+
+    return snap.docs
+      .map((doc) => ({ id: doc.id, ...(doc.data() as Omit<UserDTO, 'id'>) }))
+      .filter(
+        (u) =>
+          u.name.toLowerCase().includes(lower) ||
+          (u.phone ? u.phone.includes(term) : false),
+      );
   }
 
   async update(id: string, data: Partial<UserDTO>): Promise<void> {

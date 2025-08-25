@@ -28,4 +28,12 @@ export class FirebaseRepository implements IFamilyRepository {
     if (!doc.exists) return null;
     return { id: doc.id, ...(doc.data() as Omit<FamilyDTO, 'id'>) };
   }
+
+  async list(): Promise<FamilyDTO[]> {
+    const snap = await this.collection.get();
+    return snap.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<FamilyDTO, 'id'>),
+    }));
+  }
 }
