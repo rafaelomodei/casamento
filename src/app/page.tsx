@@ -19,6 +19,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import OpenInMapsButton from '@/components/OpenInMapsButton/OpenInMapsButton';
 import OpenInMapsImage from '@/components/OpenInMapsImage/OpenInMapsImage';
 import StoryPreview from '@/components/StoryPreview/StoryPreview';
+import GuestCarousel from '@/components/GuestCarousel';
 
 export default function Home() {
   const weddingDate = new Date('September 27, 2025 16:00:00');
@@ -700,7 +701,7 @@ export default function Home() {
                 </div>
 
                 <div className='w-xs md:w-xl lg:w-5xl'>
-                  <div className='relative group cursor-pointer'>
+                  <div className='cursor-pointer'>
                     <div className='flex flex-col w-full items-center justify-center mb-4'>
                       <div className='flex gap-2'>
                         <Sparkles className='w-5 h-5 text-secondary' />
@@ -717,19 +718,7 @@ export default function Home() {
                       </p>
                     </div>
 
-                    <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
-                      <Image
-                        src={'/png/mapaIgreja.png'}
-                        alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
-                        className='object-cover transition-transform duration-500 group-hover:scale-105'
-                        fill
-                      />
-                      <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>
-                        <div className='bg-white/90 rounded-full p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300'>
-                          <MapPin className='w-8 h-8 text-primary' />
-                        </div>
-                      </div>
-                    </div>
+                    <GuestCarousel />
                   </div>
                 </div>
               </div>
