@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 import { Card, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface GiftedProduct extends ProductDTO {
   buyerName: string;
@@ -56,8 +57,28 @@ export default function PresentesDadosPage() {
 
   const totalAmount = gifts.reduce((sum, g) => sum + g.price, 0);
 
+  if (loading) {
+    return (
+      <div className='flex flex-col w-full max-w-7xl mx-auto min-h-screen gap-4 py-8 px-4'>
+        <PageBreadcrumb />
+        <h1 className='text-2xl'>Presentes Recebidos</h1>
+        <Card>
+          <CardContent className='flex flex-col sm:flex-row justify-between gap-2 p-4'>
+            <Skeleton className='h-6 w-40' />
+            <Skeleton className='h-6 w-48' />
+          </CardContent>
+        </Card>
+        <div className='space-y-2'>
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton key={i} className='h-8 w-full' />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className='flex flex-col w-col max-w-6xl gap-4 py-8 px-4'>
+    <div className='flex flex-col w-full max-w-7xl mx-auto min-h-screen gap-4 py-8 px-4'>
       <PageBreadcrumb />
       <h1 className='text-2xl'>Presentes Recebidos</h1>
       <Card>
@@ -66,9 +87,7 @@ export default function PresentesDadosPage() {
           <span>Valor total arrecadado: {formatCurrency(totalAmount)}</span>
         </CardContent>
       </Card>
-      {loading ? (
-        <p className='py-4'>Carregando...</p>
-      ) : gifts.length === 0 ? (
+      {gifts.length === 0 ? (
         <p className='py-4'>Nenhum presente recebido ainda.</p>
       ) : (
         <div className='overflow-x-auto'>
@@ -87,7 +106,10 @@ export default function PresentesDadosPage() {
                   <td className='py-2'>{gift.title}</td>
                   <td className='py-2'>
                     {gift.giftedAt
-                      ? new Date(gift.giftedAt).toLocaleDateString('pt-BR')
+                      ? new Date(gift.giftedAt).toLocaleString('pt-BR', {
+                          dateStyle: 'short',
+                          timeStyle: 'short',
+                        })
                       : '-'}
                   </td>
                 </tr>
