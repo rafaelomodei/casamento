@@ -60,7 +60,7 @@ export default function Home() {
             <Image
               src={'/png/preWedding/DSC03547.jpg'}
               alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
-              className='rounded-md'
+              className='rounded-2xl w-[768px] h-[580px] object-cover'
               height={540}
               width={343}
             />
