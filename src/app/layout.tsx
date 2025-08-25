@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Arbutus_Slab, Poppins } from 'next/font/google';
 import localFont from 'next/font/local';
 import Analytics from '@/components/Analytics';
+import { Suspense } from 'react';
 import './globals.css';
 import NavBar from '@/components/NavBar/NavBar';
 import Footer from '@/components/Footer/Footer';
@@ -107,10 +108,10 @@ export default function RootLayout({
           <NavBar />
           {children}
           <Footer />
-        
-
-        <Analytics />
-          </AuthProvider>
+          <Suspense fallback={null}>
+            <Analytics />
+          </Suspense>
+        </AuthProvider>
 
       </body>
     </html>
