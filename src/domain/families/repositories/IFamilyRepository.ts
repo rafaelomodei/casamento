@@ -5,4 +5,5 @@ export interface IFamilyRepository {
   addMember(familyId: string, userId: string): Promise<void>;
   findById(id: string): Promise<FamilyDTO | null>;
   list(): Promise<FamilyDTO[]>;
+  update(id: string, data: Partial<FamilyDTO>): Promise<void>;
 }

@@ -36,4 +36,8 @@ export class FirebaseRepository implements IFamilyRepository {
       ...(doc.data() as Omit<FamilyDTO, 'id'>),
     }));
   }
+
+  async update(id: string, data: Partial<FamilyDTO>): Promise<void> {
+    await this.collection.doc(id).update(data);
+  }
 }
