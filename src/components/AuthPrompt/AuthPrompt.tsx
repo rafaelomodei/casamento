@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogClose,
-} from '@/components/ui/dialog'
+} from '@/components/ui/dialog';
 import {
   Drawer,
   DrawerContent,
@@ -18,32 +18,37 @@ import {
   DrawerDescription,
   DrawerFooter,
   DrawerClose,
-} from '@/components/ui/drawer'
-import { useIsMobile } from '@/hooks/use-mobile'
-import { cn } from '@/lib/utils'
+} from '@/components/ui/drawer';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 interface AuthPromptProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  onConfirm: () => void
-  description: string
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onConfirm: () => void;
+  description: string;
 }
 
-export default function AuthPrompt({ open, onOpenChange, onConfirm, description }: AuthPromptProps) {
-  const isMobile = useIsMobile()
+export default function AuthPrompt({
+  open,
+  onOpenChange,
+  onConfirm,
+  description,
+}: AuthPromptProps) {
+  const isMobile = useIsMobile();
 
-  const Wrapper = isMobile ? Drawer : Dialog
-  const Content = isMobile ? DrawerContent : DialogContent
-  const Header = isMobile ? DrawerHeader : DialogHeader
-  const Title = isMobile ? DrawerTitle : DialogTitle
-  const Description = isMobile ? DrawerDescription : DialogDescription
-  const Footer = isMobile ? DrawerFooter : DialogFooter
-  const Close = isMobile ? DrawerClose : DialogClose
+  const Wrapper = isMobile ? Drawer : Dialog;
+  const Content = isMobile ? DrawerContent : DialogContent;
+  const Header = isMobile ? DrawerHeader : DialogHeader;
+  const Title = isMobile ? DrawerTitle : DialogTitle;
+  const Description = isMobile ? DrawerDescription : DialogDescription;
+  const Footer = isMobile ? DrawerFooter : DialogFooter;
+  const Close = isMobile ? DrawerClose : DialogClose;
 
   const contentClassName = cn(
     'sm:max-w-[500px] text-primary px-4',
     !isMobile && 'rounded-md px-8 py-6'
-  )
+  );
 
   return (
     <Wrapper open={open} onOpenChange={onOpenChange}>
@@ -54,13 +59,15 @@ export default function AuthPrompt({ open, onOpenChange, onConfirm, description 
         </Header>
         <Footer>
           <Close asChild>
-            <Button variant='outline' type='button'>Cancelar</Button>
+            <Button variant='outline' type='button'>
+              Cancelar
+            </Button>
           </Close>
-          <Button type='button' onClick={onConfirm}>
+          <Button type='button' onClick={onConfirm} className='mb-16'>
             Fazer login
           </Button>
         </Footer>
       </Content>
     </Wrapper>
-  )
+  );
 }
