@@ -35,6 +35,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
+=
 ## Environment Variables
 
 Copy `env.example` to `.env.local` and fill in your Firebase credentials.
@@ -42,3 +43,10 @@ Copy `env.example` to `.env.local` and fill in your Firebase credentials.
 For Firebase Admin you may either paste the JSON content of the service account
 in `FIREBASE_SERVICE_ACCOUNT` or point `FIREBASE_SERVICE_ACCOUNT_PATH` to the
 JSON file. See `env.example` for an example.
+
+## Analytics
+
+This project integrates [Google Analytics](https://analytics.google.com). Provide
+your measurement ID in the `NEXT_PUBLIC_GA_ID` environment variable to enable
+tracking.
+
