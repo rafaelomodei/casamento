@@ -46,14 +46,13 @@ export default function Home() {
               </p>
             </div>
             <Countdown targetDate={weddingDate} />
+            <p className='text-center text-xl md:text-3xl'>
+              Sejam bem-vindos ao nosso site!
+            </p>
           </div>
         </div>
       </header>
-      <section className='flex items-center justify-center'>
-        <p className='text-center text-xl md:text-3xl'>
-          Sejam bem-vindos ao nosso site!
-        </p>
-      </section>
+
       <section className='flex py-8 gap-12'>
         <div className='flex flex-col gap-4'>
           <p className='text-2xl'> Nossas história</p>
@@ -495,12 +494,12 @@ export default function Home() {
                       </div>
 
                       <div className='flex flex-col text-lg  pl-4  gap-2'>
-                        <p>⏰ Chegue com antecedência para fotos especiais.</p>
+                        <p>Chegue com antecedência para fotos especiais ⏰</p>
                         <p>
-                          📷 Durante a cerimônia, pedimos apenas cuidado para
-                          que o corredor até o altar fique sempre livre.
+                          Durante a cerimônia, pedimos apenas cuidado para que o
+                          corredor até o altar fique sempre livre 📷
                         </p>
-                        <p>🎉 Aproveite cada momento.</p>
+                        <p>Aproveite cada momento 🎉 </p>
                       </div>
                     </div>
                   </div>
@@ -597,10 +596,10 @@ export default function Home() {
                       </div>
 
                       <div className='flex flex-col text-lg  pl-4  gap-2'>
-                        <p>⏰ Chegue com antecedência.</p>
+                        <p>Chegue com antecedência ⏰ </p>
                         <p>
-                          🎉 Aproveitem cada instante e celebrem junto conosco
-                          esse momento tão especial.
+                          Aproveitem cada instante e celebrem junto conosco esse
+                          momento tão especial 🎉
                         </p>
                       </div>
                     </div>
@@ -700,8 +699,8 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className='w-xs md:w-xl lg:w-5xl'>
-                  <div className='cursor-pointer'>
+                <div className='flex flex-col w-full md:w-xl lg:w-5xl'>
+                  <div className='cursor-pointer p-0 m-0  '>
                     <div className='flex flex-col w-full items-center justify-center mb-4'>
                       <div className='flex gap-2'>
                         <Sparkles className='w-5 h-5 text-secondary' />

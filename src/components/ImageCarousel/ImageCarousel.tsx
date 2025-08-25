@@ -9,6 +9,7 @@ interface ImageCarouselProps {
   images: string[];
   alt: string;
   className?: string;
+  objectStyle?: string;
   hoverControls?: boolean;
   showControls?: boolean;
   showIndicators?: boolean;
@@ -22,6 +23,7 @@ export function ImageCarousel({
   images,
   alt,
   className,
+  objectStyle = 'object-cover',
   hoverControls = true,
   showControls = true,
   showIndicators = false,
@@ -93,14 +95,14 @@ export function ImageCarousel({
         fill
         sizes='100vw'
         className={cn(
-          'object-cover transition duration-300',
+          `${objectStyle} transition duration-300`,
           rounded && 'rounded-md'
         )}
         priority={currentImage === 0}
         onError={(e) => {
-          const target = e.currentTarget as HTMLImageElement
-          target.onerror = null
-          target.src = '/png/defaultImage.png'
+          const target = e.currentTarget as HTMLImageElement;
+          target.onerror = null;
+          target.src = '/png/defaultImage.png';
         }}
       />
 

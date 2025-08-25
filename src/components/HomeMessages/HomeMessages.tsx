@@ -49,7 +49,7 @@ export default function HomeMessages() {
 
     if (messages.length === 0) {
       return (
-        <p className='text-lg py-4'>
+        <p className='text-lg py-4 text-center'>
           Seja o primeiro a deixar uma mensagem para {BRIDE_AND_GROOM}.
         </p>
       );
@@ -90,13 +90,13 @@ export default function HomeMessages() {
           <div className='flex flex-col md:flex-row items-center justify-center gap-8'>
             <Link
               href='/mensagens?modal=1'
-              className='flex w-full text-primary border-primary border text-center rounded-sm text-lg py-2 p-4'
+              className='flex w-full text-primary border-primary border text-center items-center justify-center rounded-sm text-lg py-2 p-4'
             >
               Deixar uma mensagem
             </Link>
             <Link
               href='/mensagens'
-              className='flex w-full bg-primary text-white text-center rounded-sm text-lg py-2 px-4'
+              className='flex w-full bg-primary text-white text-center  items-center justify-center rounded-sm text-lg py-2 px-4'
             >
               Ver todas as mensagens
             </Link>
