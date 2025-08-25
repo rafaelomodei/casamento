@@ -419,7 +419,7 @@ export default function Home() {
         <div className='flex w-full'>
           <Card className='overflow-hidden shadow-none watercolor-texture border-none pt-8 w-full'>
             <CardContent className='flex flex-col w-full gap-8 p-0'>
-              <div className='flex flex-col w-full items-center lg:flex-row gap-8'>
+              <div className='flex flex-col w-full items-center lg:flex-row gap-16'>
                 <div className='flex flex-col gap-8 w-full'>
                   <div className='space-y-4'>
                     <div>
@@ -429,7 +429,9 @@ export default function Home() {
                       </p>
 
                       <p className='text-lg text-primary/70 italic'>
-                        Sintam-se lindas e cheias de charme
+                        Antes de qualquer coisa, queremos que você se sinta
+                        linda e bem vestida, fique a vontade para escolher o
+                        modelo que você se sentir melhor.
                       </p>
                     </div>
 
@@ -441,11 +443,14 @@ export default function Home() {
                         </h4>
                       </div>
 
-                      <div className='flex flex-col text-lg'>
-                        <p>👗 Comprimento: longo (até o calcanhar)</p>
-                        <p>✨ Tecidos: fluidos, sem pedrarias nem brilhos</p>
-                        <p>💫 Corte: elegante e clássico</p>
-                        <p>💍 Acessórios: delicados e discretos</p>
+                      <div className='flex flex-col text-lg  pl-4  gap-2'>
+                        <p>
+                          Para mantermos uma harmonia no altar, a nossa
+                          preferência é por vestidos longos.
+                        </p>
+                        <p>Tecidos: fluidos, sem pedrarias nem brilhos</p>
+                        <p>Corte: elegante e clássico</p>
+                        <p>Acessórios: delicados e discretos</p>
                       </div>
                     </div>
 
@@ -459,39 +464,42 @@ export default function Home() {
 
                       <div className='flex flex-col pl-4 text-lg'>
                         <p>Rosa</p>
-                      </div>
-                    </div>
-                    <div>
-                      <div className='flex items-center gap-2'>
-                        <div className='w-1 h-6 bg-red-700 rounded-full'></div>
-                        <h4 className='text-2xl text-primary'>
-                          Cores que devem ser evitadas
-                        </h4>
-                      </div>
-
-                      <div className='flex flex-col pl-4 text-lg'>
-                        <p>❌ Branco puro ou off-white</p>
-                        <p>❌ Off-white</p>
-                        <p>❌ Tons de bege</p>
-                        <p>❌ Creme</p>
-                        <p>❌ Nude</p>
+                        <div className='flex gap-4'>
+                          <Image
+                            src={'/svg/heart-EB0085.svg'}
+                            alt='Cor de rosa mais acentuada'
+                            height={48}
+                            width={48}
+                          />
+                          <Image
+                            src={'/svg/heart-F71A96.svg'}
+                            alt='Cor de rosa mais acentuada'
+                            height={48}
+                            width={48}
+                          />
+                          <Image
+                            src={'/svg/heart-FA73BA.svg'}
+                            alt='Cor de rosa mais acentuada'
+                            height={48}
+                            width={48}
+                          />
+                        </div>
                       </div>
                     </div>
 
                     <div>
                       <div className='flex items-center gap-2'>
                         <div className='w-1 h-6 bg-secondary rounded-full'></div>
-                        <h4 className='text-2xl text-primary'>
-                          Dicas de Comportamento
-                        </h4>
+                        <h4 className='text-2xl text-primary'>Dicas extras</h4>
                       </div>
 
-                      <div className='flex flex-col pl-4 text-lg'>
-                        <p>⏰ Chegue com antecedência para fotos especiais</p>
-                        <p>📷 Evite ficar no corredor durante a cerimônia</p>
+                      <div className='flex flex-col text-lg  pl-4  gap-2'>
+                        <p>⏰ Chegue com antecedência para fotos especiais.</p>
                         <p>
-                          🎉 Aproveite cada momento (sem atrapalhar fotógrafos)
+                          📷 Durante a cerimônia, pedimos apenas cuidado para
+                          que o corredor até o altar fique sempre livre.
                         </p>
+                        <p>🎉 Aproveite cada momento.</p>
                       </div>
                     </div>
                   </div>
@@ -555,11 +563,16 @@ export default function Home() {
                         <h4 className='text-2xl text-primary'>Guia de Traje</h4>
                       </div>
 
-                      <div className='flex flex-col text-lg'>
-                        <p>🤵 Terno: cinza chumbo (corte slim ou reto)</p>
-                        <p>👔 Camisa: branca, sem estampas</p>
-                        <p>👔 Gravata: prata suave ou tom sobre tom</p>
-                        <p>👞 Sapato: social preto, bem lustrado</p>
+                      <div className='flex flex-col text-lg  pl-4  gap-2'>
+                        <p>
+                          Sugerimos terno em cinza chumbo (corte slim ou reto,
+                          conforme preferirem).
+                        </p>
+                        <p>
+                          Camisa branca, lisa e sem estampas, para valorizar a
+                          harmonia do conjunto.
+                        </p>
+                        <p>Sapatos sociais pretos.</p>
                       </div>
                     </div>
 
@@ -579,15 +592,15 @@ export default function Home() {
                     <div>
                       <div className='flex items-center gap-2'>
                         <div className='w-1 h-6 bg-secondary rounded-full'></div>
-                        <h4 className='text-2xl text-primary'>
-                          Dicas de Comportamento
-                        </h4>
+                        <h4 className='text-2xl text-primary'>Dicas extras</h4>
                       </div>
 
-                      <div className='flex flex-col pl-4 text-lg'>
-                        <p>⏰ Chegue com antecedência </p>
-                        <p>📷 Dê espaço aos fotógrafos durante as fotos</p>
-                        <p>🎉 Curta o momento junto aos noivos</p>
+                      <div className='flex flex-col text-lg  pl-4  gap-2'>
+                        <p>⏰ Chegue com antecedência.</p>
+                        <p>
+                          🎉 Aproveitem cada instante e celebrem junto conosco
+                          esse momento tão especial.
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -641,7 +654,9 @@ export default function Home() {
                       </p>
 
                       <p className='text-lg text-primary/70 italic'>
-                        Sejam parte desta festa com elegância e bom senso
+                        É uma alegria ter vocês conosco nesse dia tão especial!
+                        Para que todos aproveitem ao máximo a cerimônia e a
+                        festa,
                       </p>
                     </div>
 
@@ -651,45 +666,34 @@ export default function Home() {
                         <h4 className='text-2xl text-primary'>Guia de Traje</h4>
                       </div>
 
-                      <div className='flex flex-col text-lg'>
-                        <p>🤵 Traje social</p>
+                      <div className='flex flex-col text-lg pl-4  gap-2'>
+                        <p>Homens: Sugerimos traje social ou esporte fino.</p>
                         <p>
-                          👗 Mulheres: vestidos ou terninhos em tons pastel ou
-                          escuros
+                          Mulheres: Pedimos apenas que evitem branco e
+                          off-white, para que essa cor fique reservada à noiva.
                         </p>
-                        <p>👠 Sapatos: confortáveis para dançar</p>
+                        <p>Sapatos: confortáveis para dançar.</p>
                       </div>
                     </div>
 
                     <div>
                       <div className='flex items-center gap-2'>
                         <div className='w-1 h-6 bg-secondary rounded-full'></div>
-                        <h4 className='text-2xl text-primary'>
-                          Paleta de Cores
-                        </h4>
+                        <h4 className='text-2xl text-primary'>Dicas extras</h4>
                       </div>
 
-                      <div className='flex flex-col pl-4 text-lg'>
-                        <p> Cinza chumbo</p>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className='flex items-center gap-2'>
-                        <div className='w-1 h-6 bg-secondary rounded-full'></div>
-                        <h4 className='text-2xl text-primary'>
-                          Dicas de Comportamento
-                        </h4>
-                      </div>
-
-                      <div className='flex flex-col pl-4 text-lg'>
-                        <p>⏰ Respeitem os horários de chegada</p>
+                      <div className='flex flex-col pl-4 text-lg gap-2'>
+                        <p>Respeitem os horários de chegada ⏰ </p>
                         <p>
-                          📷 Não usem flash nem fiquem no corredor durante a
-                          cerimônia
+                          Durante as fotos, 📷 deixar o espaço livre facilita o
+                          trabalho dos fotógrafos e garante registros ainda mais
+                          bonitos.
                         </p>
-                        <p>🤫 Mantenham o celular no silencioso</p>
-                        <p>🥂 Brindem e divirtam-se com educação</p>
+                        <p>Mantenham o celular no silencioso 🤫 </p>
+                        <p>
+                          E o mais importante: aproveitem esse momento especial
+                          junto conosco, com muito carinho e alegria.
+                        </p>
                       </div>
                     </div>
                   </div>
