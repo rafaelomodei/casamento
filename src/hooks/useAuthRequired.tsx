@@ -1,11 +1,11 @@
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { useAuth } from '@/Providers/auth-provider'
 import AuthPrompt from '@/components/AuthPrompt/AuthPrompt'
+import { useLoginRedirect } from '@/hooks/useLoginRedirect'
 
 export function useAuthRequired() {
   const { user } = useAuth()
-  const router = useRouter()
+  const redirectToLogin = useLoginRedirect()
   const [open, setOpen] = useState(false)
   const [callback, setCallback] = useState('')
   const [description, setDescription] = useState(
@@ -21,8 +21,7 @@ export function useAuthRequired() {
   }
 
   function handleConfirm() {
-    const url = callback || window.location.href
-    router.push(`/entrar?callback=${encodeURIComponent(url)}`)
+    redirectToLogin(callback)
   }
 
   const dialog = (
