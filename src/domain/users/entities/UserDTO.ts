@@ -4,5 +4,6 @@ export interface UserDTO {
   avatar: string;
   sex: 'male' | 'female';
   phone: string;
+  familyId?: string | null;
   downloads?: number;
 }

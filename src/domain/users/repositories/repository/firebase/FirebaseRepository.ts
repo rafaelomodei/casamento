@@ -31,4 +31,31 @@ export class FirebaseRepository implements IUserRepository {
     const doc = snap.docs[0];
     return { id: doc.id, ...(doc.data() as Omit<UserDTO, 'id'>) };
   }
+
+  async findByFamilyId(familyId: string): Promise<UserDTO[]> {
+    const snap = await this.collection
+      .where('familyId', '==', familyId)
+      .get();
+    return snap.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<UserDTO, 'id'>),
+    }));
+  }
+
+  async search(term: string): Promise<UserDTO[]> {
+    const snap = await this.collection.get();
+    const lower = term.toLowerCase();
+
+    return snap.docs
+      .map((doc) => ({ id: doc.id, ...(doc.data() as Omit<UserDTO, 'id'>) }))
+      .filter(
+        (u) =>
+          u.name.toLowerCase().includes(lower) ||
+          (u.phone ? u.phone.includes(term) : false),
+      );
+  }
+
+  async update(id: string, data: Partial<UserDTO>): Promise<void> {
+    await this.collection.doc(id).update(data);
+  }
 }

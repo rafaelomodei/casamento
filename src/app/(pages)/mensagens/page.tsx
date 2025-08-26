@@ -5,7 +5,7 @@ import CommentCardSkeleton from '@/components/CommentCard/CommentCardSkeleton';
 import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import Modal from './components/Modal';
@@ -23,7 +23,7 @@ function MensagensContent() {
   const loginMessage =
     'Para deixar seu recado, você precisa estar logado.\nClique em Entrar ou crie sua conta em poucos segundos e volte aqui para compartilhar sua mensagem com Maria Eduarda & Rafael.';
 
-  const getMessages = async () => {
+  const getMessages = useCallback(async () => {
     try {
       const res = await fetch('/api/messages');
       const data = await res.json();
@@ -38,7 +38,7 @@ function MensagensContent() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     getMessages();
@@ -47,7 +47,7 @@ function MensagensContent() {
         setOpen(true);
       }
     }
-  }, [searchParams]);
+  }, [searchParams, requireAuth, getMessages, loginMessage]);
 
   const blockquoteRender = () => {
     return (
