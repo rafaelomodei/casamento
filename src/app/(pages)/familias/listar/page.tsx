@@ -6,6 +6,7 @@ import { User } from '@/Providers/auth-provider';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Phone } from 'lucide-react';
 
 interface Member extends User {
   responded?: boolean;
@@ -91,27 +92,42 @@ export default function ListaFamiliasPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {f.members.map((m) => (
-                    <tr key={m.id} className='border-t'>
-                      <td className='p-2'>{m.name}</td>
-                      <td className='p-2'>{m.phone}</td>
-                      <td className='p-2'>
-                        {m.responded ? 'Sim' : 'Não'}
-                      </td>
-                      <td className='p-2'>
-                        {m.respondedAt
-                          ? new Date(m.respondedAt).toLocaleDateString('pt-BR')
-                          : '-'}
-                      </td>
-                      <td className='p-2'>
-                        {m.attending === undefined
-                          ? '-'
-                          : m.attending
-                            ? 'Sim'
-                            : 'Não'}
-                      </td>
-                    </tr>
-                  ))}
+                  {f.members.map((m) => {
+                    const digits = m.phone.replace(/\D/g, '');
+                    const link = `https://wa.me/${digits.length === 11 ? `55${digits}` : digits}`;
+                    return (
+                      <tr key={m.id} className='border-t'>
+                        <td className='p-2'>{m.name}</td>
+                        <td className='p-2 flex items-center gap-2'>
+                          <a
+                            href={link}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            aria-label={`Conversar com ${m.name} no WhatsApp`}
+                            className='text-green-600 hover:text-green-700'
+                          >
+                            <Phone className='h-4 w-4' />
+                          </a>
+                          {m.phone}
+                        </td>
+                        <td className='p-2'>
+                          {m.responded ? 'Sim' : 'Não'}
+                        </td>
+                        <td className='p-2'>
+                          {m.respondedAt
+                            ? new Date(m.respondedAt).toLocaleDateString('pt-BR')
+                            : '-'}
+                        </td>
+                        <td className='p-2'>
+                          {m.attending === undefined
+                            ? '-'
+                            : m.attending
+                              ? 'Sim'
+                              : 'Não'}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
