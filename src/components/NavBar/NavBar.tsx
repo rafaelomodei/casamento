@@ -48,6 +48,7 @@ const NavBar = () => {
     { href: '/#cerimonia', label: 'Cerimónia' },
     { href: '/#festa', label: 'Festa' },
     { href: '/presentes', label: 'Presentes' },
+    { href: '/confirmar-presenca', label: 'Confirmar Presença' },
   ];
 
   return (
