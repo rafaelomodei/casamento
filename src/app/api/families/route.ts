@@ -5,6 +5,7 @@ import { CreateFamilyUseCase } from '@/domain/families/useCases/createFamily/Cre
 import { ListFamiliesUseCase } from '@/domain/families/useCases/listFamilies/ListFamiliesUseCase';
 import { GetFamilyUseCase } from '@/domain/families/useCases/getFamily/GetFamilyUseCase';
 import { UpdateFamilyUseCase } from '@/domain/families/useCases/updateFamily/UpdateFamilyUseCase';
+import { DeleteFamilyUseCase } from '@/domain/families/useCases/deleteFamily/DeleteFamilyUseCase';
 
 export async function GET(req: Request) {
   try {
@@ -77,6 +78,27 @@ export async function PUT(req: Request) {
     await updateFamily.execute({ id, name, memberIds });
 
     return NextResponse.json({ id, name, memberIds }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : 'Erro inesperado' },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID obrigatório' }, { status: 400 });
+    }
+
+    const deleteFamily = new DeleteFamilyUseCase(familyRepository);
+    await deleteFamily.execute(id);
+
+    return NextResponse.json({ ok: true }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Erro inesperado' },

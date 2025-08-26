@@ -40,4 +40,8 @@ export class FirebaseRepository implements IFamilyRepository {
   async update(id: string, data: Partial<FamilyDTO>): Promise<void> {
     await this.collection.doc(id).update(data);
   }
+
+  async delete(id: string): Promise<void> {
+    await this.collection.doc(id).delete();
+  }
 }
