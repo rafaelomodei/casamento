@@ -8,8 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface Member extends User {
-  confirmed?: boolean;
-  confirmedAt?: string;
+  responded?: boolean;
+  respondedAt?: string;
   attending?: boolean;
 }
 
@@ -85,7 +85,7 @@ export default function ListaFamiliasPage() {
                   <tr className='text-left'>
                     <th className='p-2'>Nome</th>
                     <th className='p-2'>Telefone</th>
-                    <th className='p-2'>Confirmado</th>
+                    <th className='p-2'>Respondido</th>
                     <th className='p-2'>Data</th>
                     <th className='p-2'>Presença</th>
                   </tr>
@@ -96,19 +96,19 @@ export default function ListaFamiliasPage() {
                       <td className='p-2'>{m.name}</td>
                       <td className='p-2'>{m.phone}</td>
                       <td className='p-2'>
-                        {m.confirmed ? 'Sim' : 'Não'}
+                        {m.responded ? 'Sim' : 'Não'}
                       </td>
                       <td className='p-2'>
-                        {m.confirmedAt
-                          ? new Date(m.confirmedAt).toLocaleDateString('pt-BR')
+                        {m.respondedAt
+                          ? new Date(m.respondedAt).toLocaleDateString('pt-BR')
                           : '-'}
                       </td>
                       <td className='p-2'>
                         {m.attending === undefined
                           ? '-'
                           : m.attending
-                            ? 'Presente'
-                            : 'Ausente'}
+                            ? 'Sim'
+                            : 'Não'}
                       </td>
                     </tr>
                   ))}
