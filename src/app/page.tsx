@@ -92,7 +92,7 @@ export default function Home() {
       <section id='cerimonia' className='flex flex-col w-full py-8'>
         <div className='text-center mb-16'>
           <div className='flex items-center justify-center gap-3 mb-6'>
-            <h2 className='text-4xl md:text-5xl text-primary'>Festa</h2>
+            <h2 className='text-4xl md:text-5xl text-primary'>Cerimónia</h2>
           </div>
 
           <div className='max-w-2xl mx-auto'>
