@@ -1,16 +1,24 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from "react";
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { User } from '@/Providers/auth-provider';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams } from "next/navigation";
 
 export default function FamiliasPage() {
+  return (
+    <Suspense fallback={<div />}>
+      <FamiliasPageContent />
+    </Suspense>
+  );
+}
+
+function FamiliasPageContent() {
   const searchParams = useSearchParams();
-  const familyId = searchParams.get('id');
+  const familyId = searchParams.get("id");
   const [search, setSearch] = useState('');
   const [results, setResults] = useState<User[]>([]);
   const [selected, setSelected] = useState<User[]>([]);
