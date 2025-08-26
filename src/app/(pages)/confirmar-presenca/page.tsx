@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { Button } from '@/components/ui/button';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
+import { useLoginRedirect } from '@/hooks/useLoginRedirect';
 import { useAuth, User as AuthUser } from '@/Providers/auth-provider';
 import { CalendarCheck2, Check, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -14,6 +15,7 @@ interface Member extends AuthUser {
 
 export default function ConfirmarPresencaPage() {
   const { requireAuth, dialog } = useAuthRequired();
+  const redirectToLogin = useLoginRedirect();
   const { user } = useAuth();
   const [members, setMembers] = useState<Member[]>([]);
   const [message, setMessage] = useState('');
@@ -85,7 +87,7 @@ export default function ConfirmarPresencaPage() {
               na plataforma. {" "}
               <strong>Faça login para continuar.</strong>
             </p>
-            <Button onClick={() => requireAuth(loginMessage)}>
+            <Button onClick={() => redirectToLogin()}>
               Fazer login
             </Button>
           </>
