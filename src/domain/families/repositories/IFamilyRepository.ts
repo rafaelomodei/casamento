@@ -6,4 +6,5 @@ export interface IFamilyRepository {
   findById(id: string): Promise<FamilyDTO | null>;
   list(): Promise<FamilyDTO[]>;
   update(id: string, data: Partial<FamilyDTO>): Promise<void>;
+  delete(id: string): Promise<void>;
 }
