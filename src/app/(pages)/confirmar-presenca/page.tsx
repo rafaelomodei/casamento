@@ -8,6 +8,8 @@ import { useLoginRedirect } from '@/hooks/useLoginRedirect';
 import { useAuth, User as AuthUser } from '@/Providers/auth-provider';
 import { CalendarCheck2, Check, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { truncateWithEllipsis } from '@/lib/utlils/text';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface Member extends AuthUser {
   attending?: boolean;
@@ -17,6 +19,7 @@ export default function ConfirmarPresencaPage() {
   const { requireAuth, dialog } = useAuthRequired();
   const redirectToLogin = useLoginRedirect();
   const { user } = useAuth();
+  const isMobile = useIsMobile();
   const [members, setMembers] = useState<Member[]>([]);
   const [message, setMessage] = useState('');
   const [responses, setResponses] = useState<Record<string, boolean | undefined>>({});
@@ -112,7 +115,9 @@ export default function ConfirmarPresencaPage() {
                 <tbody>
                   {members.map((m) => (
                     <tr key={m.id} className='border-t'>
-                      <td className='py-2 text-left'>{m.name}</td>
+                      <td className='py-2 text-left'>
+                        {isMobile ? truncateWithEllipsis(m.name, 13) : m.name}
+                      </td>
                       <td className='py-2'>
                         <div className='flex justify-center gap-2 text-lg'>
                           <Button
