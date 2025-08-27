@@ -1,6 +1,6 @@
 'use client'
 
-import { Suspense, useState, useEffect, useRef } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import { Input } from '@/components/ui/input'
@@ -25,7 +25,6 @@ function CadastroForm() {
   const [customAvatarUrl, setCustomAvatarUrl] = useState('')
   const [showUrlInput, setShowUrlInput] = useState(false)
   const [avatarLoaded, setAvatarLoaded] = useState(true)
-  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const avatars = {
     male: ['/png/avatars/male/01.png', '/png/avatars/male/02.png', '/png/avatars/male/03.png'],
@@ -62,30 +61,6 @@ function CadastroForm() {
     const [first = '', second = ''] = name.trim().split(' ')
     return `${first.charAt(0)}${second.charAt(0)}`.toUpperCase()
   })()
-
-  async function uploadFile(file: File) {
-    const formData = new FormData()
-    formData.append('file', file)
-    const res = await fetch('/api/upload-avatar', {
-      method: 'POST',
-      body: formData,
-    })
-    if (res.ok) {
-      const data = await res.json()
-      setCustomAvatarUrl(data.url)
-    }
-  }
-
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (file) uploadFile(file)
-  }
-
-  function handleDrop(e: React.DragEvent<HTMLDivElement>) {
-    e.preventDefault()
-    const file = e.dataTransfer.files[0]
-    if (file) uploadFile(file)
-  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -182,23 +157,6 @@ function CadastroForm() {
             ))}
           </div>
         </div>
-        {!customAvatarUrl && (
-          <div
-            className='border-2 border-dashed rounded p-4 text-center cursor-pointer'
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={handleDrop}
-            onClick={() => fileInputRef.current?.click()}
-          >
-            Arraste e solte uma imagem ou clique para enviar
-            <input
-              ref={fileInputRef}
-              type='file'
-              accept='image/*'
-              className='hidden'
-              onChange={handleFileChange}
-            />
-          </div>
-        )}
         {showUrlInput && (
           <Input
             type='text'

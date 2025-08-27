@@ -44,9 +44,6 @@ For Firebase Admin you may either paste the JSON content of the service account
 in `FIREBASE_SERVICE_ACCOUNT` or point `FIREBASE_SERVICE_ACCOUNT_PATH` to the
 JSON file. See `env.example` for an example.
 
-Provide the name of your Storage bucket in `FIREBASE_STORAGE_BUCKET` to enable
-image uploads.
-
 ## Analytics
 
 This project integrates [Google Analytics](https://analytics.google.com). Provide
