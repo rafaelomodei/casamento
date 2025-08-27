@@ -42,12 +42,14 @@ function MensagensContent() {
 
   useEffect(() => {
     getMessages();
-    if (searchParams.get('modal')) {
-      if (requireAuth(loginMessage)) {
-        setOpen(true);
-      }
+  }, [getMessages]);
+
+  useEffect(() => {
+    if (searchParams.get('modal') && requireAuth(loginMessage)) {
+      setOpen(true);
     }
-  }, [searchParams, requireAuth, getMessages, loginMessage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const blockquoteRender = () => {
     return (
