@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { User } from '@/Providers/auth-provider';
 import Link from 'next/link';
 import { useSearchParams } from "next/navigation";
+import { displayPhone } from '@/lib/utlils/phone';
 
 export default function FamiliasPage() {
   return (
@@ -104,7 +105,7 @@ function FamiliasPageContent() {
           {results.map((u) => (
             <div key={u.id} className='flex items-center justify-between gap-2'>
               <span>
-                {u.name} - {u.phone}
+                {u.name} - {displayPhone(u.phone)}
               </span>
               <Button
                 variant='outline'
@@ -122,7 +123,7 @@ function FamiliasPageContent() {
           {selected.map((u) => (
             <div key={u.id} className='flex items-center justify-between gap-2'>
               <span>
-                {u.name} - {u.phone}
+                {u.name} - {displayPhone(u.phone)}
               </span>
               <Button
                 variant='destructive'
