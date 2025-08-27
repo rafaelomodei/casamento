@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import '@/infra/repositories/firebase/admin'
 import { getStorage } from 'firebase-admin/storage'
 import { randomUUID } from 'crypto'
 
@@ -16,9 +17,9 @@ export async function POST(req: Request) {
     const bucket = getStorage().bucket()
     const bucketFile = bucket.file(fileName)
     await bucketFile.save(buffer, {
-      contentType: file.type,
-      public: true,
+      metadata: { contentType: file.type },
     })
+    await bucketFile.makePublic()
     const url = `https://storage.googleapis.com/${bucket.name}/${fileName}`
     return NextResponse.json({ url })
   } catch (err) {
