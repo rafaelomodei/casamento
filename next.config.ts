@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
       's.dicio.com.br',
       'images.yampi.me',
       'product-hub-prd.madeiramadeira.com.br',
+      'scontent.fmgf12-1.fna.fbcdn.net',
     ],
   },
 };
