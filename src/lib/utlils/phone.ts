@@ -16,3 +16,12 @@ export function formatPhone(value: string): string {
 export function isValidPhone(value: string): boolean {
   return value.replace(/\D/g, '').length === 11
 }
+
+export function isPlaceholderPhone(value: string): boolean {
+  const digits = value.replace(/\D/g, '')
+  return /^9{7,}/.test(digits)
+}
+
+export function displayPhone(value: string): string {
+  return isPlaceholderPhone(value) ? '-' : value
+}

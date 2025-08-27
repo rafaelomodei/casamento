@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Phone } from 'lucide-react';
+import { isPlaceholderPhone } from '@/lib/utlils/phone';
 
 interface Member extends User {
   responded?: boolean;
@@ -94,21 +95,30 @@ export default function ListaFamiliasPage() {
                 <tbody>
                   {f.members.map((m) => {
                     const digits = m.phone.replace(/\D/g, '');
-                    const link = `https://wa.me/${digits.length === 11 ? `55${digits}` : digits}`;
+                    const placeholder = isPlaceholderPhone(m.phone);
+                    const link = placeholder
+                      ? ''
+                      : `https://wa.me/${digits.length === 11 ? `55${digits}` : digits}`;
                     return (
                       <tr key={m.id} className='border-t'>
                         <td className='p-2'>{m.name}</td>
                         <td className='p-2 flex items-center gap-2'>
-                          <a
-                            href={link}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            aria-label={`Conversar com ${m.name} no WhatsApp`}
-                            className='text-green-600 hover:text-green-700'
-                          >
-                            <Phone className='h-4 w-4' />
-                          </a>
-                          {m.phone}
+                          {placeholder ? (
+                            <span>-</span>
+                          ) : (
+                            <>
+                              <a
+                                href={link}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                aria-label={`Conversar com ${m.name} no WhatsApp`}
+                                className='text-green-600 hover:text-green-700'
+                              >
+                                <Phone className='h-4 w-4' />
+                              </a>
+                              {m.phone}
+                            </>
+                          )}
                         </td>
                         <td className='p-2'>
                           {m.responded ? 'Sim' : 'Não'}
