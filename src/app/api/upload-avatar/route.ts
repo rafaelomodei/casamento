@@ -14,7 +14,11 @@ export async function POST(req: Request) {
     const buffer = Buffer.from(arrayBuffer)
     const ext = file.type.split('/').pop() || 'png'
     const fileName = `avatars/${randomUUID()}.${ext}`
-    const bucket = getStorage().bucket()
+    const bucketName = process.env.FIREBASE_STORAGE_BUCKET
+    if (!bucketName) {
+      throw new Error('FIREBASE_STORAGE_BUCKET is not set')
+    }
+    const bucket = getStorage().bucket(bucketName)
     const bucketFile = bucket.file(fileName)
     await bucketFile.save(buffer, {
       metadata: { contentType: file.type },

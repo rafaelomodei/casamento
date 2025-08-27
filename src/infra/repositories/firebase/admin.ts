@@ -36,6 +36,7 @@ const firebaseAdminApp =
           const serviceAccount = loadServiceAccount();
           return serviceAccount ? cert(serviceAccount) : applicationDefault();
         })(),
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
       });
 
 export const adminDb = getFirestore(firebaseAdminApp);
