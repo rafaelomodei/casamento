@@ -209,6 +209,7 @@ export default function Home() {
                     alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
                     containerClassName='w-xs md:w-xl lg:w-xl cursor-pointer '
                     overlay={<MapPin className='w-8 h-8 text-primary' />}
+                    sizes='(max-width: 768px) 100vw, 480px'
                   />
 
                   <p className='text-center text-sm text-muted-foreground'>
@@ -352,6 +353,7 @@ export default function Home() {
                     alt='Local da recepção, pesqueiro são luiz - Colorado PR'
                     containerClassName='w-xs md:w-xl lg:w-xl cursor-pointer'
                     overlay={<MapPin className='w-8 h-8 text-primary' />}
+                    sizes='(max-width: 768px) 100vw, 480px'
                   />
 
                   <p className='text-center text-sm text-muted-foreground'>

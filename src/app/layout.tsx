@@ -35,6 +35,8 @@ const arapey = localFont({
       style: 'italic',
     },
   ],
+  display: 'swap',
+  variable: '--font-arapey',
 });
 
 const shareDescription = `Um dia inesquecível está por vir! Com carinho, preparamos cada detalhe para
