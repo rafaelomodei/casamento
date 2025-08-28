@@ -27,8 +27,8 @@ export default function Home() {
   const churchCoords = { lat: -22.8382072, lng: -51.9733284 };
   const receptionCoords = { lat: -22.8082686, lng: -51.9427835 };
   return (
-    <main className='min-h-screen flex flex-col py-8  pb-4  pt-0 text-primary max-w-7xl'>
-      <header className='flex h-[calc(100dvh-95px)] md:h-[calc(100vh-180px)]'>
+    <main className='min-h-screen flex flex-col py-8 pb-4 pt-0 text-primary max-w-7xl w-full mx-auto px-4 md:px-6 lg:px-8'>
+      <header className='flex h-[calc(100dvh-95px)] md:h-[calc(100vh-180px)] -mx-4 md:-mx-6 lg:-mx-8'>
         <div className='flex flex-col w-full items-center justify-center '>
           <div className='relative w-full h-full lg:aspect-video overflow-hidden lg:rounded-xl'>
             <iframe
