@@ -45,6 +45,7 @@ const NavBar = () => {
   const items = [
     { href: '/nossas-historias', label: 'Nossas Histórias' },
     { href: '/mensagens', label: 'Mensagens' },
+    { href: '/galeria', label: 'Galeria' },
     { href: '/#cerimonia', label: 'Cerimônia' },
     { href: '/#festa', label: 'Festa' },
     { href: '/presentes', label: 'Presentes' },
