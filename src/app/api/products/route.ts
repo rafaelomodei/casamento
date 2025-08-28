@@ -7,11 +7,14 @@ import { GetProductBySlugUseCase } from '@/domain/products/useCases/getProductBy
 import { UpdateProductUseCase } from '@/domain/products/useCases/updateProduct/UpdateProductUseCase';
 import { DeleteProductUseCase } from '@/domain/products/useCases/deleteProduct/DeleteProductUseCase';
 import { productRepository } from '@/infra/repositories/firebase/ProductServerFirebaseRepositories';
+import { PRODUCTS_PAGE_SIZE } from '@/lib/constants';
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get('id');
   const slug = searchParams.get('slug');
+  const page = Number(searchParams.get('page') || '1');
+  const limit = Number(searchParams.get('limit') || PRODUCTS_PAGE_SIZE);
 
   if (id) {
     const getProduct = new GetProductByIdUseCase(productRepository);
@@ -37,8 +40,12 @@ export async function GET(req: Request) {
 
   const getAllProducts = new GetAllProductsUseCase(productRepository);
   const products = await getAllProducts.execute();
+  const start = (page - 1) * limit;
+  const end = start + limit;
+  const paginated = products.slice(start, end);
+  const hasMore = end < products.length;
 
-  return NextResponse.json(products, { status: 200 });
+  return NextResponse.json({ products: paginated, hasMore }, { status: 200 });
 }
 
 export async function POST(req: Request) {
