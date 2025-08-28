@@ -17,12 +17,10 @@ import {
 } from '@/components/ui/card';
 import {
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { Label, Pie, PieChart } from 'recharts';
+import { Pie, PieChart } from 'recharts';
 
 interface Member extends User {
   responded?: boolean;
@@ -125,56 +123,59 @@ export default function ListaFamiliasPage() {
       <PageBreadcrumb />
       <h1 className='text-2xl'>Famílias</h1>
       {!loading && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Resumo de convidados</CardTitle>
-            <CardDescription>
-              Total: {totalPeople} | Confirmados: {confirmedPeople}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className='flex flex-col items-center gap-4 md:flex-row md:items-start'>
-            <ChartContainer
-              config={chartConfig}
-              className='mx-auto aspect-square h-[200px] w-[200px]'
-            >
-              <PieChart>
-                <ChartTooltip content={<ChartTooltipContent nameKey='name' />} />
-                <Pie
-                  data={chartData}
-                  dataKey='value'
-                  nameKey='name'
-                  innerRadius={60}
-                  strokeWidth={5}
-                >
-                  <Label
-                    content={({ viewBox }) => {
-                      if (
-                        viewBox &&
-                        'cx' in viewBox &&
-                        'cy' in viewBox
-                      ) {
-                        return (
-                          <text
-                            x={viewBox.cx}
-                            y={viewBox.cy}
-                            textAnchor='middle'
-                            dominantBaseline='middle'
-                          >
-                            {confirmedPeople}/{totalPeople}
-                          </text>
-                        );
-                      }
-                      return null;
-                    }}
-                  />
-                </Pie>
-                <ChartLegend
-                  content={<ChartLegendContent nameKey='name' />}
-                />
-              </PieChart>
-            </ChartContainer>
-          </CardContent>
-        </Card>
+        <>
+          <Card className='flex flex-col'>
+            <CardHeader className='items-center pb-0'>
+              <CardTitle>Resumo de convidados</CardTitle>
+              <CardDescription>Total de convidados: {totalPeople}</CardDescription>
+            </CardHeader>
+            <CardContent className='flex-1 pb-0'>
+              <ChartContainer
+                config={chartConfig}
+                className='[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[250px] pb-0'
+              >
+                <PieChart>
+                  <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+                  <Pie data={chartData} dataKey='value' label nameKey='name' />
+                </PieChart>
+              </ChartContainer>
+            </CardContent>
+          </Card>
+          <div className='*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4'>
+            <Card className='@container/card' data-slot='card'>
+              <CardHeader>
+                <CardDescription>Total</CardDescription>
+                <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
+                  {totalPeople}
+                </CardTitle>
+              </CardHeader>
+            </Card>
+            <Card className='@container/card' data-slot='card'>
+              <CardHeader>
+                <CardDescription>Confirmados</CardDescription>
+                <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
+                  {confirmedPeople}
+                </CardTitle>
+              </CardHeader>
+            </Card>
+            <Card className='@container/card' data-slot='card'>
+              <CardHeader>
+                <CardDescription>Não irão</CardDescription>
+                <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
+                  {declinedPeople}
+                </CardTitle>
+              </CardHeader>
+            </Card>
+            <Card className='@container/card' data-slot='card'>
+              <CardHeader>
+                <CardDescription>Pendentes</CardDescription>
+                <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
+                  {pendingPeople}
+                </CardTitle>
+              </CardHeader>
+            </Card>
+          </div>
+        </>
       )}
       {loading &&
         Array.from({ length: 6 }).map((_, i) => <FamilySkeleton key={i} />)}
