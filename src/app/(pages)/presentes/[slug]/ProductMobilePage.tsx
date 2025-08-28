@@ -49,6 +49,7 @@ export function ProductMobilePage({ product }: Props) {
           showControls={false}
           rounded={false}
           className='h-full w-full'
+          priority
         />
       </div>
       <p className='text-sm text-muted-foreground'>
