@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { User } from '@/Providers/auth-provider';
+import { User, useAuth } from '@/Providers/auth-provider';
 import Link from 'next/link';
 import { useSearchParams } from "next/navigation";
 import { displayPhone } from '@/lib/utlils/phone';
@@ -25,6 +25,9 @@ function FamiliasPageContent() {
   const [selected, setSelected] = useState<User[]>([]);
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
+  const { user } = useAuth();
+  const canEdit =
+    user?.phone.replace(/\D/g, '') === '45991156286';
 
   useEffect(() => {
     if (!familyId) return;
@@ -57,6 +60,7 @@ function FamiliasPageContent() {
   }
 
   async function handleSave() {
+    if (!canEdit) return;
     const memberIds = selected.map((s) => s.id);
     if (!name || memberIds.length < 2) {
       setMessage('Selecione pelo menos dois membros');
@@ -68,7 +72,10 @@ function FamiliasPageContent() {
       : { name, memberIds };
     const res = await fetch('/api/families', {
       method,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-user-phone': user?.phone || '',
+      },
       body: JSON.stringify(body),
     });
     if (res.ok) {
@@ -81,6 +88,15 @@ function FamiliasPageContent() {
         setResults([]);
       }
     }
+  }
+
+  if (!canEdit) {
+    return (
+      <main className='mx-auto flex w-full max-w-7xl flex-col gap-4 p-4'>
+        <PageBreadcrumb />
+        <p>Acesso restrito</p>
+      </main>
+    );
   }
 
   return (
