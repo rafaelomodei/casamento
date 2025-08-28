@@ -83,7 +83,7 @@ export default function HomeMessages() {
             className='text-xl text-primary/70 mb-6'
             style={{ fontFamily: 'var(--font-arapey)', fontStyle: 'italic' }}
           >
-            Nossa felicidade é ainda maior quando compatilhada! te esperamos
+            Nossa felicidade é ainda maior quando compartilhada! Te esperamos
             para celebrar com a gente!
           </p>
 

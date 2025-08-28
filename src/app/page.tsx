@@ -55,7 +55,7 @@ export default function Home() {
 
       <section className='flex py-8 gap-12'>
         <div className='flex flex-col gap-4'>
-          <p className='text-2xl'> Nossas história</p>
+          <p className='text-2xl'>Nossa história</p>
           <div className='md:hidden w-full max-w-container mx-auto mt-[1px]'>
             <Image
               src={'/png/preWedding/DSC03547.jpg'}
@@ -92,7 +92,7 @@ export default function Home() {
       <section id='cerimonia' className='flex flex-col w-full py-8'>
         <div className='text-center mb-16'>
           <div className='flex items-center justify-center gap-3 mb-6'>
-            <h2 className='text-4xl md:text-5xl text-primary'>Cerimónia</h2>
+            <h2 className='text-4xl md:text-5xl text-primary'>Cerimônia</h2>
           </div>
 
           <div className='max-w-2xl mx-auto'>
@@ -100,7 +100,7 @@ export default function Home() {
               className='text-xl text-primary/70 mb-6'
               style={{ fontFamily: 'var(--font-arapey)', fontStyle: 'italic' }}
             >
-              Nossa felicidade é ainda maior quando compatilhada! te esperamos
+              Nossa felicidade é ainda maior quando compartilhada! Te esperamos
               para celebrar com a gente!
             </p>
 
@@ -146,7 +146,7 @@ export default function Home() {
                   <div className='space-y-4'>
                     <div>
                       <p className='text-3xl md:text-4xl text-primary font-normal'>
-                        Paróquia Nossa Senhora Auxliadora
+                        Paróquia Nossa Senhora Auxiliadora
                       </p>
 
                       <p className='text-lg text-primary/70 italic'>
@@ -430,7 +430,7 @@ export default function Home() {
 
                       <p className='text-lg text-primary/70 italic'>
                         Antes de qualquer coisa, queremos que você se sinta
-                        linda e bem vestida, fique a vontade para escolher o
+                        linda e bem vestida, fique à vontade para escolher o
                         modelo que você se sentir melhor.
                       </p>
                     </div>
@@ -526,7 +526,7 @@ export default function Home() {
                     <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
                       <Image
                         src={'/png/example/madrinhas.png'}
-                        alt='Exemplo de cor e modeo de vestido que as madrinhas devem ir'
+                        alt='Exemplo de cor e modelo de vestido que as madrinhas devem ir'
                         className='object-cover transition-transform duration-500 group-hover:scale-105'
                         fill
                       />
@@ -627,7 +627,7 @@ export default function Home() {
                     <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
                       <Image
                         src={'/png/example/padrinhos.png'}
-                        alt='Exemplo de cor e modeo de terno que os padrinhos devem ir'
+                        alt='Exemplo de cor e modelo de terno que os padrinhos devem ir'
                         className='object-cover transition-transform duration-500 group-hover:scale-105'
                         fill
                       />

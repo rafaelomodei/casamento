@@ -80,7 +80,7 @@ export default function ConfirmarPresencaPage() {
       <PageBreadcrumb />
       <div className='flex flex-col gap-6 items-center text-center'>
         <div className='w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4'>
-          <CalendarCheck2 className='h-8 w-8 text-se' />
+          <CalendarCheck2 className='h-8 w-8 text-secondary' />
         </div>
         <h1 className='text-3xl'>Confirmação de presença</h1>
         {!user ? (
