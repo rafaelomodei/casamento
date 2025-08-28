@@ -8,6 +8,21 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Phone } from 'lucide-react';
 import { isPlaceholderPhone } from '@/lib/utlils/phone';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart';
+import { Label, Pie, PieChart } from 'recharts';
 
 interface Member extends User {
   responded?: boolean;
@@ -57,10 +72,110 @@ export default function ListaFamiliasPage() {
     setFamilies((prev) => prev.filter((f) => f.id !== id));
   }
 
+  const totalPeople = families.reduce(
+    (acc, f) => acc + f.members.length,
+    0,
+  );
+  const confirmedPeople = families.reduce(
+    (acc, f) => acc + f.members.filter((m) => m.attending).length,
+    0,
+  );
+  const declinedPeople = families.reduce(
+    (acc, f) =>
+      acc + f.members.filter((m) => m.attending === false).length,
+    0,
+  );
+  const pendingPeople = totalPeople - confirmedPeople - declinedPeople;
+
+  const chartData = [
+    {
+      name: 'confirmados',
+      value: confirmedPeople,
+      fill: 'var(--color-confirmados)',
+    },
+    {
+      name: 'nao',
+      value: declinedPeople,
+      fill: 'var(--color-nao)',
+    },
+    {
+      name: 'pendentes',
+      value: pendingPeople,
+      fill: 'var(--color-pendentes)',
+    },
+  ];
+
+  const chartConfig = {
+    confirmados: {
+      label: 'Confirmados',
+      color: 'hsl(var(--chart-1))',
+    },
+    nao: {
+      label: 'Não irão',
+      color: 'hsl(var(--chart-2))',
+    },
+    pendentes: {
+      label: 'Pendentes',
+      color: 'hsl(var(--chart-3))',
+    },
+  } as const;
+
   return (
     <main className='mx-auto flex w-full max-w-7xl flex-col gap-4 p-4'>
       <PageBreadcrumb />
       <h1 className='text-2xl'>Famílias</h1>
+      {!loading && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Resumo de convidados</CardTitle>
+            <CardDescription>
+              Total: {totalPeople} | Confirmados: {confirmedPeople}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className='flex flex-col items-center gap-4 md:flex-row md:items-start'>
+            <ChartContainer
+              config={chartConfig}
+              className='mx-auto aspect-square h-[200px] w-[200px]'
+            >
+              <PieChart>
+                <ChartTooltip content={<ChartTooltipContent nameKey='name' />} />
+                <Pie
+                  data={chartData}
+                  dataKey='value'
+                  nameKey='name'
+                  innerRadius={60}
+                  strokeWidth={5}
+                >
+                  <Label
+                    content={({ viewBox }) => {
+                      if (
+                        viewBox &&
+                        'cx' in viewBox &&
+                        'cy' in viewBox
+                      ) {
+                        return (
+                          <text
+                            x={viewBox.cx}
+                            y={viewBox.cy}
+                            textAnchor='middle'
+                            dominantBaseline='middle'
+                          >
+                            {confirmedPeople}/{totalPeople}
+                          </text>
+                        );
+                      }
+                      return null;
+                    }}
+                  />
+                </Pie>
+                <ChartLegend
+                  content={<ChartLegendContent nameKey='name' />}
+                />
+              </PieChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
+      )}
       {loading &&
         Array.from({ length: 6 }).map((_, i) => <FamilySkeleton key={i} />)}
       {!loading &&
