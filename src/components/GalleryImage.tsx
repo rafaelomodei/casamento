@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface GalleryImageProps {
@@ -77,6 +77,9 @@ export default function GalleryImage({ src, alt, images, index }: GalleryImagePr
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-5xl p-0 bg-transparent border-none">
+          <DialogHeader>
+            <DialogTitle className="sr-only">{images[current]}</DialogTitle>
+          </DialogHeader>
           <div
             className="relative max-h-[90vh] overflow-hidden flex items-center justify-center"
             onTouchStart={handleTouchStart}
