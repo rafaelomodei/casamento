@@ -1,23 +1,40 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function HeroVideo() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  function handleLoad() {
+  function postMessage(func: string) {
     const player = iframeRef.current?.contentWindow;
     if (!player) return;
     const origin = 'https://www.youtube-nocookie.com';
     player.postMessage(
-      JSON.stringify({ event: 'command', func: 'mute', args: [] }),
-      origin,
-    );
-    player.postMessage(
-      JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
+      JSON.stringify({ event: 'command', func, args: [] }),
       origin,
     );
   }
+
+  function handleLoad() {
+    postMessage('mute');
+    postMessage('playVideo');
+  }
+
+  useEffect(() => {
+    // iOS browsers may block autoplay until the first user interaction.
+    // Listen for the first touch/click and trigger playback once.
+    const attemptPlay = () => {
+      postMessage('playVideo');
+    };
+
+    window.addEventListener('touchstart', attemptPlay, { once: true });
+    window.addEventListener('click', attemptPlay, { once: true });
+
+    return () => {
+      window.removeEventListener('touchstart', attemptPlay);
+      window.removeEventListener('click', attemptPlay);
+    };
+  }, []);
 
   return (
     <iframe
