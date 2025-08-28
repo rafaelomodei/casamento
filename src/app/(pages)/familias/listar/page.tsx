@@ -142,7 +142,7 @@ export default function ListaFamiliasPage() {
           <div key={f.id} className='space-y-2 rounded border p-4'>
             <div className='flex items-center justify-between'>
               <h2 className='font-semibold'>{f.name}</h2>
-              {canEdit && (
+              {canEdit && f.id !== '__no_family__' && (
                 <div className='flex gap-2'>
                   <Button asChild size='sm' variant='outline'>
                     <Link href={`/familias?id=${f.id}`}>Editar</Link>
