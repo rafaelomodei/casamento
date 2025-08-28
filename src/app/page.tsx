@@ -27,33 +27,43 @@ export default function Home() {
   const churchCoords = { lat: -22.8382072, lng: -51.9733284 };
   const receptionCoords = { lat: -22.8082686, lng: -51.9427835 };
   return (
-    <main className='min-h-screen flex flex-col py-8  px-4  text-primary max-w-7xl'>
-      <header className='flex h-screen'>
-        <div className='flex flex-col w-full items-center justify-center'>
-          <Image
-            src={'/png/capa.png'}
-            alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
-            height={540}
-            width={320}
-          />
-          <div className='flex flex-col items-center gap-4'>
-            <div className='flex flex-col items-center'>
-              <p className='font-arapey text-2xl sm:text-5xl lg:text-6xl text-primary'>
-                {BRIDE_AND_GROOM}
-              </p>
-              <p className='text-primary text-xl --font-body'>
-                27 | SET | 2025
+    <main className='min-h-screen flex flex-col py-8  pb-4  pt-0 text-primary max-w-7xl'>
+      <header className='flex h-[calc(100vh-180px)]'>
+        <div className='flex flex-col w-full items-center justify-center '>
+          <div className='relative w-full  aspect-video '>
+            <iframe
+              className='absolute inset-0 w-full h-full rounded-xl pointer-events-none border-0 '
+              src='https://www.youtube-nocookie.com/embed/ltugLz6H7cs?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=ltugLz6H7cs&disablekb=1&fs=0'
+              title='Vídeo de abertura'
+              allow='autoplay; encrypted-media'
+              referrerPolicy='strict-origin-when-cross-origin'
+              tabIndex={-1}
+              aria-hidden='true'
+            />
+            {/* Gradiente do rodapé para transparência (de baixo para cima) */}
+            <div
+              aria-hidden='true'
+              className='absolute inset-x-0 rounded-xl bottom-0 h-2/4 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none'
+            />
+            <div className='absolute inset-x-0 bottom-0 flex flex-col items-center gap-4 p-4'>
+              <div className='flex flex-col items-center'>
+                <p className='text-white  font-arapey text-2xl sm:text-5xl lg:text-6xl  drop-shadow'>
+                  {BRIDE_AND_GROOM}
+                </p>
+                <p className='text-white text-xl --font-body drop-shadow'>
+                  27 | SET | 2025
+                </p>
+              </div>
+              <Countdown targetDate={weddingDate} />
+              <p className='text-white  text-center text-xl md:text-3xl  drop-shadow'>
+                Sejam bem-vindos ao nosso site!
               </p>
             </div>
-            <Countdown targetDate={weddingDate} />
-            <p className='text-center text-xl md:text-3xl'>
-              Sejam bem-vindos ao nosso site!
-            </p>
           </div>
         </div>
       </header>
 
-      <section className='flex py-8 gap-12'>
+      <section className='flex py-8 mt-32 gap-12'>
         <div className='flex flex-col gap-4'>
           <p className='text-2xl'>Nossa história</p>
           <div className='md:hidden w-full max-w-container mx-auto mt-[1px]'>
