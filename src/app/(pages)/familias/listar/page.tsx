@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
-import { User } from '@/Providers/auth-provider';
+import { User, useAuth } from '@/Providers/auth-provider';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -47,6 +47,9 @@ function FamilySkeleton() {
 export default function ListaFamiliasPage() {
   const [families, setFamilies] = useState<Family[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  const canEdit =
+    user?.phone.replace(/\D/g, '') === '45991156286';
 
   useEffect(() => {
     setLoading(true);
@@ -58,8 +61,12 @@ export default function ListaFamiliasPage() {
   }, []);
 
   async function handleDelete(id: string) {
+    if (!canEdit) return;
     if (!confirm('Deseja excluir esta família?')) return;
-    await fetch(`/api/families?id=${id}`, { method: 'DELETE' });
+    await fetch(`/api/families?id=${id}`, {
+      method: 'DELETE',
+      headers: { 'x-user-phone': user?.phone || '' },
+    });
     setFamilies((prev) => prev.filter((f) => f.id !== id));
   }
 
@@ -135,18 +142,20 @@ export default function ListaFamiliasPage() {
           <div key={f.id} className='space-y-2 rounded border p-4'>
             <div className='flex items-center justify-between'>
               <h2 className='font-semibold'>{f.name}</h2>
-              <div className='flex gap-2'>
-                <Button asChild size='sm' variant='outline'>
-                  <Link href={`/familias?id=${f.id}`}>Editar</Link>
-                </Button>
-                <Button
-                  size='sm'
-                  variant='destructive'
-                  onClick={() => handleDelete(f.id)}
-                >
-                  Excluir
-                </Button>
-              </div>
+              {canEdit && (
+                <div className='flex gap-2'>
+                  <Button asChild size='sm' variant='outline'>
+                    <Link href={`/familias?id=${f.id}`}>Editar</Link>
+                  </Button>
+                  <Button
+                    size='sm'
+                    variant='destructive'
+                    onClick={() => handleDelete(f.id)}
+                  >
+                    Excluir
+                  </Button>
+                </div>
+              )}
             </div>
             <div className='overflow-x-auto'>
               <table className='w-full text-sm'>
