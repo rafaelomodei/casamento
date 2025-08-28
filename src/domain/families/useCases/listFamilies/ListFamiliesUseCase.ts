@@ -11,11 +11,24 @@ export class ListFamiliesUseCase {
 
   async execute(): Promise<(FamilyDTO & { members: UserDTO[] })[]> {
     const families = await this.familyRepository.list();
-    return Promise.all(
+    const familiesWithMembers = await Promise.all(
       families.map(async (f) => ({
         ...f,
         members: await this.userRepository.findByFamilyId(f.id!),
       })),
     );
+
+    const allUsers = await this.userRepository.search('');
+    const noFamilyMembers = allUsers.filter((u) => !u.familyId);
+
+    if (noFamilyMembers.length) {
+      familiesWithMembers.unshift({
+        id: '__no_family__',
+        name: 'Sem família',
+        members: noFamilyMembers,
+      });
+    }
+
+    return familiesWithMembers;
   }
 }
