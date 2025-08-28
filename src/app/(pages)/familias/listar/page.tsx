@@ -10,17 +10,10 @@ import { Phone } from 'lucide-react';
 import { isPlaceholderPhone } from '@/lib/utlils/phone';
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart';
-import { Pie, PieChart } from 'recharts';
 
 interface Member extends User {
   responded?: boolean;
@@ -80,39 +73,6 @@ export default function ListaFamiliasPage() {
     0
   );
   const pendingPeople = totalPeople - confirmedPeople - declinedPeople;
-
-  const chartData = [
-    {
-      name: 'confirmados',
-      value: confirmedPeople,
-      fill: 'var(--color-confirmados)',
-    },
-    {
-      name: 'nao',
-      value: declinedPeople,
-      fill: 'var(--color-nao)',
-    },
-    {
-      name: 'pendentes',
-      value: pendingPeople,
-      fill: 'var(--color-pendentes)',
-    },
-  ];
-
-  const chartConfig = {
-    confirmados: {
-      label: 'Confirmados',
-      color: 'hsl(var(--chart-1))',
-    },
-    nao: {
-      label: 'Não irão',
-      color: 'hsl(var(--chart-2))',
-    },
-    pendentes: {
-      label: 'Pendentes',
-      color: 'hsl(var(--chart-3))',
-    },
-  } as const;
 
   return (
     <main className='mx-auto flex w-full max-w-7xl flex-col gap-4 p-4'>
