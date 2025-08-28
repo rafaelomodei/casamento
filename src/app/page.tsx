@@ -32,7 +32,7 @@ export default function Home() {
         <div className='flex flex-col w-full items-center justify-center '>
           <div className='relative w-full h-full lg:aspect-video overflow-hidden lg:rounded-xl'>
             <iframe
-              className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto aspect-video pointer-events-none border-0 lg:inset-0 lg:top-auto lg:left-auto lg:translate-x-0 lg:translate-y-0 lg:w-full lg:h-full lg:min-w-0 lg:min-h-0'
+              className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto aspect-video pointer-events-none border-0 will-change-transform lg:scale-[1.06]'
               src='https://www.youtube-nocookie.com/embed/ltugLz6H7cs?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=ltugLz6H7cs&disablekb=1&fs=0'
               title='Vídeo de abertura'
               allow='autoplay; encrypted-media'
@@ -43,7 +43,7 @@ export default function Home() {
             {/* Gradiente do rodapé para transparência (de baixo para cima) */}
             <div
               aria-hidden='true'
-              className='absolute inset-x-0  lg:rounded-xl bottom-0 h-2/4 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none'
+              className='absolute inset-x-0 lg:rounded-xl bottom-0 h-2/4 md:h-2/5 lg:h-1/3 bg-gradient-to-t from-black via-black/50 to-transparent lg:from-black/30 lg:via-black/10 pointer-events-none'
             />
             <div className='absolute inset-x-0 bottom-0 flex flex-col items-center gap-4 p-4'>
               <div className='flex flex-col items-center'>
