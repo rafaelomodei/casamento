@@ -22,9 +22,15 @@ export class ListFamiliesUseCase {
     const noFamilyMembers = allUsers.filter((u) => !u.familyId);
 
     if (noFamilyMembers.length) {
+      const memberIds = noFamilyMembers
+        .map((u) => u.id)
+        .filter((id): id is string => Boolean(id));
+
       familiesWithMembers.unshift({
         id: '__no_family__',
         name: 'Sem família',
+        memberIds,
+        createdAt: new Date().toISOString(),
         members: noFamilyMembers,
       });
     }
