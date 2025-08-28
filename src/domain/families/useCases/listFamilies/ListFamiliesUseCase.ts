@@ -6,7 +6,7 @@ import { UserDTO } from '@/domain/users/entities/UserDTO';
 export class ListFamiliesUseCase {
   constructor(
     private familyRepository: IFamilyRepository,
-    private userRepository: IUserRepository,
+    private userRepository: IUserRepository
   ) {}
 
   async execute(): Promise<(FamilyDTO & { members: UserDTO[] })[]> {
@@ -15,7 +15,7 @@ export class ListFamiliesUseCase {
       families.map(async (f) => ({
         ...f,
         members: await this.userRepository.findByFamilyId(f.id!),
-      })),
+      }))
     );
 
     const allUsers = await this.userRepository.search('');
@@ -28,7 +28,7 @@ export class ListFamiliesUseCase {
 
       familiesWithMembers.unshift({
         id: '__no_family__',
-        name: 'Sem família',
+        name: 'Não estão associado a uma família',
         memberIds,
         createdAt: new Date().toISOString(),
         members: noFamilyMembers,
