@@ -20,6 +20,7 @@ import OpenInMapsButton from '@/components/OpenInMapsButton/OpenInMapsButton';
 import OpenInMapsImage from '@/components/OpenInMapsImage/OpenInMapsImage';
 import StoryPreview from '@/components/StoryPreview/StoryPreview';
 import GuestCarousel from '@/components/GuestCarousel';
+import HeroVideo from '@/components/HeroVideo/HeroVideo';
 
 export default function Home() {
   const weddingDate = new Date('September 27, 2025 16:00:00');
@@ -31,15 +32,7 @@ export default function Home() {
       <header className='flex h-[calc(100dvh-95px)] md:h-[calc(100vh-180px)] -mx-4 md:-mx-6 lg:-mx-8'>
         <div className='flex flex-col w-full items-center justify-center '>
           <div className='relative w-full h-full lg:aspect-video overflow-hidden lg:rounded-xl'>
-            <iframe
-              className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto aspect-video pointer-events-none border-0 will-change-transform lg:scale-[1.06]'
-              src='https://www.youtube-nocookie.com/embed/ltugLz6H7cs?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&playsinline=1&loop=1&playlist=ltugLz6H7cs&disablekb=1&fs=0'
-              title='Vídeo de abertura'
-              allow='autoplay; encrypted-media'
-              referrerPolicy='strict-origin-when-cross-origin'
-              tabIndex={-1}
-              aria-hidden='true'
-            />
+            <HeroVideo />
             {/* Gradiente do rodapé para transparência (de baixo para cima) */}
             <div
               aria-hidden='true'
@@ -209,6 +202,7 @@ export default function Home() {
                     alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
                     containerClassName='w-xs md:w-xl lg:w-xl cursor-pointer '
                     overlay={<MapPin className='w-8 h-8 text-primary' />}
+                    sizes='(max-width: 768px) 100vw, 480px'
                   />
 
                   <p className='text-center text-sm text-muted-foreground'>
@@ -352,6 +346,7 @@ export default function Home() {
                     alt='Local da recepção, pesqueiro são luiz - Colorado PR'
                     containerClassName='w-xs md:w-xl lg:w-xl cursor-pointer'
                     overlay={<MapPin className='w-8 h-8 text-primary' />}
+                    sizes='(max-width: 768px) 100vw, 480px'
                   />
 
                   <p className='text-center text-sm text-muted-foreground'>
