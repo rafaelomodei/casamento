@@ -95,7 +95,7 @@ export default function Home() {
       <section id='cerimonia' className='flex flex-col w-full py-8'>
         <div className='text-center mb-16'>
           <div className='flex items-center justify-center gap-3 mb-6'>
-            <h2 className='text-4xl md:text-5xl text-primary'>Cerimônia</h2>
+            <h2 className='text-4xl md:text-5xl text-primary'>Cerimonia</h2>
           </div>
 
           <div className='max-w-2xl mx-auto'>
@@ -224,7 +224,7 @@ export default function Home() {
                     <div className='flex items-center gap-2 justify-center'>
                       <Clock className='w-10 h-10 md:w-4 md:h-4   text-secondary' />
                       <span className='text-xl underline'>
-                        Chegada: 30 minutos antes na Cerimônia religiosa
+                        Chegada: 30 minutos antes na Cerimonia religiosa
                       </span>
                     </div>
                   </div>
@@ -501,7 +501,7 @@ export default function Home() {
                       <div className='flex flex-col text-lg  pl-4  gap-2'>
                         <p>Chegue com antecedência para fotos especiais ⏰</p>
                         <p>
-                          Durante a cerimônia, pedimos apenas cuidado para que o
+                          Durante a Cerimonia, pedimos apenas cuidado para que o
                           corredor até o altar fique sempre livre 📷
                         </p>
                         <p>Aproveite cada momento 🎉 </p>
@@ -660,7 +660,7 @@ export default function Home() {
 
                       <p className='text-lg text-primary/70 italic'>
                         É uma alegria ter vocês conosco nesse dia tão especial!
-                        Para que todos aproveitem ao máximo a cerimônia e a
+                        Para que todos aproveitem ao máximo a Cerimonia e a
                         festa,
                       </p>
                     </div>

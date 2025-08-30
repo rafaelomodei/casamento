@@ -15,7 +15,7 @@ const Footer = () => {
       <nav className='flex flex-wrap gap-4 items-center justify-center'>
         <Link href='/nossas-historias'>Nossa Histórias</Link>
         <Link href='/mensagens'>Mensagens</Link>
-        <Link href='/#cerimonia'>Cerimônia</Link>
+        <Link href='/#cerimonia'>Cerimonia</Link>
         <Link href='/#festa'>Festa</Link>
         <Link href='/presentes'>Presentes</Link>
       </nav>

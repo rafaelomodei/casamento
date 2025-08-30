@@ -106,10 +106,9 @@ export default function GuiaPage() {
       <PageBreadcrumb />
       <h1 className='text-2xl'>Guia para convidados</h1>
       <p className='text-sm'>
-        Se você é de fora e não conhece muito bem Colorado, aqui
-        reunimos algumas dicas rápidas para facilitar sua estadia. Veja
-        opções de hospedagem e transporte para aproveitar a cidade sem
-        preocupações.
+        Se você é de fora e não conhece muito bem Colorado, aqui reunimos
+        algumas dicas rápidas para facilitar sua estadia. Veja opções de
+        hospedagem e transporte para aproveitar a cidade sem preocupações.
       </p>
 
       <section className='flex flex-col gap-4'>
@@ -120,14 +119,20 @@ export default function GuiaPage() {
         </p>
         <div className='grid sm:grid-cols-2 gap-4'>
           {hotels.map((hotel) => (
-            <GuideCard key={hotel.name} imageSrc={hotel.image} title={hotel.name}>
+            <GuideCard
+              key={hotel.name}
+              imageSrc={hotel.image}
+              title={hotel.name}
+            >
               <p className='text-sm'>{hotel.address}</p>
               <p className='text-sm'>{hotel.phone}</p>
               <p className='text-sm'>{hotel.notes}</p>
             </GuideCard>
           ))}
         </div>
-        <p className='text-sm italic'>Todos ficam a menos de 2 km da Igreja Matriz, onde será a cerimônia.</p>
+        <p className='text-sm italic'>
+          Todos ficam a menos de 2 km da Igreja Matriz, onde será a Cerimonia.
+        </p>
       </section>
 
       <section className='flex flex-col gap-4'>
@@ -147,26 +152,40 @@ export default function GuiaPage() {
       </section>
 
       <section className='flex flex-col gap-4'>
-        <h2 className='text-xl font-semibold'>Aluguel de carro (Aeroporto de Maringá – MGF)</h2>
+        <h2 className='text-xl font-semibold'>
+          Aluguel de carro (Aeroporto de Maringá – MGF)
+        </h2>
         <p className='text-sm'>
-          Se preferir sair do aeroporto dirigindo, veja algumas locadoras que atendem no saguão de desembarque em Maringá.
+          Se preferir sair do aeroporto dirigindo, veja algumas locadoras que
+          atendem no saguão de desembarque em Maringá.
         </p>
         <div className='grid sm:grid-cols-2 gap-4'>
           {rentals.map((rental) => (
-            <GuideCard key={rental.name} imageSrc={rental.image} title={rental.name}>
+            <GuideCard
+              key={rental.name}
+              imageSrc={rental.image}
+              title={rental.name}
+            >
               <p className='text-sm'>{rental.counter}</p>
               <p className='text-sm'>{rental.phone}</p>
               <p className='text-sm'>{rental.site}</p>
             </GuideCard>
           ))}
         </div>
-        <p className='text-sm'>Distância Maringá ⇄ Colorado: ~82 km (1 h 15 min de carro).</p>
-        <p className='text-sm italic'>A maioria das locadoras permite retirada e devolução fora do horário mediante taxa adicional.</p>
+        <p className='text-sm'>
+          Distância Maringá ⇄ Colorado: ~82 km (1 h 15 min de carro).
+        </p>
+        <p className='text-sm italic'>
+          A maioria das locadoras permite retirada e devolução fora do horário
+          mediante taxa adicional.
+        </p>
       </section>
 
       <section className='flex flex-col gap-4'>
         <h2 className='text-xl font-semibold'>Festa &amp; deslocamento</h2>
-        <p className='text-sm'>Endereços da cerimônia e da festa para você se programar.</p>
+        <p className='text-sm'>
+          Endereços da Cerimonia e da festa para você se programar.
+        </p>
         <table className='w-full text-sm border-collapse'>
           <thead>
             <tr className='border-b'>
@@ -177,7 +196,7 @@ export default function GuiaPage() {
           </thead>
           <tbody>
             <tr className='border-b'>
-              <td>Igreja Matriz (cerimônia)</td>
+              <td>Igreja Matriz (Cerimonia)</td>
               <td>Centro de Colorado</td>
               <td>—</td>
             </tr>
