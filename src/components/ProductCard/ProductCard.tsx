@@ -9,7 +9,10 @@ import { formatCurrency } from '@/lib/utlils/currency';
 import removeMd from 'remove-markdown';
 
 const ImageCarousel = dynamic(
-  () => import('@/components/ImageCarousel/ImageCarousel'),
+  () =>
+    import('@/components/ImageCarousel/ImageCarousel').then(
+      (mod) => mod.ImageCarousel
+    ),
   {
     ssr: false,
     loading: () => (
