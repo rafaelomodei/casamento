@@ -1,75 +1,13 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import CommentCard from '../CommentCard/CommentCard';
-import CommentCardSkeleton from '../CommentCard/CommentCardSkeleton';
 import Link from 'next/link';
-import { MessageDTO } from '@/domain/messages/entities/MessageDTO';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
+import { GetAllMessagesUseCase } from '@/domain/messages/useCases/getAllMessages/GetAllMessagesUseCase';
+import { messageRepository } from '@/infra/repositories/firebase/MessageServerFirebaseRepositories';
 
-interface Message extends MessageDTO {
-  avatarUrl: string;
-}
-
-export default function HomeMessages() {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchMessages() {
-      try {
-        const res = await fetch('/api/messages?limit=4');
-        const data = await res.json();
-        const messagesData: Message[] = data.map((m: MessageDTO) => ({
-          ...m,
-          avatarUrl: m.avatar,
-        }));
-        setMessages(messagesData);
-      } catch (err) {
-        console.error('Erro ao carregar as mensagens:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchMessages();
-  }, []);
-
-  const renderContent = () => {
-    if (loading) {
-      return (
-        <div className='flex flex-wrap gap-8'>
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className='flex w-full md:flex-1/3'>
-              <CommentCardSkeleton />
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    if (messages.length === 0) {
-      return (
-        <p className='text-lg py-4 text-center'>
-          Seja o primeiro a deixar uma mensagem para {BRIDE_AND_GROOM}.
-        </p>
-      );
-    }
-
-    return (
-      <div className='flex flex-wrap gap-8'>
-        {messages.map((msg) => (
-          <div key={msg.id} className='flex w-full md:flex-1/3'>
-            <CommentCard
-              avatarUrl={msg.avatarUrl}
-              name={msg.name}
-              date={new Date(msg.createdAt).toLocaleDateString('pt-BR')}
-              message={msg.message}
-            />
-          </div>
-        ))}
-      </div>
-    );
-  };
+export default async function HomeMessages() {
+  const getAllMessages = new GetAllMessagesUseCase(messageRepository);
+  const data = await getAllMessages.execute(4);
+  const messages = data.map((m) => ({ ...m, avatarUrl: m.avatar }));
 
   return (
     <section className='flex flex-col w-full py-8'>
@@ -104,7 +42,24 @@ export default function HomeMessages() {
         </div>
       </div>
 
-      {renderContent()}
+      {messages.length === 0 ? (
+        <p className='text-lg py-4 text-center'>
+          Seja o primeiro a deixar uma mensagem para {BRIDE_AND_GROOM}.
+        </p>
+      ) : (
+        <div className='flex flex-wrap gap-8'>
+          {messages.map((msg) => (
+            <div key={msg.id} className='flex w-full md:flex-1/3'>
+              <CommentCard
+                avatarUrl={msg.avatarUrl}
+                name={msg.name}
+                date={new Date(msg.createdAt).toLocaleDateString('pt-BR')}
+                message={msg.message}
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

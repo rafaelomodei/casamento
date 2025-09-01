@@ -1,6 +1,10 @@
+import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import Countdown from '@/components/Countdown/Countdown';
 import HomeProducts from '@/components/HomeProducts/HomeProducts';
+import HomeProductsSkeleton from '@/components/HomeProducts/HomeProductsSkeleton';
 import HomeMessages from '@/components/HomeMessages/HomeMessages';
+import HomeMessagesSkeleton from '@/components/HomeMessages/HomeMessagesSkeleton';
 
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import Image from 'next/image';
@@ -19,8 +23,16 @@ import { Card, CardContent } from '@/components/ui/card';
 import OpenInMapsButton from '@/components/OpenInMapsButton/OpenInMapsButton';
 import OpenInMapsImage from '@/components/OpenInMapsImage/OpenInMapsImage';
 import StoryPreview from '@/components/StoryPreview/StoryPreview';
-import GuestCarousel from '@/components/GuestCarousel';
-import HeroVideo from '@/components/HeroVideo/HeroVideo';
+
+const GuestCarousel = dynamic(() => import('@/components/GuestCarousel'), {
+  ssr: false,
+  loading: () => <div className='h-[420px]' />,
+});
+
+const HeroVideo = dynamic(() => import('@/components/HeroVideo/HeroVideo'), {
+  ssr: false,
+  loading: () => <div className='w-full h-full bg-black' />,
+});
 
 export default function Home() {
   const weddingDate = new Date('September 27, 2025 16:00:00');
@@ -89,7 +101,9 @@ export default function Home() {
       </section>
       <Separator orientation='horizontal' className='h-4' />
 
-      <HomeMessages />
+      <Suspense fallback={<HomeMessagesSkeleton />}>
+        <HomeMessages />
+      </Suspense>
       <Separator orientation='horizontal' className='h-4' />
 
       <section id='cerimonia' className='flex flex-col w-full py-8'>
@@ -361,7 +375,9 @@ export default function Home() {
         </div>
       </section>
 
-      <HomeProducts />
+      <Suspense fallback={<HomeProductsSkeleton />}>
+        <HomeProducts />
+      </Suspense>
 
       <Separator className='my-8' />
 

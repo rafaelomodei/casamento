@@ -1,12 +1,22 @@
-'use client';
+ 'use client';
 
 import Link from 'next/link';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
+import dynamic from 'next/dynamic';
 import { capitalizeFirst, truncateWithEllipsis } from '@/lib/utlils/text';
 import { formatCurrency } from '@/lib/utlils/currency';
 import removeMd from 'remove-markdown';
+
+const ImageCarousel = dynamic(
+  () => import('@/components/ImageCarousel/ImageCarousel'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className='h-64 w-full bg-primary/20 animate-pulse rounded-md' />
+    ),
+  },
+);
 
 interface ProductProps {
   key?: string;

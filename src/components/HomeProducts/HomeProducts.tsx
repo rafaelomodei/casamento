@@ -1,67 +1,13 @@
-'use client';
-
-import { useEffect, useState } from 'react';
 import { ProductCard } from '@/components/ProductCard/ProductCard';
-import ProductCardSkeleton from '@/components/ProductCard/ProductCardSkeleton';
-import { ProductDTO } from '@/domain/products/entities/ProductDTO';
 import Link from 'next/link';
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import AllProductsCard from './AllProductsCard';
+import { GetMostViewedProductsUseCase } from '@/domain/products/useCases/getMostViewedProducts/GetMostViewedProductsUseCase';
+import { productRepository } from '@/infra/repositories/firebase/ProductServerFirebaseRepositories';
 
-export default function HomeProducts() {
-  const [products, setProducts] = useState<ProductDTO[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const res = await fetch('/api/products/most-viewed?limit=3');
-        const data = await res.json();
-        setProducts(data as ProductDTO[]);
-      } catch (err) {
-        console.error('Erro ao carregar presentes:', err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchProducts();
-  }, []);
-
-  const renderContent = () => {
-    if (loading) {
-      return (
-        <div className='flex flex-wrap gap-4'>
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className='flex w-full md:flex-1/2'>
-              <ProductCardSkeleton classNameCard='w-full' />
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    if (products.length === 0) {
-      return <p className='text-lg py-4'>Nenhum presente encontrado.</p>;
-    }
-
-    return (
-      <div className='flex flex-wrap gap-4'>
-        {products.map((product) => (
-          <div key={product.id} className='flex-1 sm:max-w-[calc(50%-0.5rem)]'>
-            <ProductCard
-              slug={product.slug}
-              images={product.images}
-              title={product.title}
-              description={product.description}
-              price={product.price}
-              status={product.status}
-            />
-          </div>
-        ))}
-        <AllProductsCard />
-      </div>
-    );
-  };
+export default async function HomeProducts() {
+  const getMostViewed = new GetMostViewedProductsUseCase(productRepository);
+  const products = await getMostViewed.execute(3);
 
   return (
     <section className='flex flex-col w-full py-8'>
@@ -91,7 +37,25 @@ export default function HomeProducts() {
           </div>
         </div>
       </div>
-      {renderContent()}
+      {products.length === 0 ? (
+        <p className='text-lg py-4'>Nenhum presente encontrado.</p>
+      ) : (
+        <div className='flex flex-wrap gap-4'>
+          {products.map((product) => (
+            <div key={product.id} className='flex-1 sm:max-w-[calc(50%-0.5rem)]'>
+              <ProductCard
+                slug={product.slug}
+                images={product.images}
+                title={product.title}
+                description={product.description}
+                price={product.price}
+                status={product.status}
+              />
+            </div>
+          ))}
+          <AllProductsCard />
+        </div>
+      )}
     </section>
   );
 }
