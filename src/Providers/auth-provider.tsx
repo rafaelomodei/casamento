@@ -9,6 +9,7 @@ export interface User {
   phone: string;
   sex: 'male' | 'female';
   familyId?: string;
+  age?: number;
 }
 
 interface AuthContextProps {

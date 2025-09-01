@@ -19,6 +19,7 @@ interface Member extends User {
   responded?: boolean;
   respondedAt?: string;
   attending?: boolean;
+  age?: number;
 }
 
 interface Family {
@@ -33,8 +34,8 @@ function FamilySkeleton() {
       <Skeleton className='h-6 w-1/4' />
       <div className='space-y-2'>
         {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className='grid grid-cols-5 gap-4'>
-            {Array.from({ length: 5 }).map((__, j) => (
+          <div key={i} className='grid grid-cols-6 gap-4'>
+            {Array.from({ length: 6 }).map((__, j) => (
               <Skeleton key={j} className='h-4 w-full' />
             ))}
           </div>
@@ -70,6 +71,13 @@ export default function ListaFamiliasPage() {
     setFamilies((prev) => prev.filter((f) => f.id !== id));
   }
 
+  function getPaymentType(age?: number): 'full' | 'half' | 'free' {
+    if (age === undefined) return 'full';
+    if (age <= 4) return 'free';
+    if (age <= 8) return 'half';
+    return 'full';
+  }
+
   const totalPeople = families.reduce((acc, f) => acc + f.members.length, 0);
   const confirmedPeople = families.reduce(
     (acc, f) => acc + f.members.filter((m) => m.attending).length,
@@ -80,6 +88,22 @@ export default function ListaFamiliasPage() {
     0
   );
   const pendingPeople = totalPeople - confirmedPeople - declinedPeople;
+  const payingPeople = families.reduce(
+    (acc, f) => acc + f.members.filter((m) => getPaymentType(m.age) !== 'free').length,
+    0
+  );
+  const halfPayingPeople = families.reduce(
+    (acc, f) => acc + f.members.filter((m) => getPaymentType(m.age) === 'half').length,
+    0
+  );
+  const confirmedPayingPeople = families.reduce(
+    (acc, f) =>
+      acc +
+      f.members.filter(
+        (m) => m.attending && getPaymentType(m.age) !== 'free',
+      ).length,
+    0,
+  );
 
   return (
     <main className='mx-auto flex w-full max-w-7xl flex-col gap-4 p-4'>
@@ -102,10 +126,30 @@ export default function ListaFamiliasPage() {
             <Card className='flex w-40 shadow-none' data-slot='card'>
               <CardHeader>
                 <CardDescription className='text-lg text-primary'>
-                  Confirmados
+                  Pagantes
                 </CardDescription>
                 <CardTitle className='text-2xl text-foreground/70 font-semibold tabular-nums @[250px]/card:text-3xl'>
-                  {confirmedPeople}
+                  {payingPeople}
+                </CardTitle>
+              </CardHeader>
+            </Card>
+            <Card className='flex w-40 shadow-none' data-slot='card'>
+              <CardHeader>
+                <CardDescription className='text-lg text-primary'>
+                  Pagam meia
+                </CardDescription>
+                <CardTitle className='text-2xl text-foreground/70 font-semibold tabular-nums @[250px]/card:text-3xl'>
+                  {halfPayingPeople}
+                </CardTitle>
+              </CardHeader>
+            </Card>
+            <Card className='flex w-40 shadow-none' data-slot='card'>
+              <CardHeader>
+                <CardDescription className='text-lg text-primary'>
+                  Confirmados pagantes
+                </CardDescription>
+                <CardTitle className='text-2xl text-foreground/70 font-semibold tabular-nums @[250px]/card:text-3xl'>
+                  {confirmedPayingPeople}
                 </CardTitle>
               </CardHeader>
             </Card>
@@ -166,6 +210,7 @@ export default function ListaFamiliasPage() {
                     <th className='p-2'>Respondido</th>
                     <th className='p-2'>Data</th>
                     <th className='p-2'>Presença</th>
+                    <th className='p-2'>Buffet</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -212,6 +257,14 @@ export default function ListaFamiliasPage() {
                             : m.attending
                             ? 'Sim'
                             : 'Não'}
+                        </td>
+                        <td className='p-2'>
+                          {(() => {
+                            const type = getPaymentType(m.age);
+                            if (type === 'half') return 'Meia';
+                            if (type === 'free') return 'Não paga';
+                            return 'Inteira';
+                          })()}
                         </td>
                       </tr>
                     );
