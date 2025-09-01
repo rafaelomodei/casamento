@@ -1,1 +1,1 @@
-export { default } from './GuestCarousel';
+export { default } from './GuestCarouselDynamic';
