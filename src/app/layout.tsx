@@ -45,7 +45,10 @@ cerimonia, festa e deixe sua mensagem especial para nós.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://mariaerafael.com.br'),
-  title: 'Maria e Rafael',
+  title: {
+    default: 'Maria e Rafael',
+    template: '%s | Maria e Rafael',
+  },
   description: 'Este é o site do nosso casamento Maria e Rafael',
 
   openGraph: {

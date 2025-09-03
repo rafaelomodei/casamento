@@ -12,7 +12,8 @@ export default function Analytics() {
   useEffect(() => {
     if (!GA_ID) return;
     const url = pathname + (searchParams.toString() ? `?${searchParams}` : '');
-    pageview(url);
+    const title = document.title;
+    pageview(url, title);
   }, [pathname, searchParams]);
 
   if (!GA_ID) {
@@ -29,7 +30,7 @@ export default function Analytics() {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', '${GA_ID}', { page_path: window.location.pathname });
+          gtag('config', '${GA_ID}', { page_path: window.location.pathname, page_title: document.title });
         `}
       </Script>
     </>

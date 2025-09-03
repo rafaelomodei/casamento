@@ -6,10 +6,11 @@ declare global {
   }
 }
 
-export const pageview = (url: string) => {
+export const pageview = (url: string, title?: string) => {
   if (!GA_ID) return;
   window.gtag('config', GA_ID, {
     page_path: url,
+    ...(title && { page_title: title }),
   });
 };
 
