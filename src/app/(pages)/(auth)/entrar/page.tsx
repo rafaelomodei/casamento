@@ -125,11 +125,13 @@ function EntrarForm() {
                 pattern='\(\d{2}\) \d \d{4} - \d{4}'
                 inputMode='numeric'
                 value={phone}
-                onChange={(e) =>
-                  setPhoneDigits(
-                    e.currentTarget.value.replace(/\D/g, '').slice(0, 11)
-                  )
-                }
+                onChange={(e) => {
+                  let digits = e.currentTarget.value.replace(/\D/g, '');
+                  while (digits.startsWith('55')) {
+                    digits = digits.slice(2);
+                  }
+                  setPhoneDigits(digits.slice(0, 11));
+                }}
                 onKeyDown={handlePhoneKeyDown}
                 required
               />
