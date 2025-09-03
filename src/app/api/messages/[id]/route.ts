@@ -4,14 +4,15 @@ import { DeleteMessageUseCase } from '@/domain/messages/useCases/deleteMessage/D
 import { messageRepository } from '@/infra/repositories/firebase/MessageServerFirebaseRepositories';
 
 interface Params {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function PATCH(req: Request, { params }: Params) {
   try {
     const { message, userId } = await req.json();
     const updateMessage = new UpdateMessageUseCase(messageRepository);
-    await updateMessage.execute({ id: params.id, userId, message });
+    const { id } = await params;
+    await updateMessage.execute({ id, userId, message });
     return NextResponse.json({ ok: true }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
@@ -25,7 +26,8 @@ export async function DELETE(req: Request, { params }: Params) {
   try {
     const { userId } = await req.json();
     const deleteMessage = new DeleteMessageUseCase(messageRepository);
-    await deleteMessage.execute({ id: params.id, userId });
+    const { id } = await params;
+    await deleteMessage.execute({ id, userId });
     return NextResponse.json({ ok: true }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
