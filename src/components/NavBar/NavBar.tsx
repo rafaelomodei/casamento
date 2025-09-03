@@ -48,6 +48,7 @@ const NavBar = () => {
     { href: '/galeria', label: 'Galeria' },
     { href: '/#cerimonia', label: 'Cerimonia' },
     { href: '/#festa', label: 'Festa' },
+    { href: '/hospedagem', label: 'Hospedagem' },
     { href: '/presentes', label: 'Presentes' },
     { href: '/confirmar-presenca', label: 'Confirmar Presença' },
   ];
