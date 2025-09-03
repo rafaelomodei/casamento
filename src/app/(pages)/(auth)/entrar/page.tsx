@@ -122,14 +122,11 @@ function EntrarForm() {
                 id='phone'
                 type='tel'
                 placeholder='Ex: (45) 9 9876 - 5432'
-                pattern='\(\d{2}\) \d \d{4} - \d{4}'
+                pattern='^(?!\(55\))\(\d{2}\) \d \d{4} - \d{4}$'
                 inputMode='numeric'
                 value={phone}
                 onChange={(e) => {
-                  let digits = e.currentTarget.value.replace(/\D/g, '');
-                  while (digits.startsWith('55')) {
-                    digits = digits.slice(2);
-                  }
+                  const digits = e.currentTarget.value.replace(/\D/g, '');
                   setPhoneDigits(digits.slice(0, 11));
                 }}
                 onKeyDown={handlePhoneKeyDown}
