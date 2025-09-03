@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { ImageCarousel } from '@/components/ImageCarousel/ImageCarousel';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import {
@@ -11,6 +11,13 @@ import {
   Star,
   Tv,
   Wifi,
+  ExternalLink,
+  MessageCircle,
+  Users,
+  Smartphone,
+  Bus,
+  Plane,
+  Info,
 } from 'lucide-react';
 import { JSX } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -21,9 +28,10 @@ interface Hotel {
   nome: string;
   categoria: string;
   preco: string;
-  imagem: string;
+  imagens: string[];
   endereco: string;
   telefone: string;
+  site?: string;
   descricaoNoivos: string;
   caracteristicas: string[];
   comodidades: {
@@ -40,15 +48,23 @@ const hoteis: Hotel[] = [
     nome: 'Hotel Bandeirantes',
     categoria: 'Opção Tradicional',
     preco: 'Valores acessíveis',
-    imagem:
-      'https://images.unsplash.com/photo-1563941613898-4a939ab4ef95?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0cmFkaXRpb25hbCUyMGhvdGVsJTIwcm9vbSUyMGNsYXNzaWMlMjBpbnRlcmlvcnxlbnwxfHx8fDE3NTU5MTQyMzh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    endereco: 'Centro da cidade',
-    telefone: '(00) 0000-0000',
+    imagens: [
+      '/png/hotel/bandeirantes_01.jpg',
+      '/png/hotel/bandeirantes_02.jpg',
+      '/png/hotel/bandeirantes_03.jpg',
+      '/png/hotel/bandeirantes_04.jpg',
+      '/png/hotel/bandeirantes_05.jpg',
+      '/png/hotel/bandeirantes_06.jpg',
+      '/png/hotel/bandeirantes_07.jpg',
+      '/png/hotel/bandeirantes_08.jpg',
+    ],
+    endereco: 'R. São Paulo, 380 - Centro, Colorado - PR, 86690-000',
+    telefone: '(44) 3323-1525',
     descricaoNoivos:
-      'O Hotel Bandeirantes possui uma estrutura mais tradicional, mas não se deixem enganar! Muitos quartos passaram por adaptações recentes e oferecem ótimo conforto. É uma opção confiável com boa localização.',
+      'O Hotel Bandeirantes possui uma estrutura mais tradicional. Muitos quartos passaram por adaptações recentes e oferecem ótimo conforto. É uma opção boa localizada no centro da cidade.',
     caracteristicas: [
       'Estrutura tradicional com melhorias',
-      'Muitos quartos renovados',
+      'Muitos quartos reformados',
       'Boa relação custo-benefício',
       'Localização central',
     ],
@@ -77,27 +93,36 @@ const hoteis: Hotel[] = [
     ],
     detalhes: [
       'Quartos com camas novas',
-      'Frigobar e TV em todos os quartos',
+      'Frigobar e TV',
       'Ar-condicionado disponível',
-      'Estrutura consolidada',
     ],
   },
   {
-    id: 'aconchego',
-    nome: 'Hotel Vila Aconchego',
+    id: 'sevilha',
+    nome: 'Sevilha Park Hotel',
     categoria: 'Opção Tradicional Plus',
     preco: 'Valores superiores',
-    imagem:
-      'https://images.unsplash.com/photo-1680503146476-abb8c752e1f4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxib3V0aXF1ZSUyMGhvdGVsJTIwcm9vbSUyMGNvenklMjBiZWRyb29tfGVufDF8fHx8MTc1NTkxNDIzNXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral',
-    endereco: 'Centro da cidade',
-    telefone: '(00) 1111-1111',
+    site: 'https://pwa.fabapp.com/colorado_digital/editor/28202334',
+    imagens: [
+      '/png/hotel/sivilha_01.jpg',
+      '/png/hotel/sivilha_02.jpg',
+      '/png/hotel/sivilha_03.jpg',
+      '/png/hotel/sivilha_04.jpg',
+      '/png/hotel/sivilha_05.jpg',
+      '/png/hotel/sivilha_06.jpg',
+      '/png/hotel/sivilha_07.jpg',
+      '/png/hotel/sivilha_08.jpg',
+      '/png/hotel/sivilha_09.jpg',
+      '/png/hotel/sivilha_10.jpg',
+    ],
+    endereco: 'R. São Paulo, 1250, Colorado - PR, 86690-000',
+    telefone: '(44) 9 9836-2286',
     descricaoNoivos:
-      'Nossa opção favorita! Os quartos são incrivelmente aconchegantes e foram completamente reformados. Ficam no terceiro andar (sem elevador), mas vale cada degrau! O ambiente é muito acolhedor e as camas são divinas.',
+      'Nossa opção! Os quartos são aconchegantes e foram reformados e melhorados. Ficam no terceiro andar (sem elevador). Tem várias opções de quarto.',
     caracteristicas: [
-      'Quartos super aconchegantes',
-      'Completamente reformados',
+      'Quartos aconchegantes',
+      'Reformados',
       '3º andar sem elevador',
-      'Ambiente intimista e acolhedor',
     ],
     comodidades: [
       {
@@ -123,18 +148,19 @@ const hoteis: Hotel[] = [
       },
     ],
     detalhes: [
-      'Quartos novos e reformados',
-      'Camas completamente novas',
+      'Quartos reformados',
+      'Camas novas',
       'Opções com e sem ar-condicionado',
       'Ambiente mais reservado',
-      'Decoração moderna e aconchegante',
     ],
   },
 ];
 
-function phoneToHref(phone: string) {
+function phoneToWhatsApp(phone: string, message: string) {
   const digits = phone.replace(/\D/g, '');
-  return `tel:${digits}`;
+  const withCountry = digits.startsWith('55') ? digits : `55${digits}`;
+  const text = encodeURIComponent(message);
+  return `https://wa.me/${withCountry}?text=${text}`;
 }
 
 export default function HospedagemPage() {
@@ -159,17 +185,19 @@ export default function HospedagemPage() {
             key={hotel.id}
             className='elegant-shadow border-border/20 overflow-hidden pt-0'
           >
-            <div className='relative h-64 overflow-hidden'>
-              <Image
-                src={hotel.imagem}
+            <div className='relative h-[400px] overflow-hidden'>
+              <ImageCarousel
+                images={hotel.imagens}
                 alt={hotel.nome}
-                className='w-full h-full object-cover transition-transform duration-300 hover:scale-105'
-                fill
+                className='h-full'
+                objectStyle='object-cover'
+                showIndicators
+                hoverControls
               />
               <div className='absolute top-4 left-4'>
                 <Badge
                   variant='secondary'
-                  className='bg-white/90 text-primary border-0'
+                  className='bg-white/90 text-primary border-0 text-sm'
                 >
                   {hotel.categoria}
                 </Badge>
@@ -177,7 +205,7 @@ export default function HospedagemPage() {
               <div className='absolute top-4 right-4'>
                 <Badge
                   variant='outline'
-                  className='bg-white/90 border-primary/30'
+                  className='bg-white/90 border-primary/30 text-sm'
                 >
                   {hotel.preco}
                 </Badge>
@@ -264,17 +292,202 @@ export default function HospedagemPage() {
                 </div>
               </div>
 
-              <Link
-                href={`tel:${hotel.telefone.replace(/\D/g, '')}`}
-                className='w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors'
-              >
-                <Phone className='h-4 w-4' />
-                Entrar em Contato
-              </Link>
+              {hotel.site ? (
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-2'>
+                  <Link
+                    href={phoneToWhatsApp(
+                      hotel.telefone,
+                      'Olá, gostaria de fazer uma reserva para do dia 27 de setembro, para o casamento da Maria Rissatti e Rafael Omodei'
+                    )}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors'
+                  >
+                    <MessageCircle className='h-4 w-4' />
+                    Falar no WhatsApp
+                  </Link>
+                  <Link
+                    href={hotel.site}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-md border border-primary/30 bg-white hover:bg-muted/50 text-primary transition-colors'
+                  >
+                    <ExternalLink className='h-4 w-4' />
+                    Visitar Site
+                  </Link>
+                </div>
+              ) : (
+                <Link
+                  href={phoneToWhatsApp(
+                    hotel.telefone,
+                    'Olá, gostaria de fazer uma reserva para do dia 27 de setembro, para o casamento da Maria Rissatti e Rafael Omodei'
+                  )}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='w-full inline-flex items-center justify-center gap-2 h-10 px-4 rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors'
+                >
+                  <MessageCircle className='h-4 w-4' />
+                  Falar no WhatsApp
+                </Link>
+              )}
             </CardContent>
           </Card>
         ))}
       </section>
+      <div className='mt-16 mb-12'>
+        <div className='text-center mb-12'>
+          <div className='w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-6'>
+            <MapPin className='h-8 w-8 text-secondary' />
+          </div>
+
+          <h2
+            className='text-3xl mb-4'
+            style={{ fontFamily: 'var(--font-arapey)' }}
+          >
+            Como Chegar
+          </h2>
+
+          <p className='text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed'>
+            Dicas para chegar até Colorado e se deslocar durante a festa.
+          </p>
+        </div>
+
+        <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8'>
+          <Card className='elegant-shadow border-border/20 text-primary'>
+            <CardContent className='p-6'>
+              <div className='w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4'>
+                <Plane className='h-6 w-6 text-primary' />
+              </div>
+              <h3 className='text-xl mb-2'>Maringá</h3>
+              <Badge variant='secondary' className='mb-3  text-sm text-white'>
+                Ponto Principal
+              </Badge>
+              <p className='text-sm text-muted-foreground mb-3'>
+                Cidade principal para desembarque (avião/ônibus). Ideal para
+                locação de carros.
+              </p>
+              <div className='space-y-2'>
+                <div className='flex items-center gap-2 text-sm'>
+                  <div className='w-1.5 h-1.5 bg-primary rounded-full'></div>
+                  <span>Distância: ~1h30 até Colorado</span>
+                </div>
+                <div className='flex items-center gap-2 text-sm'>
+                  <div className='w-1.5 h-1.5 bg-primary rounded-full'></div>
+                  <span>Melhor opção para locadoras</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className='elegant-shadow border-border/20 text-primary'>
+            <CardContent className='p-6'>
+              <div className='w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-4'>
+                <Bus className='h-6 w-6 text-secondary' />
+              </div>
+              <h3 className='text-xl mb-2'>Londrina</h3>
+              <Badge variant='outline' className='mb-3 text-sm'>
+                Alternativa
+              </Badge>
+              <p className='text-sm text-muted-foreground mb-3'>
+                Outra opção para desembarque, especialmente de ônibus.
+              </p>
+              <div className='space-y-2'>
+                <div className='flex items-center gap-2 text-sm'>
+                  <div className='w-1.5 h-1.5 bg-secondary rounded-full'></div>
+                  <span>Distância: ~2h até Colorado</span>
+                </div>
+                <div className='flex items-center gap-2 text-sm'>
+                  <div className='w-1.5 h-1.5 bg-secondary rounded-full'></div>
+                  <span>Mais distante, mas é viável</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className='elegant-shadow border-border/20 text-primary'>
+            <CardContent className='p-6'>
+              <div className='w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4'>
+                <Bus className='h-6 w-6 text-primary' />
+              </div>
+              <h3 className='text-xl mb-2'>Ônibus para Colorado</h3>
+              <Badge variant='outline' className='mb-3 text-sm'>
+                Atenção
+              </Badge>
+              <p className='text-sm text-muted-foreground mb-3'>
+                Não há passagens diretas. Normalmente os ônibus passam no
+                trajeto para Presidente Prudente.
+              </p>
+              <div className='space-y-2'>
+                <div className='flex items-center gap-2 text-sm'>
+                  <div className='w-1.5 h-1.5 bg-primary rounded-full'></div>
+                  <span>Empresas: Andorinha e Garcia</span>
+                </div>
+                <div className='flex items-center gap-2 text-sm'>
+                  <div className='w-1.5 h-1.5 bg-primary rounded-full'></div>
+                  <span>Verificar horários disponíveis</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className='grid md:grid-cols-2 gap-6'>
+          <Card className='elegant-shadow border-border/20'>
+            <CardContent className='p-6'>
+              <div className='flex items-start gap-4'>
+                <div className='w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center'>
+                  <Smartphone className='h-6 w-6 text-secondary' />
+                </div>
+                <div className='flex-1'>
+                  <h4
+                    className='text-lg mb-2'
+                    style={{ fontFamily: 'var(--font-arapey)' }}
+                  >
+                    Aplicativo Local
+                  </h4>
+                  <p className='text-sm text-muted-foreground mb-3'>
+                    Colorado possui aplicativo de transporte próprio (não é
+                    Uber). A disponibilidade pode variar, principalmente em
+                    horários noturnos.
+                  </p>
+                  <div className='flex items-center gap-2 text-xs bg-yellow-50 text-yellow-700 px-3 py-1.5 rounded-full'>
+                    <Info className='h-3 w-3' />
+                    <span className='text-sm'>Disponibilidade limitada</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Dica dos Noivos */}
+          <Card className='elegant-shadow border-border/20'>
+            <CardContent className='p-6'>
+              <div className='flex items-start gap-4'>
+                <div className='w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center'>
+                  <Heart className='h-6 w-6 text-primary' />
+                </div>
+                <div className='flex-1'>
+                  <h4
+                    className='text-lg mb-2'
+                    style={{ fontFamily: 'var(--font-arapey)' }}
+                  >
+                    Dica dos Noivos
+                  </h4>
+                  <p className='text-sm text-muted-foreground mb-3'>
+                    Sempre que possível, combine carona ou alugue um veículo
+                    para facilitar o deslocamento até o pesqueiro, onde será a
+                    recepção.
+                  </p>
+                  <div className='flex items-center gap-2 text-xs bg-primary/10 text-primary px-3 py-1.5 rounded-full'>
+                    <Users className='h-3 w-3' />
+                    <span className='text-sm'>Recomendação especial</span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </main>
   );
 }
