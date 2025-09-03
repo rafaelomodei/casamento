@@ -7,6 +7,13 @@ import { GetFamilyUseCase } from '@/domain/families/useCases/getFamily/GetFamily
 import { UpdateFamilyUseCase } from '@/domain/families/useCases/updateFamily/UpdateFamilyUseCase';
 import { DeleteFamilyUseCase } from '@/domain/families/useCases/deleteFamily/DeleteFamilyUseCase';
 
+const ADMIN_PHONE = '45991156286';
+
+function isAuthorized(req: Request) {
+  const phone = req.headers.get('x-user-phone')?.replace(/\D/g, '');
+  return phone === ADMIN_PHONE;
+}
+
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
@@ -43,6 +50,9 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    if (!isAuthorized(req)) {
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+    }
     const { name, memberIds } = (await req.json()) as {
       name: string;
       memberIds: string[];
@@ -65,6 +75,9 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   try {
+    if (!isAuthorized(req)) {
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+    }
     const { id, name, memberIds } = (await req.json()) as {
       id: string;
       name: string;
@@ -88,6 +101,9 @@ export async function PUT(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
+    if (!isAuthorized(req)) {
+      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+    }
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
 

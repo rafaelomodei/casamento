@@ -6,6 +6,7 @@ export interface UserDTO {
   phone: string;
   familyId?: string | null;
   downloads?: number;
+  age?: number;
   attending?: boolean;
   responded?: boolean;
   respondedAt?: string;

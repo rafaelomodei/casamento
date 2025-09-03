@@ -11,6 +11,7 @@ type OpenInMapsImageProps = {
   containerClassName?: string;
   imageClassName?: string;
   overlay?: React.ReactNode;
+  sizes?: string;
 };
 
 export default function OpenInMapsImage({
@@ -21,6 +22,7 @@ export default function OpenInMapsImage({
   containerClassName,
   imageClassName,
   overlay,
+  sizes,
 }: OpenInMapsImageProps) {
   const openMaps = () => {
     const url = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
@@ -43,6 +45,7 @@ export default function OpenInMapsImage({
             'object-cover transition-transform duration-500 group-hover:scale-105'
           }
           fill
+          sizes={sizes ?? '(max-width: 768px) 100vw, 360px'}
         />
         {overlay && (
           <div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center'>

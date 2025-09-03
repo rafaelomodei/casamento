@@ -17,6 +17,11 @@ interface ImageCarouselProps {
   autoPlayInterval?: number;
   pauseOnHover?: boolean;
   stopOnInteraction?: boolean;
+  /**
+   * When true, the first image will be loaded with high priority.
+   * Use this only for images that are visible above the fold.
+   */
+  priority?: boolean;
 }
 
 export function ImageCarousel({
@@ -31,6 +36,7 @@ export function ImageCarousel({
   autoPlayInterval,
   pauseOnHover = true,
   stopOnInteraction = false,
+  priority = false,
 }: ImageCarouselProps) {
   const [currentImage, setCurrentImage] = useState(0);
   const [hovered, setHovered] = useState(false);
@@ -98,7 +104,7 @@ export function ImageCarousel({
           `${objectStyle} transition duration-300`,
           rounded && 'rounded-md'
         )}
-        priority={currentImage === 0}
+        priority={priority && currentImage === 0}
         onError={(e) => {
           const target = e.currentTarget as HTMLImageElement;
           target.onerror = null;
@@ -115,6 +121,7 @@ export function ImageCarousel({
               handlePrev(true);
             }}
             className='absolute top-1/2 left-2 -translate-y-1/2 bg-background/70 p-1 rounded-full hover:bg-background transition z-10'
+            aria-label='Imagem anterior'
           >
             <ChevronLeft className='w-5 h-5 text-foreground' />
           </button>
@@ -126,6 +133,7 @@ export function ImageCarousel({
               handleNext(true);
             }}
             className='absolute top-1/2 right-2 -translate-y-1/2 bg-background/70 p-1 rounded-full hover:bg-background transition z-10'
+            aria-label='Próxima imagem'
           >
             <ChevronRight className='w-5 h-5 text-foreground' />
           </button>
@@ -147,6 +155,7 @@ export function ImageCarousel({
                 'w-2 h-2 rounded-full transition',
                 currentImage === idx ? 'bg-primary' : 'bg-muted-foreground/30'
               )}
+              aria-label={`Ir para imagem ${idx + 1}`}
             />
           ))}
         </div>

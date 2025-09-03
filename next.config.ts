@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
       'product-hub-prd.madeiramadeira.com.br',
       'scontent.fmgf12-1.fna.fbcdn.net',
       'images.unsplash.com',
+      'a-static.mlcdn.com.br',
+      'luck-teste.nyc3.cdn.digitaloceanspaces.com',
     ],
   },
 };

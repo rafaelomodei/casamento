@@ -9,6 +9,7 @@ import { Suspense, useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import Modal from './components/Modal';
+import { useAuth } from '@/Providers/auth-provider';
 
 interface Message extends MessageDTO {
   avatarUrl: string;
@@ -20,6 +21,7 @@ function MensagensContent() {
   const [open, setOpen] = useState(false);
   const searchParams = useSearchParams();
   const { requireAuth, dialog } = useAuthRequired();
+  const { user } = useAuth();
   const loginMessage =
     'Para deixar seu recado, você precisa estar logado.\nClique em Entrar ou crie sua conta em poucos segundos e volte aqui para compartilhar sua mensagem com Maria Eduarda & Rafael.';
 
@@ -50,6 +52,26 @@ function MensagensContent() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleUpdate = async (id: string, newMessage: string) => {
+    if (!user) return;
+    await fetch(`/api/messages/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: user.id, message: newMessage }),
+    });
+    getMessages();
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!user) return;
+    await fetch(`/api/messages/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: user.id }),
+    });
+    getMessages();
+  };
 
   const blockquoteRender = () => {
     return (
@@ -129,6 +151,9 @@ function MensagensContent() {
               name={msg.name}
               date={new Date(msg.createdAt).toLocaleDateString('pt-BR')}
               message={msg.message}
+              isOwner={user?.id === msg.userId}
+              onEdit={(newMessage) => handleUpdate(msg.id!, newMessage)}
+              onDelete={() => handleDelete(msg.id!)}
             />
           </div>
         ))}

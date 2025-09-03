@@ -13,9 +13,9 @@ const Footer = () => {
   return (
     <footer className='flex flex-col items-center w-full gap-4 py-8 px-4 border-t'>
       <nav className='flex flex-wrap gap-4 items-center justify-center'>
-        <Link href='/nossas-historias'>Nossas Histórias</Link>
+        <Link href='/nossas-historias'>Nossa Histórias</Link>
         <Link href='/mensagens'>Mensagens</Link>
-        <Link href='/#cerimonia'>Cerimónia</Link>
+        <Link href='/#cerimonia'>Cerimonia</Link>
         <Link href='/#festa'>Festa</Link>
         <Link href='/presentes'>Presentes</Link>
       </nav>

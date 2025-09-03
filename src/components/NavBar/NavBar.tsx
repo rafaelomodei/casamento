@@ -36,16 +36,17 @@ const NavBar = () => {
       lastScroll = current;
     };
 
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   if (isAuthPage) return null;
 
   const items = [
-    { href: '/nossas-historias', label: 'Nossas Histórias' },
+    { href: '/nossas-historias', label: 'Nossa Histórias' },
     { href: '/mensagens', label: 'Mensagens' },
-    { href: '/#cerimonia', label: 'Cerimónia' },
+    { href: '/galeria', label: 'Galeria' },
+    { href: '/#cerimonia', label: 'Cerimonia' },
     { href: '/#festa', label: 'Festa' },
     { href: '/hospedagem', label: 'Hospedagem' },
     { href: '/presentes', label: 'Presentes' },

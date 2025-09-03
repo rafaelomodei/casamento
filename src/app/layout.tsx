@@ -35,11 +35,13 @@ const arapey = localFont({
       style: 'italic',
     },
   ],
+  display: 'swap',
+  variable: '--font-arapey',
 });
 
 const shareDescription = `Um dia inesquecível está por vir! Com carinho, preparamos cada detalhe para
 celebrar nosso amor ao lado de quem mais amamos. Acompanhe nossa história, confira as informações da
-cerimônia, festa e deixe sua mensagem especial para nós.`;
+cerimonia, festa e deixe sua mensagem especial para nós.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://mariaerafael.com.br'),
@@ -112,7 +114,6 @@ export default function RootLayout({
             <Analytics />
           </Suspense>
         </AuthProvider>
-
       </body>
     </html>
   );

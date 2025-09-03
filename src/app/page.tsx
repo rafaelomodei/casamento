@@ -1,6 +1,11 @@
+import { Suspense } from 'react';
 import Countdown from '@/components/Countdown/Countdown';
 import HomeProducts from '@/components/HomeProducts/HomeProducts';
+import HomeProductsSkeleton from '@/components/HomeProducts/HomeProductsSkeleton';
 import HomeMessages from '@/components/HomeMessages/HomeMessages';
+import HomeMessagesSkeleton from '@/components/HomeMessages/HomeMessagesSkeleton';
+import GuestCarousel from '@/components/GuestCarousel';
+import HeroVideo from '@/components/HeroVideo';
 
 import { BRIDE_AND_GROOM } from '@/lib/constants';
 import Image from 'next/image';
@@ -19,43 +24,43 @@ import { Card, CardContent } from '@/components/ui/card';
 import OpenInMapsButton from '@/components/OpenInMapsButton/OpenInMapsButton';
 import OpenInMapsImage from '@/components/OpenInMapsImage/OpenInMapsImage';
 import StoryPreview from '@/components/StoryPreview/StoryPreview';
-import GuestCarousel from '@/components/GuestCarousel';
-
 export default function Home() {
   const weddingDate = new Date('September 27, 2025 16:00:00');
 
   const churchCoords = { lat: -22.8382072, lng: -51.9733284 };
   const receptionCoords = { lat: -22.8082686, lng: -51.9427835 };
   return (
-    <main className='min-h-screen flex flex-col py-8  px-4  text-primary max-w-7xl'>
-      <header className='flex h-screen'>
-        <div className='flex flex-col w-full items-center justify-center'>
-          <Image
-            src={'/png/capa.png'}
-            alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
-            height={540}
-            width={320}
-          />
-          <div className='flex flex-col items-center gap-4'>
-            <div className='flex flex-col items-center'>
-              <p className='font-arapey text-2xl sm:text-5xl lg:text-6xl text-primary'>
-                {BRIDE_AND_GROOM}
-              </p>
-              <p className='text-primary text-xl --font-body'>
-                27 | SET | 2025
+    <main className='min-h-screen flex flex-col py-8 pb-4 pt-0 text-primary max-w-7xl w-full mx-auto px-4 md:px-6 lg:px-8'>
+      <header className='flex h-[calc(100dvh-95px)] md:h-[calc(100vh-180px)] -mx-4 md:-mx-6 lg:-mx-8'>
+        <div className='flex flex-col w-full items-center justify-center '>
+          <div className='relative w-full h-full lg:aspect-video overflow-hidden lg:rounded-xl'>
+            <HeroVideo />
+            {/* Gradiente do rodapé para transparência (de baixo para cima) */}
+            <div
+              aria-hidden='true'
+              className='absolute inset-x-0 lg:rounded-xl bottom-0 h-2/4 md:h-2/5 lg:h-1/3 bg-gradient-to-t from-black via-black/50 to-transparent lg:from-black/30 lg:via-black/10 pointer-events-none'
+            />
+            <div className='absolute inset-x-0 bottom-0 flex flex-col items-center gap-4 p-4'>
+              <div className='flex flex-col items-center'>
+                <p className='text-white  font-arapey text-2xl sm:text-5xl lg:text-6xl  drop-shadow'>
+                  {BRIDE_AND_GROOM}
+                </p>
+                <p className='text-white text-xl --font-body drop-shadow'>
+                  27 | SET | 2025
+                </p>
+              </div>
+              <Countdown targetDate={weddingDate} />
+              <p className='text-white  text-center text-xl md:text-3xl  drop-shadow'>
+                Sejam bem-vindos ao nosso site!
               </p>
             </div>
-            <Countdown targetDate={weddingDate} />
-            <p className='text-center text-xl md:text-3xl'>
-              Sejam bem-vindos ao nosso site!
-            </p>
           </div>
         </div>
       </header>
 
-      <section className='flex py-8 gap-12'>
+      <section className='flex py-8 mt-32 gap-12'>
         <div className='flex flex-col gap-4'>
-          <p className='text-2xl'> Nossas história</p>
+          <p className='text-2xl'>Nossa história</p>
           <div className='md:hidden w-full max-w-container mx-auto mt-[1px]'>
             <Image
               src={'/png/preWedding/DSC03547.jpg'}
@@ -86,13 +91,15 @@ export default function Home() {
       </section>
       <Separator orientation='horizontal' className='h-4' />
 
-      <HomeMessages />
+      <Suspense fallback={<HomeMessagesSkeleton />}>
+        <HomeMessages />
+      </Suspense>
       <Separator orientation='horizontal' className='h-4' />
 
       <section id='cerimonia' className='flex flex-col w-full py-8'>
         <div className='text-center mb-16'>
           <div className='flex items-center justify-center gap-3 mb-6'>
-            <h2 className='text-4xl md:text-5xl text-primary'>Cerimónia</h2>
+            <h2 className='text-4xl md:text-5xl text-primary'>Cerimonia</h2>
           </div>
 
           <div className='max-w-2xl mx-auto'>
@@ -100,7 +107,7 @@ export default function Home() {
               className='text-xl text-primary/70 mb-6'
               style={{ fontFamily: 'var(--font-arapey)', fontStyle: 'italic' }}
             >
-              Nossa felicidade é ainda maior quando compatilhada! te esperamos
+              Nossa felicidade é ainda maior quando compartilhada! Te esperamos
               para celebrar com a gente!
             </p>
 
@@ -146,7 +153,7 @@ export default function Home() {
                   <div className='space-y-4'>
                     <div>
                       <p className='text-3xl md:text-4xl text-primary font-normal'>
-                        Paróquia Nossa Senhora Auxliadora
+                        Paróquia Nossa Senhora Auxiliadora
                       </p>
 
                       <p className='text-lg text-primary/70 italic'>
@@ -199,6 +206,7 @@ export default function Home() {
                     alt='Igreja Nossa Senhora Auxiliadora - Colorado PR'
                     containerClassName='w-xs md:w-xl lg:w-xl cursor-pointer '
                     overlay={<MapPin className='w-8 h-8 text-primary' />}
+                    sizes='(max-width: 768px) 100vw, 480px'
                   />
 
                   <p className='text-center text-sm text-muted-foreground'>
@@ -220,7 +228,7 @@ export default function Home() {
                     <div className='flex items-center gap-2 justify-center'>
                       <Clock className='w-10 h-10 md:w-4 md:h-4   text-secondary' />
                       <span className='text-xl underline'>
-                        Chegada: 30 minutos antes na Cerimônia religiosa
+                        Chegada: 30 minutos antes na Cerimonia religiosa
                       </span>
                     </div>
                   </div>
@@ -342,6 +350,7 @@ export default function Home() {
                     alt='Local da recepção, pesqueiro são luiz - Colorado PR'
                     containerClassName='w-xs md:w-xl lg:w-xl cursor-pointer'
                     overlay={<MapPin className='w-8 h-8 text-primary' />}
+                    sizes='(max-width: 768px) 100vw, 480px'
                   />
 
                   <p className='text-center text-sm text-muted-foreground'>
@@ -356,7 +365,9 @@ export default function Home() {
         </div>
       </section>
 
-      <HomeProducts />
+      <Suspense fallback={<HomeProductsSkeleton />}>
+        <HomeProducts />
+      </Suspense>
 
       <Separator className='my-8' />
 
@@ -430,7 +441,7 @@ export default function Home() {
 
                       <p className='text-lg text-primary/70 italic'>
                         Antes de qualquer coisa, queremos que você se sinta
-                        linda e bem vestida, fique a vontade para escolher o
+                        linda e bem vestida, fique à vontade para escolher o
                         modelo que você se sentir melhor.
                       </p>
                     </div>
@@ -496,7 +507,7 @@ export default function Home() {
                       <div className='flex flex-col text-lg  pl-4  gap-2'>
                         <p>Chegue com antecedência para fotos especiais ⏰</p>
                         <p>
-                          Durante a cerimônia, pedimos apenas cuidado para que o
+                          Durante a Cerimonia, pedimos apenas cuidado para que o
                           corredor até o altar fique sempre livre 📷
                         </p>
                         <p>Aproveite cada momento 🎉 </p>
@@ -526,7 +537,7 @@ export default function Home() {
                     <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
                       <Image
                         src={'/png/example/madrinhas.png'}
-                        alt='Exemplo de cor e modeo de vestido que as madrinhas devem ir'
+                        alt='Exemplo de cor e modelo de vestido que as madrinhas devem ir'
                         className='object-cover transition-transform duration-500 group-hover:scale-105'
                         fill
                       />
@@ -627,7 +638,7 @@ export default function Home() {
                     <div className='relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted elegant-shadow'>
                       <Image
                         src={'/png/example/padrinhos.png'}
-                        alt='Exemplo de cor e modeo de terno que os padrinhos devem ir'
+                        alt='Exemplo de cor e modelo de terno que os padrinhos devem ir'
                         className='object-cover transition-transform duration-500 group-hover:scale-105'
                         fill
                       />
@@ -655,7 +666,7 @@ export default function Home() {
 
                       <p className='text-lg text-primary/70 italic'>
                         É uma alegria ter vocês conosco nesse dia tão especial!
-                        Para que todos aproveitem ao máximo a cerimônia e a
+                        Para que todos aproveitem ao máximo a Cerimonia e a
                         festa,
                       </p>
                     </div>
