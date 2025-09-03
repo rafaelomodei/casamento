@@ -35,4 +35,15 @@ export class FirebaseRepository implements IMessageRepository {
     if (!doc.exists) return null;
     return { id: doc.id, ...(doc.data() as MessageDTO) };
   }
+
+  async update(id: string, message: string): Promise<void> {
+    await this.collection.doc(id).update({
+      message,
+      updatedAt: new Date().toISOString(),
+    });
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.collection.doc(id).delete();
+  }
 }
