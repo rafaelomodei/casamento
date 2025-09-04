@@ -239,7 +239,7 @@ export default function HospedagemPage() {
                   <span className='text-sm  text-primary'>Nossa opinião</span>
                 </div>
                 <p className='text-sm text-muted-foreground italic'>
-                  "{hotel.descricaoNoivos}"
+                  &ldquo;{hotel.descricaoNoivos}&rdquo;
                 </p>
               </div>
 

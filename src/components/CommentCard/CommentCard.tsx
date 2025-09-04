@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import type { CommentCardProps } from './interface';
@@ -118,7 +120,11 @@ export default function CommentCard({
               </DropdownMenu>
             ) : (
               <div className='flex gap-2'>
-                <Button variant='ghost' size='sm' onClick={() => setEditOpen(true)}>
+                <Button
+                  variant='ghost'
+                  size='sm'
+                  onClick={() => setEditOpen(true)}
+                >
                   Editar
                 </Button>
                 <Button
@@ -139,12 +145,15 @@ export default function CommentCard({
 
       {/* Edit Message: Drawer on mobile, Dialog on desktop */}
       {isMobile ? (
-        <Drawer open={editOpen} onOpenChange={(o) => {
-          if (!o) {
-            setEditedMessage(message);
-          }
-          setEditOpen(o);
-        }}>
+        <Drawer
+          open={editOpen}
+          onOpenChange={(o) => {
+            if (!o) {
+              setEditedMessage(message);
+            }
+            setEditOpen(o);
+          }}
+        >
           <DrawerContent>
             <DrawerHeader>
               <DrawerTitle>Editar mensagem</DrawerTitle>
@@ -186,12 +195,15 @@ export default function CommentCard({
           </DrawerContent>
         </Drawer>
       ) : (
-        <Dialog open={editOpen} onOpenChange={(o) => {
-          if (!o) {
-            setEditedMessage(message);
-          }
-          setEditOpen(o);
-        }}>
+        <Dialog
+          open={editOpen}
+          onOpenChange={(o) => {
+            if (!o) {
+              setEditedMessage(message);
+            }
+            setEditOpen(o);
+          }}
+        >
           <DialogContent className='sm:max-w-[500px] text-primary rounded-md px-8 py-6'>
             <DialogHeader>
               <DialogTitle className='text-xl'>Editar mensagem</DialogTitle>
@@ -216,7 +228,10 @@ export default function CommentCard({
               >
                 Cancelar
               </Button>
-              <Button onClick={handleSave} disabled={saving || !editedMessage.trim()}>
+              <Button
+                onClick={handleSave}
+                disabled={saving || !editedMessage.trim()}
+              >
                 {saving ? (
                   <div className='flex gap-2'>
                     Salvando
@@ -238,7 +253,8 @@ export default function CommentCard({
             <DrawerHeader>
               <DrawerTitle>Excluir mensagem</DrawerTitle>
               <DrawerDescription>
-                Tem certeza que deseja excluir esta mensagem? Esta ação não pode ser desfeita.
+                Tem certeza que deseja excluir esta mensagem? Esta ação não pode
+                ser desfeita.
               </DrawerDescription>
             </DrawerHeader>
             <DrawerFooter>
@@ -264,7 +280,8 @@ export default function CommentCard({
             <AlertDialogHeader>
               <AlertDialogTitle>Excluir mensagem</AlertDialogTitle>
               <AlertDialogDescription>
-                Tem certeza que deseja excluir esta mensagem? Esta ação não pode ser desfeita.
+                Tem certeza que deseja excluir esta mensagem? Esta ação não pode
+                ser desfeita.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
