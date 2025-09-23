@@ -49,8 +49,7 @@ export default function ListaFamiliasPage() {
   const [families, setFamilies] = useState<Family[]>([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
-  const canEdit =
-    user?.phone.replace(/\D/g, '') === '45991156286';
+  const canEdit = user?.phone.replace(/\D/g, '') === '45991156286';
 
   useEffect(() => {
     setLoading(true);
@@ -89,26 +88,32 @@ export default function ListaFamiliasPage() {
   );
   const pendingPeople = totalPeople - confirmedPeople - declinedPeople;
   const payingPeople = families.reduce(
-    (acc, f) => acc + f.members.filter((m) => getPaymentType(m.age) !== 'free').length,
+    (acc, f) =>
+      acc + f.members.filter((m) => getPaymentType(m.age) !== 'free').length,
     0
   );
   const halfPayingPeople = families.reduce(
-    (acc, f) => acc + f.members.filter((m) => getPaymentType(m.age) === 'half').length,
+    (acc, f) =>
+      acc + f.members.filter((m) => getPaymentType(m.age) === 'half').length,
     0
   );
   const confirmedPayingPeople = families.reduce(
     (acc, f) =>
       acc +
-      f.members.filter(
-        (m) => m.attending && getPaymentType(m.age) !== 'free',
-      ).length,
-    0,
+      f.members.filter((m) => m.attending && getPaymentType(m.age) !== 'free')
+        .length,
+    0
   );
 
   return (
     <main className='mx-auto flex w-full max-w-7xl flex-col gap-4 p-4'>
       <PageBreadcrumb />
-      <h1 className='text-2xl'>Status geral Famílias</h1>
+      <div className='flex items-center justify-between'>
+        <h1 className='text-2xl'>Status geral Famílias</h1>
+        <Button asChild variant='outline'>
+          <Link href='/mesas/listar'>Ver organizações de mesas</Link>
+        </Button>
+      </div>
 
       {!loading && (
         <>
