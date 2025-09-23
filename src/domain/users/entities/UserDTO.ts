@@ -12,4 +12,5 @@ export interface UserDTO {
   responded?: boolean;
   respondedAt?: string;
   status?: number;
+  needsChildChair?: boolean;
 }

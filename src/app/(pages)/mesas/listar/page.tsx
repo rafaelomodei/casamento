@@ -7,8 +7,6 @@ import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { useAuth, User } from '@/Providers/auth-provider';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Phone } from 'lucide-react';
-import { isPlaceholderPhone } from '@/lib/utlils/phone';
 import { truncateWithEllipsis } from '@/lib/utlils/text';
 import { formatBuffetLabel, getBuffetType } from '@/lib/utlils/buffet';
 import {
@@ -17,20 +15,21 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import {
+  prepareTablesForDisplay,
+  type TableWithMembers,
+} from '@/lib/utlils/tables';
+import { toast } from 'sonner';
 
 interface Member extends User {
   responded?: boolean;
   respondedAt?: string;
   attending?: boolean;
   age?: number;
+  needsChildChair?: boolean;
 }
 
-interface TableGroup {
-  id: string;
-  name: string;
-  members: Member[];
-  priority?: number;
-}
+type TableGroup = TableWithMembers<Member>;
 
 function TableSkeleton() {
   return (
@@ -53,6 +52,7 @@ function TableSkeleton() {
 export default function ListarMesasPage() {
   const [tables, setTables] = useState<TableGroup[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isDownloading, setIsDownloading] = useState(false);
   const { user } = useAuth();
   const canEdit = user?.phone.replace(/\D/g, '') === '45991156286';
 
@@ -75,74 +75,74 @@ export default function ListarMesasPage() {
     setTables((prev) => prev.filter((table) => table.id !== id));
   }
 
-  const tablesWithFilteredMembers = useMemo(() => {
-    const mapped = tables.map((table) => {
-      const isVirtualTable = table.id === '__no_table__';
-      const members = isVirtualTable
-        ? table.members.filter((member) => member.attending !== false)
-        : table.members;
-      const normalizedPriority = isVirtualTable
-        ? Number.NEGATIVE_INFINITY
-        : table.priority ?? 0;
+  async function handleDownloadPdf() {
+    try {
+      setIsDownloading(true);
 
-      return { ...table, members, priority: normalizedPriority };
-    });
+      const response = await fetch('/api/tables/pdf');
 
-    const virtualTable = mapped.find((table) => table.id === '__no_table__');
-    const realTables = mapped
-      .filter((table) => table.id !== '__no_table__')
-      .sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
+      if (!response.ok) {
+        let errorMessage =
+          'Não foi possível gerar o PDF da organização de mesas.';
+        try {
+          const data = await response.json();
+          if (data && typeof data.error === 'string') {
+            errorMessage = data.error;
+          }
+        } catch (jsonError) {
+          console.error('Erro ao interpretar resposta do PDF:', jsonError);
+        }
+        throw new Error(errorMessage);
+      }
 
-    if (!virtualTable) {
-      return realTables;
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'organizacao-mesas.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : 'Não foi possível baixar o PDF. Tente novamente.';
+      toast.error(message);
+      console.error('Erro ao baixar PDF das mesas:', error);
+    } finally {
+      setIsDownloading(false);
     }
+  }
 
-    return [virtualTable, ...realTables];
+  const { tables: tablesWithFilteredMembers, overview } = useMemo(() => {
+    const prepared = prepareTablesForDisplay<Member>(tables);
+    return {
+      tables: prepared.tables,
+      overview: prepared.overview,
+    };
   }, [tables]);
 
-  const { totalTables, totalGuests, unassignedGuests } = useMemo(() => {
-    const realTables = tablesWithFilteredMembers.filter(
-      (table) => table.id !== '__no_table__'
-    );
-    const fallbackUnassigned = tablesWithFilteredMembers.find(
-      (table) => table.id === '__no_table__'
-    );
-
-    if (realTables.length === 0) {
-      return {
-        totalTables: 0,
-        totalGuests: 0,
-        maxGuests: 0,
-        minGuests: 0,
-        averageGuests: 0,
-        unassignedGuests: fallbackUnassigned?.members.length ?? 0,
-      };
-    }
-
-    const guests = realTables.map((table) => table.members.length);
-    const totalGuestsCount = guests.reduce((acc, value) => acc + value, 0);
-    const max = Math.max(...guests);
-    const min = Math.min(...guests);
-    const avg = totalGuestsCount / realTables.length;
-
-    return {
-      totalTables: realTables.length,
-      totalGuests: totalGuestsCount,
-      maxGuests: max,
-      minGuests: min,
-      averageGuests: avg,
-      unassignedGuests: fallbackUnassigned?.members.length ?? 0,
-    };
-  }, [tablesWithFilteredMembers]);
+  const { totalTables, totalGuests, unassignedGuests } = overview;
 
   return (
     <main className='mx-auto flex w-full max-w-7xl flex-col gap-4 p-4'>
       <PageBreadcrumb />
-      <div className='flex items-center justify-between'>
+      <div className='flex flex-wrap items-center justify-between gap-2'>
         <h1 className='text-2xl'>Organização de mesas</h1>
-        <Button asChild variant='outline'>
-          <Link href='/familias/listar'>Ver lista de famílias</Link>
-        </Button>
+        <div className='flex items-center gap-2'>
+          <Button
+            size='sm'
+            onClick={handleDownloadPdf}
+            disabled={isDownloading}
+          >
+            {isDownloading ? 'Baixando...' : 'Baixar organização em PDF'}
+          </Button>
+          <Button asChild size='sm' variant='outline'>
+            <Link href='/familias/listar'>Ver lista de famílias</Link>
+          </Button>
+        </div>
       </div>
 
       {!loading && (
@@ -225,24 +225,21 @@ export default function ListarMesasPage() {
                   <thead>
                     <tr className='text-left'>
                       <th className='w-52 p-2'>Nome</th>
-                      <th className='w-40 p-2'>Telefone</th>
                       <th className='w-28 p-2'>Buffet</th>
                       <th className='w-24 p-2'>Presença</th>
                       <th className='w-32 p-2'>Última resposta</th>
+                      <th className='w-36 p-2'>Cadeira infantil</th>
                     </tr>
                   </thead>
                   <tbody>
                     {table.members.map((member) => {
-                      const digits = member.phone.replace(/\D/g, '');
-                      const placeholder = isPlaceholderPhone(member.phone);
-                      const link = placeholder
-                        ? ''
-                        : `https://wa.me/${
-                            digits.length === 11 ? `55${digits}` : digits
-                          }`;
-
                       const displayName = truncateWithEllipsis(member.name, 30);
-                      const buffetLabel = formatBuffetLabel(getBuffetType(member.age));
+                      const buffetLabel = formatBuffetLabel(
+                        getBuffetType(member.age)
+                      );
+                      const needsChildChairLabel = member.needsChildChair
+                        ? 'Sim'
+                        : '-';
 
                       return (
                         <tr key={member.id} className='border-t'>
@@ -253,26 +250,6 @@ export default function ListarMesasPage() {
                             >
                               {displayName}
                             </span>
-                          </td>
-                          <td className='w-40 p-2'>
-                            <div className='flex items-center gap-2'>
-                              {placeholder ? (
-                                <span>-</span>
-                              ) : (
-                                <>
-                                  <a
-                                    href={link}
-                                    target='_blank'
-                                    rel='noopener noreferrer'
-                                    aria-label={`Conversar com ${member.name} no WhatsApp`}
-                                    className='text-green-600 hover:text-green-700'
-                                  >
-                                    <Phone className='h-4 w-4' />
-                                  </a>
-                                  {member.phone}
-                                </>
-                              )}
-                            </div>
                           </td>
                           <td className='w-28 p-2'>{buffetLabel}</td>
                           <td className='w-24 p-2'>
@@ -289,6 +266,7 @@ export default function ListarMesasPage() {
                                 )
                               : '-'}
                           </td>
+                          <td className='w-36 p-2'>{needsChildChairLabel}</td>
                         </tr>
                       );
                     })}

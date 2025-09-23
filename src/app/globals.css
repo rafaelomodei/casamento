@@ -131,3 +131,20 @@
     @apply bg-background text-foreground;
   }
 }
+
+.print-surface {
+  background: var(--card);
+  color: var(--foreground);
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .print-surface {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+}
