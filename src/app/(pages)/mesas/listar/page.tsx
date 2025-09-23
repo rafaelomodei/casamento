@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Phone } from 'lucide-react';
 import { isPlaceholderPhone } from '@/lib/utlils/phone';
+import { truncateWithEllipsis } from '@/lib/utlils/text';
+import { formatBuffetLabel, getBuffetType } from '@/lib/utlils/buffet';
 import {
   Card,
   CardDescription,
@@ -20,6 +22,7 @@ interface Member extends User {
   responded?: boolean;
   respondedAt?: string;
   attending?: boolean;
+  age?: number;
 }
 
 interface TableGroup {
@@ -36,8 +39,8 @@ function TableSkeleton() {
       <Skeleton className='h-4 w-1/6' />
       <div className='space-y-2'>
         {Array.from({ length: 3 }).map((_, index) => (
-          <div key={index} className='grid grid-cols-4 gap-4'>
-            {Array.from({ length: 4 }).map((__, innerIndex) => (
+          <div key={index} className='grid grid-cols-5 gap-4'>
+            {Array.from({ length: 5 }).map((__, innerIndex) => (
               <Skeleton key={innerIndex} className='h-4 w-full' />
             ))}
           </div>
@@ -218,13 +221,14 @@ export default function ListarMesasPage() {
               </div>
 
               <div className='overflow-x-auto'>
-                <table className='w-full text-sm'>
+                <table className='w-full table-fixed text-sm'>
                   <thead>
                     <tr className='text-left'>
-                      <th className='p-2'>Nome</th>
-                      <th className='p-2'>Telefone</th>
-                      <th className='p-2'>Presença</th>
-                      <th className='p-2'>Última resposta</th>
+                      <th className='w-52 p-2'>Nome</th>
+                      <th className='w-40 p-2'>Telefone</th>
+                      <th className='w-28 p-2'>Buffet</th>
+                      <th className='w-24 p-2'>Presença</th>
+                      <th className='w-32 p-2'>Última resposta</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -237,35 +241,48 @@ export default function ListarMesasPage() {
                             digits.length === 11 ? `55${digits}` : digits
                           }`;
 
+                      const displayName = truncateWithEllipsis(member.name, 30);
+                      const buffetLabel = formatBuffetLabel(getBuffetType(member.age));
+
                       return (
                         <tr key={member.id} className='border-t'>
-                          <td className='p-2'>{member.name}</td>
-                          <td className='p-2 flex items-center gap-2'>
-                            {placeholder ? (
-                              <span>-</span>
-                            ) : (
-                              <>
-                                <a
-                                  href={link}
-                                  target='_blank'
-                                  rel='noopener noreferrer'
-                                  aria-label={`Conversar com ${member.name} no WhatsApp`}
-                                  className='text-green-600 hover:text-green-700'
-                                >
-                                  <Phone className='h-4 w-4' />
-                                </a>
-                                {member.phone}
-                              </>
-                            )}
+                          <td className='w-52 p-2'>
+                            <span
+                              title={member.name}
+                              className='inline-block max-w-full truncate'
+                            >
+                              {displayName}
+                            </span>
                           </td>
-                          <td className='p-2'>
+                          <td className='w-40 p-2'>
+                            <div className='flex items-center gap-2'>
+                              {placeholder ? (
+                                <span>-</span>
+                              ) : (
+                                <>
+                                  <a
+                                    href={link}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    aria-label={`Conversar com ${member.name} no WhatsApp`}
+                                    className='text-green-600 hover:text-green-700'
+                                  >
+                                    <Phone className='h-4 w-4' />
+                                  </a>
+                                  {member.phone}
+                                </>
+                              )}
+                            </div>
+                          </td>
+                          <td className='w-28 p-2'>{buffetLabel}</td>
+                          <td className='w-24 p-2'>
                             {member.attending === undefined
                               ? '-'
                               : member.attending
                               ? 'Sim'
                               : 'Não'}
                           </td>
-                          <td className='p-2'>
+                          <td className='w-32 p-2'>
                             {member.respondedAt
                               ? new Date(member.respondedAt).toLocaleDateString(
                                   'pt-BR'
