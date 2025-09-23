@@ -42,6 +42,14 @@ export class FirebaseRepository implements IUserRepository {
     }));
   }
 
+  async findByTableId(tableId: string): Promise<UserDTO[]> {
+    const snap = await this.collection.where('tableId', '==', tableId).get();
+    return snap.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<UserDTO, 'id'>),
+    }));
+  }
+
   async search(term: string): Promise<UserDTO[]> {
     const snap = await this.collection.get();
     const lower = term.toLowerCase();

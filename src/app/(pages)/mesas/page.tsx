@@ -25,6 +25,7 @@ function MesasPageContent() {
   const [results, setResults] = useState<User[]>([]);
   const [selected, setSelected] = useState<User[]>([]);
   const [name, setName] = useState("");
+  const [priority, setPriority] = useState("0");
   const [message, setMessage] = useState("");
   const { user } = useAuth();
   const canEdit = user?.phone.replace(/\D/g, "") === "45991156286";
@@ -33,9 +34,10 @@ function MesasPageContent() {
     if (!tableId) return;
     fetch(`/api/tables?id=${tableId}`)
       .then((res) => res.json())
-      .then((data: { name: string; members: User[] }) => {
+      .then((data: { name: string; members: User[]; priority?: number }) => {
         setName(data.name);
         setSelected(data.members);
+        setPriority(String(data.priority ?? 0));
       })
       .catch(() => {
         setMessage("Mesa não encontrada");
@@ -68,9 +70,12 @@ function MesasPageContent() {
     }
 
     const method = tableId ? "PUT" : "POST";
+    const parsedPriority = Number.parseInt(priority, 10);
+    const normalizedPriority = Number.isFinite(parsedPriority) ? parsedPriority : 0;
+
     const body = tableId
-      ? { id: tableId, name, memberIds }
-      : { name, memberIds };
+      ? { id: tableId, name, memberIds, priority: normalizedPriority }
+      : { name, memberIds, priority: normalizedPriority };
 
     const res = await fetch("/api/tables", {
       method,
@@ -89,6 +94,7 @@ function MesasPageContent() {
         setName("");
         setSelected([]);
         setResults([]);
+        setPriority("0");
       }
     }
   }
@@ -155,11 +161,22 @@ function MesasPageContent() {
           ))}
         </div>
       </div>
-      <Input
-        value={name}
-        onChange={(event) => setName(event.currentTarget.value)}
-        placeholder="Nome da mesa"
-      />
+      <div className="flex flex-col gap-2 md:flex-row">
+        <Input
+          value={name}
+          onChange={(event) => setName(event.currentTarget.value)}
+          placeholder="Nome da mesa"
+          className="md:flex-1"
+        />
+        <Input
+          type="number"
+          value={priority}
+          onChange={(event) => setPriority(event.currentTarget.value)}
+          placeholder="Prioridade da mesa"
+          min={0}
+          className="md:w-48"
+        />
+      </div>
       <Button onClick={handleSave}>
         {tableId ? "Salvar alterações" : "Criar mesa"}
       </Button>

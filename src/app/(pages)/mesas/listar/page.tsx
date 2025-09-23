@@ -26,6 +26,7 @@ interface TableGroup {
   id: string;
   name: string;
   members: Member[];
+  priority?: number;
 }
 
 function TableSkeleton() {
@@ -71,31 +72,66 @@ export default function ListarMesasPage() {
     setTables((prev) => prev.filter((table) => table.id !== id));
   }
 
-  const { totalTables, totalGuests, maxGuests, minGuests, averageGuests } = useMemo(() => {
-    if (tables.length === 0) {
-      return {
-        totalTables: 0,
-        totalGuests: 0,
-        maxGuests: 0,
-        minGuests: 0,
-        averageGuests: 0,
-      };
+  const tablesWithFilteredMembers = useMemo(() => {
+    const mapped = tables.map((table) => {
+      const isVirtualTable = table.id === '__no_table__';
+      const members = isVirtualTable
+        ? table.members.filter((member) => member.attending !== false)
+        : table.members;
+      const normalizedPriority = isVirtualTable
+        ? Number.NEGATIVE_INFINITY
+        : table.priority ?? 0;
+
+      return { ...table, members, priority: normalizedPriority };
+    });
+
+    const virtualTable = mapped.find((table) => table.id === '__no_table__');
+    const realTables = mapped
+      .filter((table) => table.id !== '__no_table__')
+      .sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
+
+    if (!virtualTable) {
+      return realTables;
     }
 
-    const guests = tables.map((table) => table.members.length);
-    const totalGuestsCount = guests.reduce((acc, value) => acc + value, 0);
-    const max = Math.max(...guests);
-    const min = Math.min(...guests);
-    const avg = totalGuestsCount / tables.length;
-
-    return {
-      totalTables: tables.length,
-      totalGuests: totalGuestsCount,
-      maxGuests: max,
-      minGuests: min,
-      averageGuests: avg,
-    };
+    return [virtualTable, ...realTables];
   }, [tables]);
+
+  const { totalTables, totalGuests, maxGuests, minGuests, averageGuests, unassignedGuests } =
+    useMemo(() => {
+      const realTables = tablesWithFilteredMembers.filter(
+        (table) => table.id !== '__no_table__',
+      );
+      const fallbackUnassigned = tablesWithFilteredMembers.find(
+        (table) => table.id === '__no_table__',
+      );
+
+      if (realTables.length === 0) {
+        return {
+          totalTables: 0,
+          totalGuests: 0,
+          maxGuests: 0,
+          minGuests: 0,
+          averageGuests: 0,
+          unassignedGuests: fallbackUnassigned?.members.length ?? 0,
+        };
+      }
+
+      const guests = realTables.map((table) => table.members.length);
+      const totalGuestsCount = guests.reduce((acc, value) => acc + value, 0);
+      const max = Math.max(...guests);
+      const min = Math.min(...guests);
+      const avg = totalGuestsCount / realTables.length;
+
+      return {
+        totalTables: realTables.length,
+        totalGuests: totalGuestsCount,
+        maxGuests: max,
+        minGuests: min,
+        averageGuests: avg,
+        unassignedGuests: fallbackUnassigned?.members.length ?? 0,
+      };
+    }, [tablesWithFilteredMembers]);
 
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-col gap-4 p-4">
@@ -161,6 +197,18 @@ export default function ListarMesasPage() {
               </CardTitle>
             </CardHeader>
           </Card>
+          {unassignedGuests > 0 && (
+            <Card className="flex w-40 md:w-48 shadow-none" data-slot="card">
+              <CardHeader>
+                <CardDescription className="text-lg text-primary">
+                  Sem mesa
+                </CardDescription>
+                <CardTitle className="text-2xl text-foreground/70 font-semibold tabular-nums @[250px]/card:text-3xl">
+                  {unassignedGuests}
+                </CardTitle>
+              </CardHeader>
+            </Card>
+          )}
         </div>
       )}
 
@@ -172,92 +220,96 @@ export default function ListarMesasPage() {
       )}
 
       {!loading &&
-        tables.map((table) => (
-          <div key={table.id} className="space-y-2 rounded border p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-lg font-semibold">{table.name}</h2>
-                <p className="text-sm text-muted-foreground">
-                  {table.members.length} convidado(s)
-                </p>
-              </div>
-              {canEdit && (
-                <div className="flex gap-2">
-                  <Button asChild size="sm" variant="outline">
-                    <Link href={`/mesas?id=${table.id}`}>Editar</Link>
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    onClick={() => handleDelete(table.id)}
-                  >
-                    Excluir
-                  </Button>
+        tablesWithFilteredMembers.map((table) => {
+          const isVirtualTable = table.id === '__no_table__';
+          if (isVirtualTable && table.members.length === 0) return null;
+          return (
+            <div key={table.id} className="space-y-2 rounded border p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold">{table.name}</h2>
+                  <p className="text-sm text-muted-foreground">
+                    {table.members.length} convidado(s)
+                  </p>
                 </div>
-              )}
-            </div>
+                {canEdit && !isVirtualTable && (
+                  <div className="flex gap-2">
+                    <Button asChild size="sm" variant="outline">
+                      <Link href={`/mesas?id=${table.id}`}>Editar</Link>
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleDelete(table.id)}
+                    >
+                      Excluir
+                    </Button>
+                  </div>
+                )}
+              </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-left">
-                    <th className="p-2">Nome</th>
-                    <th className="p-2">Telefone</th>
-                    <th className="p-2">Presença</th>
-                    <th className="p-2">Última resposta</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {table.members.map((member) => {
-                    const digits = member.phone.replace(/\D/g, "");
-                    const placeholder = isPlaceholderPhone(member.phone);
-                    const link = placeholder
-                      ? ""
-                      : `https://wa.me/${
-                          digits.length === 11 ? `55${digits}` : digits
-                        }`;
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="text-left">
+                      <th className="p-2">Nome</th>
+                      <th className="p-2">Telefone</th>
+                      <th className="p-2">Presença</th>
+                      <th className="p-2">Última resposta</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {table.members.map((member) => {
+                      const digits = member.phone.replace(/\D/g, '');
+                      const placeholder = isPlaceholderPhone(member.phone);
+                      const link = placeholder
+                        ? ''
+                        : `https://wa.me/${
+                            digits.length === 11 ? `55${digits}` : digits
+                          }`;
 
-                    return (
-                      <tr key={member.id} className="border-t">
-                        <td className="p-2">{member.name}</td>
-                        <td className="p-2 flex items-center gap-2">
-                          {placeholder ? (
-                            <span>-</span>
-                          ) : (
-                            <>
-                              <a
-                                href={link}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label={`Conversar com ${member.name} no WhatsApp`}
-                                className="text-green-600 hover:text-green-700"
-                              >
-                                <Phone className="h-4 w-4" />
-                              </a>
-                              {member.phone}
-                            </>
-                          )}
-                        </td>
-                        <td className="p-2">
-                          {member.attending === undefined
-                            ? "-"
-                            : member.attending
-                            ? "Sim"
-                            : "Não"}
-                        </td>
-                        <td className="p-2">
-                          {member.respondedAt
-                            ? new Date(member.respondedAt).toLocaleDateString("pt-BR")
-                            : "-"}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                      return (
+                        <tr key={member.id} className="border-t">
+                          <td className="p-2">{member.name}</td>
+                          <td className="p-2 flex items-center gap-2">
+                            {placeholder ? (
+                              <span>-</span>
+                            ) : (
+                              <>
+                                <a
+                                  href={link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  aria-label={`Conversar com ${member.name} no WhatsApp`}
+                                  className="text-green-600 hover:text-green-700"
+                                >
+                                  <Phone className="h-4 w-4" />
+                                </a>
+                                {member.phone}
+                              </>
+                            )}
+                          </td>
+                          <td className="p-2">
+                            {member.attending === undefined
+                              ? '-'
+                              : member.attending
+                              ? 'Sim'
+                              : 'Não'}
+                          </td>
+                          <td className="p-2">
+                            {member.respondedAt
+                              ? new Date(member.respondedAt).toLocaleDateString('pt-BR')
+                              : '-'}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
     </main>
   );
 }
