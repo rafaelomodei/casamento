@@ -11,8 +11,13 @@ import { buildTablesPdfHtml } from '@/lib/pdf/tables-html';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-chromium.setHeadlessMode = true;
-chromium.setGraphicsMode = false;
+const chromiumRuntime = chromium as typeof chromium & {
+  setHeadlessMode?: boolean;
+  setGraphicsMode?: boolean;
+};
+
+chromiumRuntime.setHeadlessMode = true;
+chromiumRuntime.setGraphicsMode = false;
 
 async function resolveExecutablePath(): Promise<string> {
   const executablePath = await chromium.executablePath();

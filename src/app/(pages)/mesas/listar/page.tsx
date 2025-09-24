@@ -7,6 +7,12 @@ import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { useAuth, User } from '@/Providers/auth-provider';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { truncateWithEllipsis } from '@/lib/utlils/text';
 import { formatBuffetLabel, getBuffetType } from '@/lib/utlils/buffet';
 import {
@@ -52,7 +58,7 @@ function TableSkeleton() {
 export default function ListarMesasPage() {
   const [tables, setTables] = useState<TableGroup[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadingFormat, setDownloadingFormat] = useState<'pdf' | 'csv' | null>(null);
   const { user } = useAuth();
   const canEdit = user?.phone.replace(/\D/g, '') === '45991156286';
 
@@ -75,22 +81,23 @@ export default function ListarMesasPage() {
     setTables((prev) => prev.filter((table) => table.id !== id));
   }
 
-  async function handleDownloadPdf() {
+  async function handleDownload(format: 'pdf' | 'csv') {
     try {
-      setIsDownloading(true);
+      if (downloadingFormat) return;
+      setDownloadingFormat(format);
 
-      const response = await fetch('/api/tables/pdf');
+      const response = await fetch(`/api/tables/${format}`);
 
       if (!response.ok) {
         let errorMessage =
-          'Não foi possível gerar o PDF da organização de mesas.';
+          'Não foi possível gerar o arquivo da organização de mesas.';
         try {
           const data = await response.json();
           if (data && typeof data.error === 'string') {
             errorMessage = data.error;
           }
         } catch (jsonError) {
-          console.error('Erro ao interpretar resposta do PDF:', jsonError);
+          console.error('Erro ao interpretar resposta do download:', jsonError);
         }
         throw new Error(errorMessage);
       }
@@ -99,7 +106,8 @@ export default function ListarMesasPage() {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'organizacao-mesas.pdf';
+      const extension = format === 'pdf' ? 'pdf' : 'csv';
+      link.download = `organizacao-mesas.${extension}`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -108,11 +116,11 @@ export default function ListarMesasPage() {
       const message =
         error instanceof Error
           ? error.message
-          : 'Não foi possível baixar o PDF. Tente novamente.';
+          : 'Não foi possível realizar o download. Tente novamente.';
       toast.error(message);
-      console.error('Erro ao baixar PDF das mesas:', error);
+      console.error('Erro ao baixar arquivo das mesas:', error);
     } finally {
-      setIsDownloading(false);
+      setDownloadingFormat(null);
     }
   }
 
@@ -125,6 +133,13 @@ export default function ListarMesasPage() {
   }, [tables]);
 
   const { totalTables, totalGuests, unassignedGuests } = overview;
+  const isDownloading = downloadingFormat !== null;
+  const downloadingLabel =
+    downloadingFormat === 'pdf'
+      ? 'Baixando PDF...'
+      : downloadingFormat === 'csv'
+      ? 'Baixando CSV...'
+      : 'Baixar organização de mesas';
 
   return (
     <main className='mx-auto flex w-full max-w-7xl flex-col gap-4 p-4'>
@@ -132,13 +147,27 @@ export default function ListarMesasPage() {
       <div className='flex flex-wrap items-center justify-between gap-2'>
         <h1 className='text-2xl'>Organização de mesas</h1>
         <div className='flex items-center gap-2'>
-          <Button
-            size='sm'
-            onClick={handleDownloadPdf}
-            disabled={isDownloading}
-          >
-            {isDownloading ? 'Baixando...' : 'Baixar organização em PDF'}
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size='sm' disabled={isDownloading}>
+                {downloadingLabel}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              <DropdownMenuItem
+                disabled={isDownloading}
+                onSelect={() => handleDownload('pdf')}
+              >
+                Baixar em PDF
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                disabled={isDownloading}
+                onSelect={() => handleDownload('csv')}
+              >
+                Baixar em CSV
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button asChild size='sm' variant='outline'>
             <Link href='/familias/listar'>Ver lista de famílias</Link>
           </Button>
