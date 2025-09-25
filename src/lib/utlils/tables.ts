@@ -6,7 +6,7 @@ export interface TableMemberLike {
 }
 
 export interface TableWithMembers<TMember extends TableMemberLike = TableMemberLike> {
-  id: string;
+  id?: string;
   name: string;
   members: TMember[];
   priority?: number | null;
@@ -14,6 +14,7 @@ export interface TableWithMembers<TMember extends TableMemberLike = TableMemberL
 
 export interface PreparedTable<TMember extends TableMemberLike = TableMemberLike>
   extends TableWithMembers<TMember> {
+  id: string;
   priority: number;
   isVirtual: boolean;
 }

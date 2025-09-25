@@ -14,6 +14,8 @@ export const dynamic = 'force-dynamic';
 const chromiumRuntime = chromium as typeof chromium & {
   setHeadlessMode?: boolean;
   setGraphicsMode?: boolean;
+  headless?: boolean;
+  args?: string[];
 };
 
 chromiumRuntime.setHeadlessMode = true;
@@ -40,7 +42,7 @@ async function resolveExecutablePath(): Promise<string> {
 }
 
 export async function GET() {
-  let browser: puppeteer.Browser | undefined;
+  let browser: Awaited<ReturnType<typeof puppeteer.launch>> | undefined;
 
   try {
     const listTables = new ListTablesUseCase(tableRepository, userRepository);
@@ -50,13 +52,15 @@ export async function GET() {
       prepareTablesForDisplay(tables);
     const html = buildTablesPdfHtml(preparedTables, overview, new Date());
 
-    browser = await puppeteer.launch({
-      args: chromium.args,
+    const executablePath = await resolveExecutablePath();
+    const launchOptions = {
+      args: chromiumRuntime.args ?? chromium.args ?? [],
       defaultViewport: { width: 1280, height: 720 },
-      executablePath: await resolveExecutablePath(),
-      headless: chromium.headless,
-      ignoreHTTPSErrors: true,
-    });
+      executablePath,
+      headless: chromiumRuntime.headless ?? true,
+    };
+
+    browser = await puppeteer.launch(launchOptions);
 
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: 'networkidle0' });
@@ -68,7 +72,9 @@ export async function GET() {
 
     await page.close();
 
-    return new NextResponse(pdf, {
+    const pdfBuffer = Buffer.from(pdf);
+
+    return new NextResponse(pdfBuffer, {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
