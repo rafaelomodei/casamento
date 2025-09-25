@@ -251,6 +251,14 @@ export function buildTablesPdfHtml<TMember extends PrintableMemberBase>(
           <p>${overview.totalGuests}</p>
         </div>
         <div class="overview-card">
+          <h3>Pagantes</h3>
+          <p>${overview.payingGuests}</p>
+        </div>
+        <div class="overview-card">
+          <h3>Não pagantes</h3>
+          <p>${overview.nonPayingGuests}</p>
+        </div>
+        <div class="overview-card">
           <h3>Sem mesa</h3>
           <p>${overview.unassignedGuests}</p>
         </div>

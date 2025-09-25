@@ -132,7 +132,7 @@ export default function ListarMesasPage() {
     };
   }, [tables]);
 
-  const { totalTables, totalGuests, unassignedGuests } = overview;
+  const { totalTables, totalGuests, unassignedGuests, payingGuests, nonPayingGuests } = overview;
   const isDownloading = downloadingFormat !== null;
   const downloadingLabel =
     downloadingFormat === 'pdf'
@@ -193,6 +193,26 @@ export default function ListarMesasPage() {
               </CardDescription>
               <CardTitle className='text-2xl text-foreground/70 font-semibold tabular-nums @[250px]/card:text-3xl'>
                 {totalGuests}
+              </CardTitle>
+            </CardHeader>
+          </Card>
+          <Card className='flex w-40 md:w-48 shadow-none' data-slot='card'>
+            <CardHeader>
+              <CardDescription className='text-lg text-primary'>
+                Pagantes
+              </CardDescription>
+              <CardTitle className='text-2xl text-foreground/70 font-semibold tabular-nums @[250px]/card:text-3xl'>
+                {payingGuests}
+              </CardTitle>
+            </CardHeader>
+          </Card>
+          <Card className='flex w-40 md:w-48 shadow-none' data-slot='card'>
+            <CardHeader>
+              <CardDescription className='text-lg text-primary'>
+                Não pagantes
+              </CardDescription>
+              <CardTitle className='text-2xl text-foreground/70 font-semibold tabular-nums @[250px]/card:text-3xl'>
+                {nonPayingGuests}
               </CardTitle>
             </CardHeader>
           </Card>
