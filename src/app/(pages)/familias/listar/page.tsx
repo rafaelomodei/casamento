@@ -147,7 +147,7 @@ export default function ListaFamiliasPage() {
             <Card className='flex w-40 shadow-none' data-slot='card'>
               <CardHeader>
                 <CardDescription className='text-lg text-primary'>
-                  Pagantes
+                  Convidados Pagantes
                 </CardDescription>
                 <CardTitle className='text-2xl text-foreground/70 font-semibold tabular-nums @[250px]/card:text-3xl'>
                   {payingPeople}
@@ -252,7 +252,10 @@ export default function ListaFamiliasPage() {
                     return (
                       <tr key={m.id} className='border-t'>
                         <td className='w-52 p-2'>
-                          <span title={m.name} className='inline-block max-w-full truncate'>
+                          <span
+                            title={m.name}
+                            className='inline-block max-w-full truncate'
+                          >
                             {displayName}
                           </span>
                         </td>
@@ -277,11 +280,16 @@ export default function ListaFamiliasPage() {
                           </div>
                         </td>
                         <td className='w-36 p-2'>
-                          <span title={tableName} className='inline-block max-w-full truncate'>
+                          <span
+                            title={tableName}
+                            className='inline-block max-w-full truncate'
+                          >
                             {tableName}
                           </span>
                         </td>
-                        <td className='w-28 p-2'>{m.responded ? 'Sim' : 'Não'}</td>
+                        <td className='w-28 p-2'>
+                          {m.responded ? 'Sim' : 'Não'}
+                        </td>
                         <td className='w-32 p-2'>
                           {m.respondedAt
                             ? new Date(m.respondedAt).toLocaleDateString(

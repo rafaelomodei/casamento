@@ -28,6 +28,7 @@ export interface TablesOverview {
   unassignedGuests: number;
   payingGuests: number;
   nonPayingGuests: number;
+  halfPayingGuests: number;
 }
 
 export function prepareTablesForDisplay<TMember extends TableMemberLike>(
@@ -70,9 +71,26 @@ export function prepareTablesForDisplay<TMember extends TableMemberLike>(
   const virtualGuests = virtualTable?.members ?? [];
   const allGuests = realTableGuests.concat(virtualGuests);
 
-  const payingGuests = allGuests.reduce((acc, member) => {
-    return getBuffetType(member.age) !== 'free' ? acc + 1 : acc;
-  }, 0);
+  const buffetDistribution = allGuests.reduce(
+    (acc, member) => {
+      const type = getBuffetType(member.age);
+      if (type === 'free') return acc;
+      if (type === 'half') {
+        return {
+          paying: acc.paying + 1,
+          half: acc.half + 1,
+        };
+      }
+      return {
+        paying: acc.paying + 1,
+        half: acc.half,
+      };
+    },
+    { paying: 0, half: 0 },
+  );
+
+  const payingGuests = buffetDistribution.paying;
+  const halfPayingGuests = buffetDistribution.half;
 
   const nonPayingGuests = allGuests.length - payingGuests;
 
@@ -82,6 +100,7 @@ export function prepareTablesForDisplay<TMember extends TableMemberLike>(
     unassignedGuests: virtualTable?.members.length ?? 0,
     payingGuests,
     nonPayingGuests,
+    halfPayingGuests,
   };
 
   return { tables: orderedTables, overview };

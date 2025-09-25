@@ -58,7 +58,9 @@ function TableSkeleton() {
 export default function ListarMesasPage() {
   const [tables, setTables] = useState<TableGroup[]>([]);
   const [loading, setLoading] = useState(true);
-  const [downloadingFormat, setDownloadingFormat] = useState<'pdf' | 'csv' | null>(null);
+  const [downloadingFormat, setDownloadingFormat] = useState<
+    'pdf' | 'csv' | null
+  >(null);
   const { user } = useAuth();
   const canEdit = user?.phone.replace(/\D/g, '') === '45991156286';
 
@@ -132,7 +134,14 @@ export default function ListarMesasPage() {
     };
   }, [tables]);
 
-  const { totalTables, totalGuests, unassignedGuests, payingGuests, nonPayingGuests } = overview;
+  const {
+    totalTables,
+    totalGuests,
+    unassignedGuests,
+    payingGuests,
+    nonPayingGuests,
+    halfPayingGuests,
+  } = overview;
   const isDownloading = downloadingFormat !== null;
   const downloadingLabel =
     downloadingFormat === 'pdf'
@@ -199,7 +208,7 @@ export default function ListarMesasPage() {
           <Card className='flex w-40 md:w-48 shadow-none' data-slot='card'>
             <CardHeader>
               <CardDescription className='text-lg text-primary'>
-                Pagantes
+                Convidados pagantes
               </CardDescription>
               <CardTitle className='text-2xl text-foreground/70 font-semibold tabular-nums @[250px]/card:text-3xl'>
                 {payingGuests}
@@ -209,10 +218,20 @@ export default function ListarMesasPage() {
           <Card className='flex w-40 md:w-48 shadow-none' data-slot='card'>
             <CardHeader>
               <CardDescription className='text-lg text-primary'>
-                Não pagantes
+                Convidados não pagantes
               </CardDescription>
               <CardTitle className='text-2xl text-foreground/70 font-semibold tabular-nums @[250px]/card:text-3xl'>
                 {nonPayingGuests}
+              </CardTitle>
+            </CardHeader>
+          </Card>
+          <Card className='flex w-40 md:w-48 shadow-none' data-slot='card'>
+            <CardHeader>
+              <CardDescription className='text-lg text-primary'>
+                Convidados que pagam meia
+              </CardDescription>
+              <CardTitle className='text-2xl text-foreground/70 font-semibold tabular-nums @[250px]/card:text-3xl'>
+                {halfPayingGuests}
               </CardTitle>
             </CardHeader>
           </Card>

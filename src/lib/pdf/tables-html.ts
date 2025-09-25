@@ -1,5 +1,9 @@
 import { formatBuffetLabel, getBuffetType } from '@/lib/utlils/buffet';
-import { PreparedTable, TablesOverview, TableMemberLike } from '@/lib/utlils/tables';
+import {
+  PreparedTable,
+  TablesOverview,
+  TableMemberLike,
+} from '@/lib/utlils/tables';
 
 interface PrintableMemberBase extends TableMemberLike {
   name: string;
@@ -9,8 +13,9 @@ interface PrintableMemberBase extends TableMemberLike {
   needsChildChair?: boolean;
 }
 
-export type PrintableTable<TMember extends PrintableMemberBase = PrintableMemberBase> =
-  PreparedTable<TMember>;
+export type PrintableTable<
+  TMember extends PrintableMemberBase = PrintableMemberBase
+> = PreparedTable<TMember>;
 
 function escapeHtml(value: string): string {
   return value
@@ -34,7 +39,7 @@ function formatAttendance(attending?: boolean): string {
 }
 
 function renderTableRows<TMember extends PrintableMemberBase>(
-  table: PrintableTable<TMember>,
+  table: PrintableTable<TMember>
 ): string {
   return table.members
     .map((member) => {
@@ -56,14 +61,16 @@ function renderTableRows<TMember extends PrintableMemberBase>(
 }
 
 function renderTableSection<TMember extends PrintableMemberBase>(
-  tables: PrintableTable<TMember>[],
+  tables: PrintableTable<TMember>[]
 ): string {
   return tables
     .filter((table) => !table.isVirtual || table.members.length > 0)
     .map((table) => {
       const totalMembers = table.members.length;
       const title = escapeHtml(table.name);
-      const subtitle = `${totalMembers} convidado${totalMembers === 1 ? '' : 's'}`;
+      const subtitle = `${totalMembers} convidado${
+        totalMembers === 1 ? '' : 's'
+      }`;
       const tableClass = table.isVirtual ? 'table-card virtual' : 'table-card';
 
       return `
@@ -97,7 +104,7 @@ function renderTableSection<TMember extends PrintableMemberBase>(
 export function buildTablesPdfHtml<TMember extends PrintableMemberBase>(
   tables: PrintableTable<TMember>[],
   overview: TablesOverview,
-  generatedAt: Date,
+  generatedAt: Date
 ): string {
   const generatedLabel = generatedAt.toLocaleString('pt-BR', {
     dateStyle: 'medium',
@@ -251,16 +258,16 @@ export function buildTablesPdfHtml<TMember extends PrintableMemberBase>(
           <p>${overview.totalGuests}</p>
         </div>
         <div class="overview-card">
-          <h3>Pagantes</h3>
+          <h3>Convidados pagantes</h3>
           <p>${overview.payingGuests}</p>
         </div>
         <div class="overview-card">
-          <h3>Não pagantes</h3>
+          <h3>Convidados não pagantes</h3>
           <p>${overview.nonPayingGuests}</p>
         </div>
         <div class="overview-card">
-          <h3>Sem mesa</h3>
-          <p>${overview.unassignedGuests}</p>
+          <h3>Convidados que pagam meia</h3>
+          <p>${overview.halfPayingGuests}</p>
         </div>
       </section>
       <div class="table-list">
