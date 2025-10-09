@@ -3,6 +3,16 @@
 import { useEffect, useState } from 'react';
 import PageBreadcrumb from '@/components/PageBreadcrumb';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { useAuthRequired } from '@/hooks/useAuthRequired';
 import { useLoginRedirect } from '@/hooks/useLoginRedirect';
 import { useAuth, User as AuthUser } from '@/Providers/auth-provider';
@@ -10,6 +20,7 @@ import { CalendarCheck2, Check, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { truncateWithEllipsis } from '@/lib/utlils/text';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { getRandomAvatar } from '@/lib/utlils/randomAvatar';
 
 interface Member extends AuthUser {
   attending?: boolean;
@@ -23,6 +34,9 @@ export default function ConfirmarPresencaPage() {
   const [members, setMembers] = useState<Member[]>([]);
   const [message, setMessage] = useState('');
   const [responses, setResponses] = useState<Record<string, boolean | undefined>>({});
+  const [open, setOpen] = useState(false);
+  const [newName, setNewName] = useState('');
+  const [newPhone, setNewPhone] = useState('');
   const commonMessage =
     'Sua resposta foi registrada. Agradecemos por nos avisar.';
   const loginMessage = 'Para confirmar presença, faça login ou cadastre-se.';
@@ -75,6 +89,39 @@ export default function ConfirmarPresencaPage() {
     }
   }
 
+  async function handleAddMember(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!user) return;
+    try {
+      const sex: 'male' | 'female' = 'male';
+      const avatar = getRandomAvatar(sex);
+      const res = await fetch('/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: newName,
+          phone: newPhone,
+          familyId: user.familyId,
+          avatar,
+          sex,
+          downloads: 0,
+        }),
+      });
+      if (res.ok) {
+        const created = (await res.json()) as Member;
+        setMembers((prev) => [...prev, created]);
+        setResponses((prev) => ({ ...prev, [created.id]: undefined }));
+        setOpen(false);
+        setNewName('');
+        setNewPhone('');
+      }
+    } catch (err) {
+      console.error('Erro ao adicionar membro:', err);
+    }
+  }
+
   return (
     <main className='flex flex-col w-full gap-4 p-4 min-h-screen  max-w-6xl '>
       <PageBreadcrumb />
@@ -104,6 +151,48 @@ export default function ConfirmarPresencaPage() {
                 Sem sua resposta, você e sua família não poderão entrar na festa.
               </strong>
             </p>
+            {user.familyId && (
+              <Dialog open={open} onOpenChange={setOpen}>
+                <DialogTrigger asChild>
+                  <Button variant='outline'>Cadastrar novo membro</Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Cadastrar novo membro</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={handleAddMember} className='flex flex-col gap-4'>
+                    <div className='flex flex-col gap-2'>
+                      <Label htmlFor='newMemberName'>Nome</Label>
+                      <Input
+                        id='newMemberName'
+                        value={newName}
+                        onChange={(e) => setNewName(e.currentTarget.value)}
+                        required
+                      />
+                    </div>
+                    <div className='flex flex-col gap-2'>
+                      <Label htmlFor='newMemberPhone'>Telefone</Label>
+                      <Input
+                        id='newMemberPhone'
+                        value={newPhone}
+                        onChange={(e) => setNewPhone(e.currentTarget.value)}
+                        required
+                      />
+                    </div>
+                    <DialogFooter>
+                      <Button
+                        type='button'
+                        variant='outline'
+                        onClick={() => setOpen(false)}
+                      >
+                        Cancelar
+                      </Button>
+                      <Button type='submit'>Adicionar</Button>
+                    </DialogFooter>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            )}
             <div className='w-full overflow-x-auto'>
               <table className='w-full'>
                 <thead>
