@@ -14,7 +14,8 @@ export function formatPhone(value: string): string {
 }
 
 export function isValidPhone(value: string): boolean {
-  return value.replace(/\D/g, '').length === 11
+  const digits = value.replace(/\D/g, '');
+  return digits.length === 11 && !digits.startsWith('55');
 }
 
 export function isPlaceholderPhone(value: string): boolean {
