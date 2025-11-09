@@ -14,7 +14,10 @@ import { event } from '@/lib/analytics';
 const NavBar = () => {
   const { user } = useAuth();
   const pathname = usePathname();
-  const isAuthPage = pathname.startsWith('/entrar');
+  const isAuthPage =
+    pathname === '/' ||
+    pathname.startsWith('/entrar') ||
+    pathname.startsWith('/esqueci-senha');
 
   const [visible, setVisible] = useState(true);
   const navRef = useRef<HTMLDivElement>(null);
@@ -46,8 +49,8 @@ const NavBar = () => {
     { href: '/nossas-historias', label: 'Nossa Histórias' },
     { href: '/mensagens', label: 'Mensagens' },
     { href: '/galeria', label: 'Galeria' },
-    { href: '/#cerimonia', label: 'Cerimonia' },
-    { href: '/#festa', label: 'Festa' },
+    { href: '/inicio#cerimonia', label: 'Cerimonia' },
+    { href: '/inicio#festa', label: 'Festa' },
     { href: '/hospedagem', label: 'Hospedagem' },
     { href: '/presentes', label: 'Presentes' },
     { href: '/confirmar-presenca', label: 'Confirmar Presença' },
@@ -66,7 +69,7 @@ const NavBar = () => {
       >
         <main className='flex w-full py-8 border-b justify-center bg-background'>
           <div className='flex w-full max-w-6xl items-center justify-between px-4 md:px-0'>
-            <Link href='/'>
+            <Link href='/inicio'>
               <Image
                 src={'/svg/logoNavBar.svg'}
                 alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
@@ -101,7 +104,7 @@ const NavBar = () => {
                   <UserMenu />
                 ) : (
                   <Button asChild variant='secondary' className='text-white'>
-                    <Link href='/entrar'>Entrar</Link>
+                    <Link href='/'>Entrar</Link>
                   </Button>
                 )}
               </div>

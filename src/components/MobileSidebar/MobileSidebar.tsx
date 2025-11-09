@@ -33,7 +33,10 @@ export default function MobileSidebar({ items }: MobileSidebarProps) {
   const { user, signOut } = useAuth();
   const { setOpenMobile } = useSidebar();
   const pathname = usePathname();
-  const isAuthPage = pathname.startsWith('/entrar');
+  const isAuthPage =
+    pathname === '/' ||
+    pathname.startsWith('/entrar') ||
+    pathname.startsWith('/esqueci-senha');
   const displayName = user ? capitalizeWords(user.name) : '';
 
   return (
@@ -43,7 +46,7 @@ export default function MobileSidebar({ items }: MobileSidebarProps) {
         <Sidebar side='right' className='md:hidden'>
           <SidebarContent>
             <div className='flex flex-col items-center gap-2 p-4'>
-              <Link href='/'>
+              <Link href='/inicio'>
                 <Image
                   src={'/svg/logoNavBar.svg'}
                   alt='Logo Casamento, Maria Eduarda e Rafael Omodei'
@@ -94,7 +97,7 @@ export default function MobileSidebar({ items }: MobileSidebarProps) {
                   </>
                 ) : (
                   <Button asChild variant='secondary' className='text-white'>
-                    <Link href='/entrar'>Entrar</Link>
+                    <Link href='/'>Entrar</Link>
                   </Button>
                 )}
               </div>

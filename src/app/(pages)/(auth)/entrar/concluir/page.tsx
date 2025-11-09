@@ -13,7 +13,7 @@ import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn'
 function CadastroForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const callback = searchParams.get('callback') || '/'
+  const callback = searchParams.get('callback') || '/inicio'
   const phone = searchParams.get('phone') || ''
   useRedirectIfLoggedIn(callback);
   const { signIn } = useAuth()

@@ -5,6 +5,6 @@ export function useLoginRedirect() {
 
   return (callback?: string) => {
     const url = callback || window.location.href
-    router.push(`/entrar?callback=${encodeURIComponent(url)}`)
+    router.push(`/?callback=${encodeURIComponent(url)}`)
   }
 }

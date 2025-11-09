@@ -6,7 +6,10 @@ import { usePathname } from 'next/navigation';
 
 const Footer = () => {
   const pathname = usePathname();
-  const isAuthPage = pathname.startsWith('/entrar');
+  const isAuthPage =
+    pathname === '/' ||
+    pathname.startsWith('/entrar') ||
+    pathname.startsWith('/esqueci-senha');
 
   if (isAuthPage) return null;
 
@@ -15,8 +18,8 @@ const Footer = () => {
       <nav className='flex flex-wrap gap-4 items-center justify-center'>
         <Link href='/nossas-historias'>Nossa Histórias</Link>
         <Link href='/mensagens'>Mensagens</Link>
-        <Link href='/#cerimonia'>Cerimonia</Link>
-        <Link href='/#festa'>Festa</Link>
+        <Link href='/inicio#cerimonia'>Cerimonia</Link>
+        <Link href='/inicio#festa'>Festa</Link>
         <Link href='/presentes'>Presentes</Link>
       </nav>
 
